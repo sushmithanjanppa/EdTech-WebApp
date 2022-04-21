@@ -22,7 +22,7 @@ router.get('/video', async(req,res) => {
 })
 
 router.post('/video', async(req,res) => {
-    console.log("post")
+    // console.log("post")
     // console.log(req.body)
     // let timeupdated = await videos.addtime(id = req.body.video_id, time = req.body.resume)
     let timeupdated = await videos.addtime(data = req.body)

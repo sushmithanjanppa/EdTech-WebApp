@@ -61,54 +61,7 @@ module.exports = {
             });
         }
     }
-//     async createUser(username, password){
-//         // console.log("in create user")
-//         username = validation.checkusername(username,'Username')
-//         password = validation.checkpassword(password, 'Password')
-//         const usercollection = await users()
-//         const username_dup = await usercollection.findOne({username : username})
-//         if (username_dup !== null)
-//             throw `${username} already exists.`
-//         else
-//         {
-//             password = await bcrypt.hash(password, saltRounds);
-//             let newUser = {
-//                 username: username,
-//                 password: password
-//             };
-//             const insertInfo = await usercollection.insertOne(newUser);
-//             if (!insertInfo.acknowledged || !insertInfo.insertedId)
-//                 throw "Could not add user";
-//             else
-//                 return {userInserted: true}
-//         }
-//     },
-
-//     async checkUser(username, password){
-//         username = validation.checkusername(username,'Username')
-//         password = validation.checkpassword(password, 'Password')
-//         const usercollection = await users()
-//         const username_dup = await usercollection.findOne({username : username})
-//         if (username_dup === null)
-//             throw `Either the username or password is invalid`
-//         else
-//         {
-//             let compareToMatch = false;
-//             try {
-//                 compareToMatch = await bcrypt.compare(password, username_dup.password);
-//             } catch (e) {
-//                 console.log(e)
-//             }
-
-//             if (compareToMatch) {
-//                 return {authenticated: true}
-//             } else {
-//                 throw `Either the username or password is invalid`
-//             }
-//         }
-// }
-// }
-    }
+}
 
 async function main(){
     try{

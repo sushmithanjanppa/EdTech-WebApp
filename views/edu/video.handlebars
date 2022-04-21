@@ -1,9 +1,11 @@
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/public/css/video.css" crossorigin="anonymous">
     <div>
     <button id="stop">Stop All Videos</button>
     </div>
     
-    <div class="wrapper">
+    {{!-- <div class="wrapper">
         <div id="player1"></div>
         <div id="player2"></div>
         <div id="player3"></div>
@@ -13,13 +15,27 @@
         <div id="player4"></div>
         <div id="player5"></div>
         <div id="player6"></div>
-    </div>
+    </div> --}}
 
-
+    {{!-- <div class="wrapper" id="wrapper"></div> --}}
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script>
-        //var catDiv = document.createElement("div");
-        //catDiv.innerHTML = "Test";
-        //document.body.appendChild(catDiv);
+        var playerInfoList = {{{videodata}}}
+        for (var i = 0; i < playerInfoList.length; i++) {
+            {{!-- p = document.createElement('p') --}}
+            {{!-- p.innerHTML = 'I am P' --}}
+            {{!-- p.setAttribute("id", 'p'+(i+1)); --}}
+            {{!-- var wrapper = document.getElementById('wrapper') --}}
+            var wrapper = document.createElement('div');
+            wrapper.setAttribute("id", 'player_wrapper')
+            var d = document.createElement("div");
+            d.setAttribute("id", 'player'+(i+1));
+            wrapper.appendChild(d)
+            document.body.append(wrapper)
+            {{!-- wrapper.appendChild(d) --}}
+            playerInfoList[i].id = 'player'+(i+1)
+        }
+
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -43,16 +59,16 @@
         id: 'player6',
         videoId: 'S4R8HTIgHUU'
         }]; --}}
-        var playerInfoList = {{{videodata}}}
+        
         //console.log("In script")
         //console.log(playerInfoList)
         function onYouTubeIframeAPIReady() {
         if (typeof playerInfoList === 'undefined') return;
 
         for (var i = 0; i < playerInfoList.length; i++) {
-            d = document.createElement("div");
-            d.setAttribute("id", 'player'+(i+1));
-            playerInfoList[i].id = 'player'+(i+1)
+            //d = document.createElement("div");
+            //d.setAttribute("id", 'player'+(i+1));
+            //playerInfoList[i].id = 'player'+(i+1)
             //console.log(playerInfoList[i])
             var curplayer = createPlayer(playerInfoList[i]);
             players[i] = curplayer;
@@ -68,10 +84,12 @@
                 height: '390',
                 width: '640',
                 videoId: playerInfo.video_id,
+                frameborder: '1',
                 playerVars: {
                     'showinfo': 0,
                     'playsinline': 1,
-                    'start': parseInt(playerInfo.resume)
+                    'start': parseInt(playerInfo.resume),
+                    'autoplay':0
                 },
                 events: {
                     'onReady': onPlayerReady,
@@ -83,8 +101,8 @@
         // 4. The API will call this function when the video player is ready.
         function onPlayerReady(event) {
             //console.log(event);
-            console.log(event.target.getDuration());
-            event.target.seekTo(parseFloat(0)).playVideo();
+            {{!-- console.log(event.target.getDuration()); --}}
+            event.target.seekTo(parseFloat(0));
         }
 
         // 5. The API calls this function when the player's state changes.
@@ -114,7 +132,7 @@
                         duration: duration,
                         done: true
                     })}
-
+                playerevent.done = true;
                 $.ajax(requestConfig).then(function (responseMessage) {
                     console.log(responseMessage);});
             }
@@ -132,7 +150,7 @@
                         duration: duration,
                         done: playerevent.done || false
                     })}
-
+                playerevent.done = playerevent.done || false
                 $.ajax(requestConfig).then(function (responseMessage) {
                     console.log(responseMessage);});
             // setTimeout(stopVideo, 10000);
@@ -142,6 +160,13 @@
         function stopVideo() {
             player.stopVideo();
         }
+
+        $('#stop').click(function () {
+            {{!-- alert("Stop") --}}
+            players.forEach(function (el) {
+            el.stopVideo();
+            });
+        });
 
     </script>
 

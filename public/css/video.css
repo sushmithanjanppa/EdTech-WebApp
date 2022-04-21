@@ -1,0 +1,33 @@
+
+button {
+    background-color: lightcoral;
+    color: white;
+    display: block;
+    margin: 3vw auto;
+    min-width: 120px;
+    border: none;
+    padding: 0 1em;
+    font-size: 12px;
+    text-transform: uppercase;
+    line-height: 40px;
+    text-align: center;
+    outline: none;
+    cursor: pointer;
+}
+    
+#player_wrapper {
+display: flex;
+align-content: center;
+justify-content: space-around;
+margin-bottom: 3vw;
+border: 1px solid #000000;
+margin: 10px;
+border-radius: 10px;
+background: #000000;
+    iframe {
+        frameborder :1;
+        border: 3px solid #000fff ;
+        width: 30vw;
+        height: 16.5vw;
+    }
+}
