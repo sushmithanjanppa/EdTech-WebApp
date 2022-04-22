@@ -25,21 +25,21 @@ body {
   height: 150px;
   margin: 0.5rem;
   border-radius: 50%;
-  background: #FFCDB2;
+  background: #f52b2b;
   overflow: hidden;
 }
-.circle.per-25 {
+/* .circle.per-25 {
   background-image: conic-gradient(#B5838D 25%, #FFCDB2 0);
 }
 .circle.per-50 {
   background-image: conic-gradient(#B5838D 50%, #FFCDB2 0);
 }
 .circle.per-75 {
-  background-image: conic-gradient(#B5838D 30%, #FFCDB2 0);
+  background-image: conic-gradient(#B5838D 75%, #FFCDB2 0);
 }
 .circle.per-100 {
   background-image: conic-gradient(#B5838D 100%, #FFCDB2 0);
-}
+} */
 .circle .inner {
   display: flex;
   justify-content: center;

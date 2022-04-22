@@ -84,7 +84,6 @@
                 height: '390',
                 width: '640',
                 videoId: playerInfo.video_id,
-                frameborder: '1',
                 playerVars: {
                     'showinfo': 0,
                     'playsinline': 1,
@@ -102,7 +101,9 @@
         function onPlayerReady(event) {
             //console.log(event);
             {{!-- console.log(event.target.getDuration()); --}}
-            event.target.seekTo(parseFloat(0));
+            event.target.pauseVideo();
+            {{!-- event.target.seekTo(parseFloat(0)); --}}
+            
         }
 
         // 5. The API calls this function when the player's state changes.

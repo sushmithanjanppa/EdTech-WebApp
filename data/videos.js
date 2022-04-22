@@ -60,6 +60,19 @@ module.exports = {
                 videoId: playerInfo.videoId
             });
         }
+    },
+
+    async getprogress(){
+        const videocollection = await videos();
+        let data = await videocollection.find({},{projection:{_id:1,done:1}}).toArray();
+        // console.log(data);
+        count = 0
+        for(var i = 0; i < data.length; i++){
+            if(data[i].done === true){
+                count += 1
+            }
+        }
+        return (count*100/data.length)
     }
 }
 
@@ -68,9 +81,10 @@ async function main(){
         // console.log(await module.exports.createVideo('Demo Video', 'M7lc1UVf-VE'))
         // console.log(await module.exports.createVideo('First Video', '3JluqTojuME'))
         // console.log(await module.exports.createVideo('Second Video', 'Q33KBiDriJY'))
-        console.log(await module.exports.createVideo('fourth Video', 'fqdidduTuZM'))
+        // console.log(await module.exports.createVideo('fourth Video', 'fqdidduTuZM'))
         // console.log(await module.exports.getVideos());
-        console.log(await module.exports.addtime('3JluqTojuME',250));
+        // console.log(await module.exports.addtime('3JluqTojuME',250));
+        await module.exports.getprogress();
         process.exit(0)
         
     }catch(e){
