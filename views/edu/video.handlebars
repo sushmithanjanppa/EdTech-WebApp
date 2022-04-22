@@ -1,0 +1,173 @@
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/public/css/video.css" crossorigin="anonymous">
+    <div>
+    <button id="stop">Stop All Videos</button>
+    </div>
+    
+    {{!-- <div class="wrapper">
+        <div id="player1"></div>
+        <div id="player2"></div>
+        <div id="player3"></div>
+    </div>
+
+    <div class="wrapper">
+        <div id="player4"></div>
+        <div id="player5"></div>
+        <div id="player6"></div>
+    </div> --}}
+
+    {{!-- <div class="wrapper" id="wrapper"></div> --}}
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script>
+        var playerInfoList = {{{videodata}}}
+        for (var i = 0; i < playerInfoList.length; i++) {
+            {{!-- p = document.createElement('p') --}}
+            {{!-- p.innerHTML = 'I am P' --}}
+            {{!-- p.setAttribute("id", 'p'+(i+1)); --}}
+            {{!-- var wrapper = document.getElementById('wrapper') --}}
+            var wrapper = document.createElement('div');
+            wrapper.setAttribute("id", 'player_wrapper')
+            var d = document.createElement("div");
+            d.setAttribute("id", 'player'+(i+1));
+            wrapper.appendChild(d)
+            document.body.append(wrapper)
+            {{!-- wrapper.appendChild(d) --}}
+            playerInfoList[i].id = 'player'+(i+1)
+        }
+
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        {{!-- var playerInfoList = [{
+        id: 'player1',
+        videoId: 'dOy7vPwEtCw'
+        }, {
+        id: 'player2',
+        videoId: 'QWtsV50_-p4'
+        }, {
+        id: 'player3',
+        videoId: 'y-JqH1M4Ya8'
+        }, {
+        id: 'player4',
+        videoId: 'gH7dMBcg-gE'
+        }, {
+        id: 'player5',
+        videoId: '7wL9NUZRZ4I'
+        }, {
+        id: 'player6',
+        videoId: 'S4R8HTIgHUU'
+        }]; --}}
+        
+        //console.log("In script")
+        //console.log(playerInfoList)
+        function onYouTubeIframeAPIReady() {
+        if (typeof playerInfoList === 'undefined') return;
+
+        for (var i = 0; i < playerInfoList.length; i++) {
+            //d = document.createElement("div");
+            //d.setAttribute("id", 'player'+(i+1));
+            //playerInfoList[i].id = 'player'+(i+1)
+            //console.log(playerInfoList[i])
+            var curplayer = createPlayer(playerInfoList[i]);
+            players[i] = curplayer;
+            // console.log(players[i].getDuration)
+        }
+        }
+
+        var players = new Array();
+
+        function createPlayer(playerInfo) {
+            {{!-- console.log(playerInfo) --}}
+            return new YT.Player(playerInfo.id,{
+                height: '390',
+                width: '640',
+                videoId: playerInfo.video_id,
+                playerVars: {
+                    'showinfo': 0,
+                    'playsinline': 1,
+                    'start': parseInt(playerInfo.resume),
+                    'autoplay':0
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+                }); 
+            }
+
+        // 4. The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+            //console.log(event);
+            {{!-- console.log(event.target.getDuration()); --}}
+            event.target.pauseVideo();
+            {{!-- event.target.seekTo(parseFloat(0)); --}}
+            
+        }
+
+        // 5. The API calls this function when the player's state changes.
+        //    The function indicates that when playing a video (state=1),
+        //    the player should play for six seconds and then stop.
+        var done = false;
+        function onPlayerStateChange(event) {
+            {{!-- console.log(event.target.getVideoData().video_id) --}}
+            {{!-- console.log(playerInfoList) --}}
+
+            var playerevent = playerInfoList.find(function(player, index) {
+            if(player.video_id === event.target.getVideoData().video_id)
+                return true;
+            });
+            if(event.data === 0){
+                var duration = event.target.getDuration()
+                var video_id = event.target.getVideoData().video_id
+                {{!-- alert("DONE!!!"); --}}
+                {{!-- console.log(event.target) --}}
+                var requestConfig = {
+                    method: 'POST',
+                    url: '/video',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        resume: 0,
+                        video_id: video_id,
+                        duration: duration,
+                        done: true
+                    })}
+                playerevent.done = true;
+                $.ajax(requestConfig).then(function (responseMessage) {
+                    console.log(responseMessage);});
+            }
+            if (event.data == YT.PlayerState.PAUSED) {
+                var time = event.target.getCurrentTime();
+                var video_id = event.target.getVideoData().video_id
+                var duration = event.target.getDuration()
+                var requestConfig = {
+                    method: 'POST',
+                    url: '/video',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        resume: time,
+                        video_id: video_id,
+                        duration: duration,
+                        done: playerevent.done || false
+                    })}
+                playerevent.done = playerevent.done || false
+                $.ajax(requestConfig).then(function (responseMessage) {
+                    console.log(responseMessage);});
+            // setTimeout(stopVideo, 10000);
+            // done = true;
+            }
+        }
+        function stopVideo() {
+            player.stopVideo();
+        }
+
+        $('#stop').click(function () {
+            {{!-- alert("Stop") --}}
+            players.forEach(function (el) {
+            el.stopVideo();
+            });
+        });
+
+    </script>
+
