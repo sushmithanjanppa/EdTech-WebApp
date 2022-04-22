@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const videos = require('../data/videos')
+const courses = require('../data/courses')
+
 // const validation = require('../tasks/validation')
 
 router.get('/', async (req, res) => {
@@ -20,7 +22,14 @@ router.get('/video', async(req,res) => {
     // console.log(res.locals.videodata)
     return res.render('edu/video',{videodata : JSON.stringify(data)});
 })
-
+router.get('/courseForm',async(req,res)=>{
+     res.render('edu/addCourseForm')
+})
+router.post('/courseForm', async(req,res) => {
+  let courseAdded=await courses.addCourse(req.body.courseName,req.body.description);
+  if(courseAdded)  
+  res.redirect('/');
+})
 router.post('/video', async(req,res) => {
     // console.log("post")
     // console.log(req.body)
