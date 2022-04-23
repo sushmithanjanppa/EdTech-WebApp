@@ -29,6 +29,10 @@ router.get('/allCourses',async(req,res)=>{
     let courseList = await courses.getAllCourses();
     res.render('edu/coursesPage',{data:courseList})
 })
+router.post('/delete/:_id',async(req,res)=>{
+    let flag = await courses.deleteCourse(req.params._id);
+    if(flag)res.redirect('/allCourses');
+})
 router.get('/courses/:_id', async(req,res) => {
     let course=await courses.getCourseById(req.params._id);
     res.render('edu/courseContent',{data:course });

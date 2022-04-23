@@ -5,6 +5,9 @@
     {{#data}}    
      <a href="/courses/{{_id}}">{{courseName}}</a>
      <p id={{_id}}>{{description}}</p>
+     <form action="/delete/{{_id}}" method="post">
+      <input type="submit" value="delete" /></form>
+     {{!-- <a href="/delete/{{_id}}" action="post">delete {{courseName}} </a> --}}
      {{/data}}   
      </div>      
      <a href="/courseForm">+ Add a Course</a>

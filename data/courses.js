@@ -31,10 +31,13 @@ module.exports = {
     },
     async getCourseById(id){
         const courseCollection = await courses();
-        const restaurant = await courseCollection.findOne({ _id: ObjectId(id) });
-        return restaurant;
-
-
+        const course = await courseCollection.findOne({ _id: ObjectId(id) });
+        return course;
+    },
+    async deleteCourse(id){
+        const courseCollection = await courses();
+        const flag = await courseCollection.deleteOne( { "_id" : ObjectId(id) } );
+        return flag;
     }
 
 }
