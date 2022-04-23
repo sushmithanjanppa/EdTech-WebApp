@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const videos = require('../data/videos')
+const courses = require('../data/courses')
+
 // const validation = require('../tasks/validation')
 
 router.get('/', async (req, res) => {
@@ -20,7 +22,26 @@ router.get('/video', async(req,res) => {
     // console.log(res.locals.videodata)
     return res.render('edu/video',{videodata : JSON.stringify(data)});
 })
-
+router.get('/courseForm',async(req,res)=>{
+     res.render('edu/addCourseForm')
+})
+router.get('/allCourses',async(req,res)=>{
+    let courseList = await courses.getAllCourses();
+    res.render('edu/coursesPage',{data:courseList})
+})
+router.post('/delete/:_id',async(req,res)=>{
+    let flag = await courses.deleteCourse(req.params._id);
+    if(flag)res.redirect('/allCourses');
+})
+router.get('/courses/:_id', async(req,res) => {
+    let course=await courses.getCourseById(req.params._id);
+    res.render('edu/courseContent',{data:course });
+  })
+router.post('/courseForm', async(req,res) => {
+  let courseAdded=await courses.addCourse(req.body.courseName,req.body.description);
+  if(courseAdded.courseInserted)  
+  res.redirect('/allCourses');
+})
 router.post('/video', async(req,res) => {
     // console.log("post")
     // console.log(req.body)

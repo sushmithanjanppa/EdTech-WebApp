@@ -1,6 +1,7 @@
 const videos = require('./videos');
-
+const courses=require('./courses');
 
 module.exports = {
-    videos: videos
+    videos: videos,
+    courses:courses
 };
