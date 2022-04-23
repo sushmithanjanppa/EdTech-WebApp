@@ -1,0 +1,20 @@
+<div class="segment">
+
+<h1>Login Form</h1>
+
+</div>
+  <form action="/login" method="POST" id="login-form" class="login-form">
+    <label for='username'>Username:
+      <input type="text" name="username" placeholder="Enter username" id="username" class="full-width-input" />
+      </label>
+      <label for="password">Password:
+      <input type="password" name="password" placeholder="Enter password" id="password" class="full-width-input"/>
+    </label>
+    <button type="submit">Login</button>
+  </form>
+  {{#if hasErrors}}
+    <p class="error">{{error}}</p>
+  {{/if}}
+  <div class="signup">
+  <a href="/signup">Need to register? Click here to sign-up</a>
+  </div>

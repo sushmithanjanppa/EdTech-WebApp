@@ -1,0 +1,46 @@
+.resize-image{
+    width: 8em;
+    height: 5em;
+}
+
+.text-center-course3 {
+    text-align: center;
+}
+
+.text-center-course2 {
+    text-align: center;
+}
+
+.text-center-course1web {
+    text-align: center;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+#email {
+    border: 2px solid;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 300px;
+}
+
+#password {
+    border: 2px solid;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 300px;
+}
+
+#name {
+    border: 2px solid;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 300px;
+}

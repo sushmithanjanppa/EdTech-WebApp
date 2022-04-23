@@ -78,12 +78,77 @@ app.use('/course', async (req, res, next) => {
 //         next();
 // }});
 
+const handlebarsInstance = exphbs.create({
+    defaultLayout: "main",
+  
+    helpers: {
+      asJSON: (obj, spacing) => {
+        if (typeof spacing === "number")
+          return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
+        return new Handlebars.SafeString(JSON.stringify(obj));
+      },
+    },
+});
 
+app.use;
+app.use("/public", static);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.engine("handlebars", handlebarsInstance.engine);
+app.set("view engine", "handlebars");
+
+app.use(
+  session({
+    name: "AuthCookie",
+    secret: "some  secret  string!",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+app.use("/private", (req, res, next) => {
+    if (!req.session.user) {
+      return res.status(403).render("users/private", { title:"Private Page", error: "Sorry you are not authenticated, please login first !", hasErrors: true });
+    } else {
+      next();
+    }
+});
+
+
+let logMiddleware = function (req, res, next) {
+    let CurrenttimeStamp = new Date().toUTCString();
+  
+    let RequestMethod = req.method;
+  
+    let RequestRoute = req.originalUrl;
+    if (!req.session.user) {
+      console.log(
+        "[" +
+          CurrenttimeStamp +
+          "]: " +
+          RequestMethod +
+          " " +
+          RequestRoute +
+          " Non-Authenticated User"
+      );
+    } else {
+      console.log(
+        "[" +
+          CurrenttimeStamp +
+          "]: " +
+          RequestMethod +
+          " " +
+          RequestRoute +
+          " Authenticated User"
+      );
+    }
+    next();
+};
+
+app.use(logMiddleware);
 configRoutes(app);
 
 app.listen(3000, () => {
-    console.log("We've now got a server!");
-    console.log('Your routes will be running on http://localhost:3000');
+  console.log("We've now got a server!");
+  console.log("Your routes will be running on http://localhost:3000");
 });
-
-// debugger;
