@@ -25,10 +25,18 @@ router.get('/video', async(req,res) => {
 router.get('/courseForm',async(req,res)=>{
      res.render('edu/addCourseForm')
 })
+router.get('/allCourses',async(req,res)=>{
+    let courseList = await courses.getAllCourses();
+    res.render('edu/coursesPage',{data:courseList})
+})
+router.get('/courses/:_id', async(req,res) => {
+    let course=await courses.getCourseById(req.params._id);
+    res.render('edu/courseContent',{data:course });
+  })
 router.post('/courseForm', async(req,res) => {
   let courseAdded=await courses.addCourse(req.body.courseName,req.body.description);
-  if(courseAdded)  
-  res.redirect('/');
+  if(courseAdded.courseInserted)  
+  res.redirect('/allCourses');
 })
 router.post('/video', async(req,res) => {
     // console.log("post")

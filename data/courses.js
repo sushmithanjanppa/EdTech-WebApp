@@ -1,10 +1,10 @@
 const mongoCollections = require("../config/mongoCollections");
-const courseCollection = mongoCollections.courses;
+const courses = mongoCollections.courses;
 const { ObjectId } = require("mongodb");
 
 module.exports = {
     async addCourse(courseName,description){
-        const courses = await courseCollection();
+        const courseCollection = await courses();
         let videos=[];
         let newCourse={
            courseName:courseName,
@@ -12,12 +12,29 @@ module.exports = {
            description:description,
            videos:videos
         }
-        const insertInfo = await courses.insertOne(newCourse);
+        const insertInfo = await courseCollection.insertOne(newCourse);
         if (!insertInfo.insertedId)
         throw "Could not add course";
         else
         return {courseInserted: true};
 
     },
+    async getAllCourses(){
+        const courseCollection = await courses();
+        const courseList = [];
+        await courseCollection.find({}).toArray().then((courses) => {
+            courses.forEach(course => {
+                courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description});
+            });
+        });
+        return courseList;
+    },
+    async getCourseById(id){
+        const courseCollection = await courses();
+        const restaurant = await courseCollection.findOne({ _id: ObjectId(id) });
+        return restaurant;
+
+
+    }
 
 }
