@@ -2,6 +2,7 @@ const mongoCollections = require("../config/mongoCollections");
 const courses = mongoCollections.courses;
 const { ObjectId } = require("mongodb");
 
+
 module.exports = {
     async addCourse(courseName,description){
         const courseCollection = await courses();
@@ -10,7 +11,8 @@ module.exports = {
            courseName:courseName,
         //    userId:userId,
            description:description,
-           videos:videos
+           videos:videos,
+           questions: []
         }
         const insertInfo = await courseCollection.insertOne(newCourse);
         if (!insertInfo.insertedId)
@@ -38,6 +40,15 @@ module.exports = {
         const courseCollection = await courses();
         const flag = await courseCollection.deleteOne( { "_id" : ObjectId(id) } );
         return flag;
-    }
+    },
+    async getcourseByName(courseName) {
+        try {
+            const courseCollection = await courses();
+            const response = await courseCollection.findOne({courseName: courseName});
+            return response;
+        } catch (error) {
+            throw new Error(`Unable to retrieve course. Check again later..`)
+        }
+    },
 
 }

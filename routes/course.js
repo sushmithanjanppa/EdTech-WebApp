@@ -298,7 +298,7 @@ router.post('/searchcourses', async (req, res) => {
   if (!bodyData.courseSearchTerm || bodyData.courseSearchTerm.trim() === '') {
       return res.status(400).json({ status: 400, error: `No search term provided.`, home: "http://localhost:3000" });
   }
-  let result = await courses1.getcourse(bodyData.showCourseTerm);
+  let result = await courses1.getcourse(bodyData.courseCourseTerm);
   let resultArr = [];
   for (let i = 0; i < result.length; i++) {
       resultArr.push(result[i]);
@@ -309,7 +309,7 @@ router.post('/searchcourses', async (req, res) => {
       hasError = true;
       error = `We're sorry, but no results were found for ${bodyData.courseSearchTerm}.`
   }
-  res.render('search/search', { title: `Coursess Found`, data: resultArr, courseSearchTerm: bodyData.courseSearchTerm, error: error, hasError: hasError });
+  res.render('users/search', { title: `Coursess Found`, data: resultArr, courseSearchTerm: bodyData.courseSearchTerm, error: error, hasError: hasError });
 });
 
 
