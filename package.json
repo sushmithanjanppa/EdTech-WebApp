@@ -8,12 +8,12 @@
     "start": "node app.js",
     "dev": "nodemon ./app.js"
   },
-  "author": "Preet Jhanglani 10474322",
+  "author": "Sushmitha Anjanappa 10473762",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
-    "express": "^4.17.1",
-    "express-handlebars": "^6.0.3",
+    "express": "^4.17.3",
+    "express-handlebars": "^6.0.5",
     "express-session": "^1.17.2",
     "html": "^1.0.0",
     "mongodb": "^4.5.0",
