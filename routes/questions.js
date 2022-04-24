@@ -7,11 +7,11 @@ router.post('/:id', async (req, res) => {
     const createQuestionData = req.body;
     try {
         if (!req.params.id) {
-            res.status(400).json({ error: `bandId must be passed` });
+            res.status(400).json({ error: `courseID must be passed` });
             return;
         }
         if (typeof req.params.id != 'string' || req.params.id.trim() === '') {
-            res.status(400).json({ error: `bandId must be valid` });
+            res.status(400).json({ error: `courseId must be valid` });
             return;
         }
 
