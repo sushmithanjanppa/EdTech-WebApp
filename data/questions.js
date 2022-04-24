@@ -30,7 +30,7 @@ module.exports = {
 
         const testCollection = await tests();
         await testCollection.findOne({ _id: parseId }).then(test => {
-            if (!test) throw new Error('Unable to find Band');
+            if (!test) throw new Error('Unable to find Questions');
 
             });
        
