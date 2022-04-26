@@ -8,6 +8,7 @@ const emailValidate = require('email-validator')
 const data = require("../data");
 const videos = require('../data/videos')
 const courses = require('../data/courses')
+const validate = require('../data/validate')
 
 const ud = data.users;
 const samePageNavs = {
@@ -37,10 +38,14 @@ router.get("/", async (req, res) => {
 
 router.get("/signup", async (req, res) => {
   if (req.session.user) {
-    return res.redirect("/private");
+    return res.redirect("/login");
   } else {
     res.render("users/signup", { title: "Signup Page" });
   }
+});
+
+router.get("/login", async (req, res) => {
+  res.redirect("/")
 });
 
 router.post("/signup", async (req, res) => {
@@ -48,99 +53,10 @@ router.post("/signup", async (req, res) => {
   email = req.body.email;
   password = req.body.password;
 
-  if (!name) {
-    res.status(400).render("users/signup", {
-      title: "Signup Page",
-      error: "Please enter a valid input for name",
-      hasErrors: true,
-    });
-    return;
-  }
-
-  if (!email) {
-    res.status(400).render("users/signup", {
-      title: "Signup Page",
-      error: "Please enter a valid input for email",
-      hasErrors: true,
-    });
-    return;
-  }
-
-  if (!password) {
-    res.status(400).render("users/signup", {
-      title: "Signup Page",
-      error: "Please enter a valid input for password",
-      hasErrors: true,
-    });
-    return;
-  }
   
-  if (typeof name !== "string" ||typeof email !== "string" || typeof password !== "string") {
-    res.status(400).render("users/signup", {
-      title: "Signup Page",
-      error: "UserName and password both should be string",
-      hasErrors: true,
-    });
-    return;
-  }
-
-  // if (email.length < 4) {
-  //     res.status(400).render("users/signup", {title:"Signup Page",
-  //       error: "Enter username with length of more than 4 characters.",
-  //       hasErrors: true
-  //     });
-  //     return;
-  // }
-
-  if (password.length < 6) {
-    res.status(400).render("users/signup", {
-      title: "Signup Page",
-      error: "The minimum length of password should be atleast 6.",
-      hasErrors: true,
-    });
-    return;
-  }
-
-  // if (username.match(/^[\s]*$/gi)) {
-  //     res.status(400).render("users/signup", {title:"Signup Page",
-  //       error: "Do not enter blank spaces",
-  //       hasErrors: true
-  //     });
-  //     return;
-  // }
-
-  if (password.match(/^[\s]*$/gi)) {
-    res.status(400).render("users/signup", {
-      title: "Signup Page",
-      error: "Do not enter blank spaces",
-      hasErrors: true,
-    });
-    return;
-  }
-
-  //   username = username.trim();
-  // let userValidate = /^[a-zA-Z0-9]+$/gi;
-  // if (!username.match(userValidate)) {
-  //   res.status(400).render("users/signup", {title:"Signup Page",
-  //     error:
-  //       "The Username should be valid and should only contain alphanumeric characters",
-  //       hasErrors: true
-  //   });
-  //   return;
-  // }
-
-  email = email.trim();
-  
-  if (!emailValidate.validate(email)) {
-    res.status(400).render("users/signup", {
-      title: "Signup Page",
-      error: "The email should be valid",
-      hasErrors: true,
-    });
-    return;
-  }
 
   try {
+    await validate.validateUserEmailPasswordName(name, email, password)
     const p = await ud.createUser(name, email, password);
     if (p.userInserted) {
       return res.redirect("/");
@@ -149,101 +65,23 @@ router.post("/signup", async (req, res) => {
     
     return res.status(e.b || 500).render("users/signup", {
       title: "Signup Page",
-      error: e.message || "Internal Server Error",
+      error: e || "Internal Server Error",
       hasErrors: true,
     });
   }
 });
 
 router.post("/login", async (req, res) => {
-  // name= req.body.name;
   email = req.body.email;
   password = req.body.password;
 
-  // if (!name) {
-  //   res.status(400).render("users/login", {
-  //     title: "Login Page",
-  //     error: "Please enter a valid input for name",
-  //     hasErrors: true,
-  //   });
-  //   return;
-  // }
-
-  if (!email) {
-    res.status(400).render("users/index", {
-      title: "Login Page",
-      error: "Please enter a valid input for email",
-      hasErrors: true,
-    });
-    return;
-  }
-  if (!password) {
-    res.status(400).render("users/index", {
-      title: "Login Page",
-      error: "Please enter a valid input for password",
-      hasErrors: true,
-    });
-    return;
-  }
-
-  if (typeof email !== "string" || typeof password !== "string") {
-    res.status(400).render("users/index", {
-      title: "Login Page",
-      error: "UserName and password both should be string",
-      hasErrors: true,
-    });
-    return;
-  }
-
-  // if (username.length < 4) {
-  //   res.status(400).render("users/index", {title:"Login Page",
-  //     error: "Enter username with length of more than 4 characters.",
-  //     hasErrors: true
-  //   });
-  //   return;
-  // }
-
-  if (password.length < 6) {
-    res.status(400).render("users/index", {
-      title: "Login Page",
-      error: "The minimum length of password should be atleast 6.",
-      hasErrors: true,
-    });
-    return;
-  }
-
-  // if (username.match(/^[\s]*$/gi)) {
-  //   res.status(400).render("users/index", {title:"Login Page",
-  //     error: "Do not enter blank spaces",
-  //     hasErrors: true
-  //   });
-  //   return;
-  // }
-
-  if (password.match(/^[\s]*$/gi)) {
-    res.status(400).render("users/index", {
-      title: "Login Page",
-      error: "Do not enter blank spaces",
-      hasErrors: true,
-    });
-    return;
-  }
-
-  
-  if (!emailValidate.validate(email)){
-    res.status(400).render("users/index", {
-      title: "Login Page",
-      error: "The email should be valid for login",
-      hasErrors: true,
-    });
-    return;
-  }
 
   try {
+    await validate.validateUserEmailPassword(email, password)
     let xyz = await ud.checkUser(email, password);
 
     if (xyz) {
-      req.session.user = { email: username };
+      req.session.user = { email: email };
       res.redirect("/index");
       return;
     } else {
@@ -264,14 +102,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// router.get("/private", async (req, res) => {
-//   res.render("users/index", {
-//     title: "Private Page",
-//     email: req.session.user.username,
-//     hasErrors: false,
-//   });
-//   return;
-// });
 
 router.get("/logout", async (req, res) => {
   req.session.destroy();
@@ -336,7 +166,7 @@ router.post('/video', async(req,res) => {
     // console.log("post")
     // console.log(req.body)
     // let timeupdated = await videos.addtime(id = req.body.video_id, time = req.body.resume)
-    let timeupdated = await videos.addtime(data = req.body)
+    let timeupdated = await videos.addtime(req.body)
     if (!timeupdated.TimeUpdated){
         console.log("Updation Failed")
     }

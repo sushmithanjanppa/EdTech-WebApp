@@ -106,13 +106,13 @@ app.use(
   })
 );
 
-app.use("/private", (req, res, next) => {
-    if (!req.session.user) {
-      return res.status(403).render("users/private", { title:"Private Page", error: "Sorry you are not authenticated, please login first !", hasErrors: true });
-    } else {
-      next();
-    }
-});
+// app.use("/private", (req, res, next) => {
+//     if (!req.session.user) {
+//       return res.status(403).render("users/private", { title:"Private Page", error: "Sorry you are not authenticated, please login first !", hasErrors: true });
+//     } else {
+//       next();
+//     }
+// });
 
 
 let logMiddleware = function (req, res, next) {
@@ -145,7 +145,7 @@ let logMiddleware = function (req, res, next) {
     next();
 };
 
-app.use(logMiddleware);
+// app.use(logMiddleware);
 configRoutes(app);
 
 app.listen(3000, () => {
