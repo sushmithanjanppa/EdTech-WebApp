@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const data = require('../data');
-const mongoCollections = require('../config/mongoCollections')
+const mongoCollections = require('../config/mongoCollection')
 const users = mongoCollections.users;
 const { ObjectId } = require('mongodb');
 const bcrypt = require('bcrypt');
@@ -56,17 +56,17 @@ module.exports = {
 
 
 
-    async checkUser(name, email, password) {
+    async checkUser(email, password) {
 
-        if(!name) throw "Please enter a valid input for name";
+        // if(!name) throw "Please enter a valid input for name";
 
         if(!email) throw "Please enter a valid input for email";
 
         if(!password) throw "Please enter a valid input for password";
 
-        if(typeof name !== 'string' ||typeof email !== 'string' || typeof password !== 'string') throw "You must provide string values in the inputs of name, email and password.";
+        if(typeof email !== 'string' || typeof password !== 'string') throw "You must provide string values in the inputs of name, email and password.";
 
-        if(name.trim().length == 0 ||email.trim().length == 0 || password.trim().length == 0) throw "Do not enter blank spaces for name, email and password."
+        if(email.trim().length == 0 || password.trim().length == 0) throw "Do not enter blank spaces for name, email and password."
 
         // if(username.trim().replace(/\s/g, "").length < 4) throw "Enter username with length of more than 4 characters."
 

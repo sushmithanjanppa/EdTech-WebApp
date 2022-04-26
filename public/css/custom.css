@@ -44,3 +44,32 @@
     border-radius: 4px;
     width: 300px;
 }
+
+
+a:link {
+    color: #2d76e2;
+}
+a:visited {
+    color: #58e620;
+}
+a:hover {
+    color: #20e6b5;
+}
+a:active {
+    color: #fc007e;
+}
+a.new {
+    color: #e93ea2;
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-style: italic;
+    margin-bottom: 5px;
+}
+
+textarea:focus, input:focus {
+    color: #ff7b00;
+}
+
+input, select, textarea{
+    color: rgb(167, 233, 54);
+}
