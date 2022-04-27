@@ -1,8 +1,10 @@
-const user = require('./videos');
+const userRoutes = require('./users');
 
 const constructorMethod = (app) => {
-    app.use('/', user)
+    app.use('/', userRoutes);
+    app.use('*', (req, res) => {
+      res.status(404).send("Page not found");
+    });
 
 };
-
 module.exports = constructorMethod;

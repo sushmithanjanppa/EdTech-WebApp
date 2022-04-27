@@ -1,4 +1,4 @@
-const mongoCollections = require("../config/mongoCollections");
+const mongoCollections = require("../config/mongoCollection");
 const videos = mongoCollections.videos;
 // const validation = require('../tasks/validation')
 const { ObjectId } = require("mongodb");
@@ -78,10 +78,10 @@ module.exports = {
 
 async function main(){
     try{
-        // console.log(await module.exports.createVideo('Demo Video', 'M7lc1UVf-VE'))
-        // console.log(await module.exports.createVideo('First Video', '3JluqTojuME'))
-        // console.log(await module.exports.createVideo('Second Video', 'Q33KBiDriJY'))
-        // console.log(await module.exports.createVideo('fourth Video', 'fqdidduTuZM'))
+        console.log(await module.exports.createVideo('Demo Video', 'M7lc1UVf-VE'))
+        console.log(await module.exports.createVideo('First Video', '3JluqTojuME'))
+        console.log(await module.exports.createVideo('Second Video', 'Q33KBiDriJY'))
+        console.log(await module.exports.createVideo('fourth Video', 'fqdidduTuZM'))
         // console.log(await module.exports.getVideos());
         // console.log(await module.exports.addtime('3JluqTojuME',250));
         await module.exports.getprogress();

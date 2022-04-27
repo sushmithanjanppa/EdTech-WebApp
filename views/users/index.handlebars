@@ -1,44 +1,32 @@
-<!-- PRE LOADER -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     {{!-- <link rel="shortcut icon" href="/images/EdTech-LOGO.png" type="image/x-icon" /> --}}
+     <title>EdTech</title>
+<!-- 
+
+Known Template 
+
+https://templatemo.com/tm-516-known
+
+-->
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+     <meta name="description" content="">
+     <meta name="keywords" content="">
+     <meta name="author" content="">
+     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+</head>
+<body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+
+     <!-- PRE LOADER -->
      <section class="preloader">
           <div class="spinner">
 
                <span class="spinner-rotate"></span>
                
-          </div>
-     </section>
-
-
-     <!-- MENU -->
-     <section class="navbar custom-navbar navbar-fixed-top" role="navigation">
-          <div class="container">
-
-               <div class="navbar-header">
-                    <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                         <span class="icon icon-bar"></span>
-                         <span class="icon icon-bar"></span>
-                         <span class="icon icon-bar"></span>
-                    </button>
-
-                    <!-- lOGO TEXT HERE -->
-                    <a href="#" class="navbar-brand">Known</a>
-               </div>
-
-               <!-- MENU LINKS -->
-               <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-nav-first">
-                         <li><a href="#top" class="smoothScroll">Home</a></li>
-                         <li><a href="#about" class="smoothScroll">About</a></li>
-                         <li><a href="#team" class="smoothScroll">Our Teachers</a></li>
-                         <li><a href="#courses" class="smoothScroll">Courses</a></li>
-                         <li><a href="#testimonial" class="smoothScroll">Reviews</a></li>
-                         <li><a href="#contact" class="smoothScroll">Contact</a></li>
-                    </ul>
-
-                    <ul class="nav navbar-nav navbar-right">
-                         <li><a href="#"><i class="fa fa-phone"></i> +65 2244 1100</a></li>
-                    </ul>
-               </div>
-
           </div>
      </section>
 
@@ -147,30 +135,36 @@
                                    </figcaption>
                               </figure>
 
-                              <figure>
-                                   <span><i class="fa fa-bar-chart-o"></i></span>
-                                   <figcaption>
-                                        <h3>Free for 3 months</h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint ipsa voluptatibus.</p>
-                                   </figcaption>
-                              </figure>
                          </div>
                     </div>
+
+
+                              
+
+                                   {{!-- LOGIN PAGE --}}
+
 
                     <div class="col-md-offset-1 col-md-4 col-sm-12">
                          <div class="entry-form">
-                              <form action="#" method="post">
-                                   <h2>Signup today</h2>
-                                   <input type="text" name="full name" class="form-control" placeholder="Full name" required="">
+                              <form action="/login" method="post" id="login-form" class="login-form">
+                                   <h2>Login Now</h2>
+                                   
 
-                                   <input type="email" name="email" class="form-control" placeholder="Your email address" required="">
+                                   <input type="email" name="email" class="form-control" placeholder="Your Email" required="">
 
                                    <input type="password" name="password" class="form-control" placeholder="Your password" required="">
 
-                                   <button class="submit-btn form-control" id="form-submit">Get started</button>
+                                   <button class="submit-btn form-control" id="form-submit">Login</button>
                               </form>
+
+                              {{#if hasErrors}}
+                              <p class="error">{{error}}</p>
+                              {{/if}}
+                              <div class="signup">
+                              <a href="/signup">Need to register? Click here to SignUp</a>
                          </div>
                     </div>
+
 
                </div>
           </div>
@@ -191,7 +185,7 @@
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="/public/images/author-image1.jpg" class="img-responsive" alt="">
+                                   <img src="images/author-image1.jpg" class="img-responsive" alt="">
                               </div>
                               <div class="team-info">
                                    <h3>Mark Wilson</h3>
@@ -208,7 +202,7 @@
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="/public/images/author-image2.jpg" class="img-responsive" alt="">
+                                   <img src="images/author-image2.jpg" class="img-responsive" alt="">
                               </div>
                               <div class="team-info">
                                    <h3>Catherine</h3>
@@ -224,7 +218,7 @@
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="/public/images/author-image3.jpg" class="img-responsive" alt="">
+                                   <img src="images/author-image3.jpg" class="img-responsive" alt="">
                               </div>
                               <div class="team-info">
                                    <h3>Jessie Ca</h3>
@@ -241,7 +235,7 @@
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="/public/images/author-image4.jpg" class="img-responsive" alt="">
+                                   <img src="images/author-image4.jpg" class="img-responsive" alt="">
                               </div>
                               <div class="team-info">
                                    <h3>Andrew Berti</h3>
@@ -276,7 +270,7 @@
                                         <div class="courses-thumb">
                                              <div class="courses-top">
                                                   <div class="courses-image">
-                                                       <img src="/public/images/courses-image1.jpg" class="img-responsive" alt="">
+                                                       <img src="courses-image1.jpg" class="img-responsive" alt="">
                                                   </div>
                                                   <div class="courses-date">
                                                        <span><i class="fa fa-calendar"></i> 12 / 7 / 2018</span>
@@ -285,18 +279,18 @@
                                              </div>
 
                                              <div class="courses-detail">
-                                                  <h3><a href="#">Social Media Management</a></h3>
-                                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                                  <h3><a href="/course1web">Web Development</a></h3>
+                                                  <p>HTML, CSS, and Javascript for Web Developers</p>
                                              </div>
 
                                              <div class="courses-info">
                                                   <div class="courses-author">
-                                                       <img src="/public/images/author-image1.jpg" class="img-responsive" alt="">
+                                                       <img src="images/author-image1.jpg" class="img-responsive" alt="">
                                                        <span>Mark Wilson</span>
                                                   </div>
-                                                  <div class="courses-price">
+                                                  <!-- <div class="courses-price">
                                                        <a href="#"><span>USD 25</span></a>
-                                                  </div>
+                                                  </div> -->
                                              </div>
                                         </div>
                                    </div>
@@ -307,7 +301,7 @@
                                         <div class="courses-thumb">
                                              <div class="courses-top">
                                                   <div class="courses-image">
-                                                       <img src="/public/images/courses-image2.jpg" class="img-responsive" alt="">
+                                                       <img src="images/courses-image2.jpg" class="img-responsive" alt="">
                                                   </div>
                                                   <div class="courses-date">
                                                        <span><i class="fa fa-calendar"></i> 20 / 7 / 2018</span>
@@ -316,18 +310,18 @@
                                              </div>
 
                                              <div class="courses-detail">
-                                                  <h3><a href="/video">Graphic & Web Design</a></h3>
-                                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                                  <h3><a href="/course2">  Python Python for Everybody   </a></h3>
+                                                  <p>Python Programming, Python Syntax, Basic Programming Language, Tuple</p>
                                              </div>
 
                                              <div class="courses-info">
                                                   <div class="courses-author">
-                                                       <img src="/public/images/author-image2.jpg" class="img-responsive" alt="">
+                                                       <img src="images/author-image2.jpg" class="img-responsive" alt="">
                                                        <span>Jessica</span>
                                                   </div>
-                                                  <div class="courses-price">
+                                                  <!-- <div class="courses-price">
                                                        <a href="#"><span>USD 80</span></a>
-                                                  </div>
+                                                  </div> -->
                                              </div>
                                         </div>
                                    </div>
@@ -338,7 +332,7 @@
                                         <div class="courses-thumb">
                                              <div class="courses-top">
                                                   <div class="courses-image">
-                                                       <img src="/public/images/courses-image3.jpg" class="img-responsive" alt="">
+                                                       <img src="images/courses-image3.jpg" class="img-responsive" alt="">
                                                   </div>
                                                   <div class="courses-date">
                                                        <span><i class="fa fa-calendar"></i> 15 / 8 / 2018</span>
@@ -347,29 +341,29 @@
                                              </div>
 
                                              <div class="courses-detail">
-                                                  <h3><a href="#">Marketing Communication</a></h3>
-                                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                                  <h3><a href="/course3">Introduction to Java</a></h3>
+                                                  <p>Java Database Connectivity (JDBC), Java Class Library, Java Programming </p>
                                              </div>
 
                                              <div class="courses-info">
                                                   <div class="courses-author">
-                                                       <img src="/public/images/author-image3.jpg" class="img-responsive" alt="">
+                                                       <img src="images/author-image3.jpg" class="img-responsive" alt="">
                                                        <span>Catherine</span>
                                                   </div>
-                                                  <div class="courses-price free">
+                                                  <!-- <div class="courses-price free">
                                                        <a href="#"><span>Free</span></a>
-                                                  </div>
+                                                  </div> -->
                                              </div>
                                         </div>
                                    </div>
                               </div>
 
-                              <div class="col-md-4 col-sm-4">
+                              <!-- <div class="col-md-4 col-sm-4">
                                    <div class="item">
                                         <div class="courses-thumb">
                                              <div class="courses-top">
                                                   <div class="courses-image">
-                                                       <img src="/public/images/courses-image4.jpg" class="img-responsive" alt="">
+                                                       <img src="images/courses-image4.jpg" class="img-responsive" alt="">
                                                   </div>
                                                   <div class="courses-date">
                                                        <span><i class="fa fa-calendar"></i> 10 / 8 / 2018</span>
@@ -384,7 +378,7 @@
 
                                              <div class="courses-info">
                                                   <div class="courses-author">
-                                                       <img src="/public/images/author-image1.jpg" class="img-responsive" alt="">
+                                                       <img src="images/author-image1.jpg" class="img-responsive" alt="">
                                                        <span>Mark Wilson</span>
                                                   </div>
                                                   <div class="courses-price">
@@ -393,14 +387,14 @@
                                              </div>
                                         </div>
                                    </div>
-                              </div>
+                              </div> -->
 
-                              <div class="col-md-4 col-sm-4">
+                              <!-- <div class="col-md-4 col-sm-4">
                                    <div class="item">
                                         <div class="courses-thumb">
                                              <div class="courses-top">
                                                   <div class="courses-image">
-                                                       <img src="/public/images/courses-image5.jpg" class="img-responsive" alt="">
+                                                       <img src="images/courses-image5.jpg" class="img-responsive" alt="">
                                                   </div>
                                                   <div class="courses-date">
                                                        <span><i class="fa fa-calendar"></i> 5 / 10 / 2018</span>
@@ -415,7 +409,7 @@
 
                                              <div class="courses-info">
                                                   <div class="courses-author">
-                                                       <img src="/public/images/author-image2.jpg" class="img-responsive" alt="">
+                                                       <img src="images/author-image2.jpg" class="img-responsive" alt="">
                                                        <span>Jessica</span>
                                                   </div>
                                                   <div class="courses-price free">
@@ -424,7 +418,7 @@
                                              </div>
                                         </div>
                                    </div>
-                              </div>
+                              </div> -->
 
                          </div>
 
@@ -447,7 +441,7 @@
                               <div class="col-md-4 col-sm-4">
                                    <div class="item">
                                         <div class="tst-image">
-                                             <img src="/public/images/tst-image1.jpg" class="img-responsive" alt="">
+                                             <img src="images/tst-image1.jpg" class="img-responsive" alt="">
                                         </div>
                                         <div class="tst-author">
                                              <h4>Jackson</h4>
@@ -467,7 +461,7 @@
                               <div class="col-md-4 col-sm-4">
                                    <div class="item">
                                         <div class="tst-image">
-                                             <img src="/public/images/tst-image2.jpg" class="img-responsive" alt="">
+                                             <img src="images/tst-image2.jpg" class="img-responsive" alt="">
                                         </div>
                                         <div class="tst-author">
                                              <h4>Camila</h4>
@@ -485,7 +479,7 @@
                               <div class="col-md-4 col-sm-4">
                                    <div class="item">
                                         <div class="tst-image">
-                                             <img src="/public/images/tst-image3.jpg" class="img-responsive" alt="">
+                                             <img src="images/tst-image3.jpg" class="img-responsive" alt="">
                                         </div>
                                         <div class="tst-author">
                                              <h4>Barbie</h4>
@@ -504,7 +498,7 @@
                               <div class="col-md-4 col-sm-4">
                                    <div class="item">
                                         <div class="tst-image">
-                                             <img src="/public/images/tst-image4.jpg" class="img-responsive" alt="">
+                                             <img src="images/tst-image4.jpg" class="img-responsive" alt="">
                                         </div>
                                         <div class="tst-author">
                                              <h4>Andrio</h4>
@@ -555,7 +549,7 @@
 
                     <div class="col-md-6 col-sm-12">
                          <div class="contact-image">
-                              <img src="/public/images/contact-image.jpg" class="img-responsive" alt="Smiling Two Girls">
+                              <img src="images/contact-image.jpg" class="img-responsive" alt="Smiling Two Girls">
                          </div>
                     </div>
 
@@ -634,3 +628,6 @@
                </div>
           </div>
      </footer>
+
+</body>
+</html>
