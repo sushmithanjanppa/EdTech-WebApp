@@ -1,11 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
-const session = require("express-session");
-const { user } = require("../config/mongoCollection");
-const connection = require("../config/mongoConnection");
-
-const data = require("../data");
 const userData = require("../data/users");
 const videos = require('../data/videos');
 const courses = require('../data/courses');
@@ -42,10 +36,6 @@ router.get("/signup", async (req, res) => {
   }
 });
 
-router.get("/login", async (req, res) => {
-  res.redirect("/")
-});
-
 router.post("/signup", async (req, res) => {
   let name= req.body.name;
   let email = req.body.email;
@@ -75,17 +65,19 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+
 router.post("/login", async (req, res) => {
-  email = req.body.email;
-  password = req.body.password;
+  let email = req.body.email;
+  let password = req.body.password;
 
   try {
-    await validate.validateUserEmailPassword(email, password)
-    let xyz = await ud.checkUser(email, password);
+    await validate.validateEmail(email);
+    await validate.validatePassword(password);
 
-    if (xyz) {
-      req.session.user = { email: email };
-      res.redirect("/index");
+    const existingUser = await userData.checkUser(email,password);
+    if (existingUser) {
+      req.session.user = { email: req.body.email };
+      res.redirect("/userPage");
       return;
     } else {
       res.render("users/index", {
@@ -109,26 +101,6 @@ router.post("/login", async (req, res) => {
 router.get("/logout", async (req, res) => {
   req.session.destroy();
   return res.render("users/logout", { title: "Logged out" });
-});
-
-// COURSE ROUTES
-
-router.get("/course1web", async (req, res) => {
-  res.render("users/course1web", {
-    title: "course1web",
-    location: crossPageNavs,
-  });
-  return;
-});
-
-router.get("/course2", async (req, res) => {
-  res.render("users/course2", { title: "course2", location: crossPageNavs });
-  return;
-});
-
-router.get("/course3", async (req, res) => {
-  res.render("users/course3", { title: "course3", location: crossPageNavs });
-  return;
 });
 
 // VIDEOS ROUTES

@@ -58,19 +58,20 @@ module.exports = {
 
         let passwordCompareToMatch = await bcrypt.compare(password, duplicateEmail.password);
         if(passwordCompareToMatch) {
-            return {userInserted : true}
+            return {userExists : true}
         } else {
             throw "Either the email or password is invalid";
         } 
     },
 
-    async getUser(id){
-        validate.validateId(id);
-        id = id.trim();
-
+    async getUser(email){
+        console.log('inside getuser, mail:',email)
+        validate.validateEmail(email);
+        email = email.trim();
+        email = email.toLowerCase();
         const userCollection = await users();
-        const user = await userCollection.findOne({ _id: id});
-        if (user === null) throw `no user with id: ${id} found`;
+        const user = await userCollection.findOne({email: email});
+        if (user === null) throw 'No such user found';
         return user;
     },
 

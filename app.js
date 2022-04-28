@@ -2,24 +2,9 @@ const express = require('express');
 const app = express();
 const session = require('express-session');
 const static = express.static(__dirname + '/public');
-
 const configRoutes = require('./routes');
 const exphbs = require('express-handlebars');
-
-app.use('/public', static);
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-
-app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}));
-app.set('view engine', 'handlebars');
-
-app.use(session({
-    name: 'AuthCookie',
-    secret: 'some secret string!',
-    resave: false,
-    saveUninitialized: true
-}))
-
+const Handlebars = require('handlebars');
 // app.get('/private', async (req,res, next) =>{
 //     if(!req.session.user){
 //         return res.status(403).render("login/error", {error: "You are not logged in.", user:false})
@@ -79,20 +64,52 @@ const handlebarsInstance = exphbs.create({
     },
 });
 
+const rewriteUnsupportedBrowserMethods = (req, res, next) => {
+  // If the user posts to the server with a property called _method, rewrite the request's method
+  // To be that method; so if they post _method=PUT you can now allow browsers to POST to a route that gets
+  // rewritten in this middleware to a PUT route
+  if (req.body && req.body._method) {
+    req.method = req.body._method;
+    delete req.body._method;
+  }
+
+  // let the next middleware run:
+next();
+};
+
 app.use;
 app.use("/public", static);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(rewriteUnsupportedBrowserMethods);
+
 app.engine("handlebars", handlebarsInstance.engine);
 app.set("view engine", "handlebars");
 
-// app.use("/private", (req, res, next) => {
-//     if (!req.session.user) {
-//       return res.status(403).render("users/private", { title:"Private Page", error: "Sorry you are not authenticated, please login first !", hasErrors: true });
-//     } else {
-//       next();
-//     }
-// });
+app.use(session({
+  name: 'AuthCookie',
+  secret: 'some secret string!',
+  resave: false,
+  saveUninitialized: true
+}))
+
+//Authentication Middleware
+app.use('/userPage', (req, res, next) => {
+  if(req.session.user){
+    next();
+  }else{
+    res.status(403).render('users/authError');
+  }
+});
+
+app.use('/login', (req, res, next) => {
+  if (req.session.user) {
+    return res.redirect('users/userPage');
+  } else {
+    req.method = 'POST';
+    next();
+  }
+});
 
 configRoutes(app);
 
