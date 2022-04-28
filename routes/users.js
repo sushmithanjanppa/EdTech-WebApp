@@ -4,13 +4,13 @@ const bcrypt = require("bcrypt");
 const session = require("express-session");
 const { user } = require("../config/mongoCollection");
 const connection = require("../config/mongoConnection");
-const emailValidate = require('email-validator')
-const data = require("../data");
-const videos = require('../data/videos')
-const courses = require('../data/courses')
-const validate = require('../data/validate')
 
-const ud = data.users;
+const data = require("../data");
+const userData = require("../data/users");
+const videos = require('../data/videos');
+const courses = require('../data/courses');
+const validate = require('../validation/userValidate');
+
 const samePageNavs = {
   top: "#top",
   about: "#about",
@@ -23,8 +23,6 @@ const crossPageNavs = {
   courses: "/#courses",
   reviews: "/#reviews",
 };
-
-
 
 
 // USER ROUTES
@@ -49,20 +47,26 @@ router.get("/login", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-  name= req.body.name;
-  email = req.body.email;
-  password = req.body.password;
-
-  
+  let name= req.body.name;
+  let email = req.body.email;
+  let password = req.body.password;
+  let age = req.body.age;
+  let gender = req.body.gender;
+  let userType = req.body.userType;
 
   try {
-    await validate.validateUserEmailPasswordName(name, email, password)
-    const p = await ud.createUser(name, email, password);
-    if (p.userInserted) {
+    await validate.validateName(name);
+    await validate.validateEmail(email);
+    await validate.validatePassword(password);
+    await validate.validateAge(age);
+    await validate.validateGender(gender);
+    await validate.validateUserType(userType);
+
+    const newUser = await userData.createUser(name, email, password, gender, age, userType);
+    if (newUser.userInserted) {
       return res.redirect("/");
     }
   } catch (e) {
-    
     return res.status(e.b || 500).render("users/signup", {
       title: "Signup Page",
       error: e || "Internal Server Error",
@@ -74,7 +78,6 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   email = req.body.email;
   password = req.body.password;
-
 
   try {
     await validate.validateUserEmailPassword(email, password)
@@ -108,6 +111,8 @@ router.get("/logout", async (req, res) => {
   return res.render("users/logout", { title: "Logged out" });
 });
 
+// COURSE ROUTES
+
 router.get("/course1web", async (req, res) => {
   res.render("users/course1web", {
     title: "course1web",
@@ -125,11 +130,6 @@ router.get("/course3", async (req, res) => {
   res.render("users/course3", { title: "course3", location: crossPageNavs });
   return;
 });
-
-
-
-
-
 
 // VIDEOS ROUTES
 
