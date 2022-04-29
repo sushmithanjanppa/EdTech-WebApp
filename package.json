@@ -1,20 +1,22 @@
 {
-  "name": "known",
+  "name": "webprojectg18",
   "version": "1.0.0",
-  "description": "",
+  "description": "Web Project G18",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js",
-    "dev": "nodemon ./app.js"
+    "start": "node app.js"
   },
-  "author": "Sushmitha Anjanappa 10473762",
+  "author": "Achal Shah",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.6",
+    "email-validator": "^2.0.4",
     "express": "^4.17.3",
     "express-handlebars": "^6.0.5",
     "express-session": "^1.17.2",
+    "handlebars": "^4.7.7",
     "html": "^1.0.0",
     "mongodb": "^4.5.0",
     "nodemon": "^2.0.15"

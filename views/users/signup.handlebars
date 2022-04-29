@@ -1,0 +1,28 @@
+<div class="segment">
+
+<h1>
+    SignUp Page 
+</h1>
+</div>
+ 
+  <form action="/signup" method="POST" id="signup-form" class="signup-form">
+  <label for='name'>Full Name:
+      <input type="name" name="name" placeholder="Enter Full Name" id="name" class="full-width-input"/>
+      </label>
+      <br>
+    <label for='email'>Email:
+      <input type="text" name="email" placeholder="Enter Email" id="email" class="full-width-input"/>
+      </label>
+      <br>
+      <label for="password">Password:
+      <input type="password" name="password" placeholder="Enter password" id="password" class="full-width-input"/>
+    </label>
+    <br>
+    <button class="red" type="submit"><i class="icon ion-md-lock"></i>Sign up</button>
+  </form>
+  {{#if hasErrors}}
+    <p class="error">{{error}}</p>
+  {{/if}}
+  <div class="signup">
+  <a href="/" class="signup">Already have an account? Click here to login</a>
+</div>
