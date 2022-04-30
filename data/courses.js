@@ -9,6 +9,7 @@ module.exports = {
         let videos=[];
         let newCourse={
            courseName:courseName,
+           branch:branch,
         //    userId:userId,
            description:description,
            videos:videos,
@@ -47,6 +48,17 @@ module.exports = {
             const response = await courseCollection.findOne({courseName: courseName});
             return response;
         } catch (error) {
+            throw new Error(`Unable to retrieve course. Check again later..`)
+        }
+    },
+
+    async getfilterByBranch(branch) {
+        try {
+            const result = data.filter(d => d.branch == branch);
+
+            return result;
+        }
+        catch (error) {
             throw new Error(`Unable to retrieve course. Check again later..`)
         }
     },

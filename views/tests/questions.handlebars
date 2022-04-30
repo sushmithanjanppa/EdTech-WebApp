@@ -1,0 +1,31 @@
+  <section>
+  <h1>Take a Test</h1>
+   <form>
+         <fieldset>
+  <ul>
+  {{#each questions}}  
+    
+      <li class="tests"><a class="Anchor" href="/tests/{{_id}}/{{name}}"></a>
+      <section id="{{sectionid}}" class="questions">
+          <span class="choice_error">Please select a choice</span></p>
+           <p> {{question}} <span class="error"></span></p>
+          
+        <label ><input type="radio" name={{_id}}  value="A">{{answer1}}<span></span></label>
+        <label ><input type="radio" name={{_id}} value="B">{{answer2}}<span></span></label>
+        <label ><input type="radio" name={{_id}} value="C">{{answer3}}<span></span></label> 
+        <label ><input type="radio" name={{_id}} value="D">{{answer4}}<span></span></label> 
+        <span id="{{setid}}"></span>
+         <br>
+        <br>
+    </section>
+    </li>
+  {{/each}}
+  </ul>
+  <input id="questionButton" type="button" value="Show Results" />
+  <br><br>
+  <p id="results"></p>
+  <a href="/layouts/main">Click here to go Back</a>
+</fieldset>
+  </form>
+  </section>
+  

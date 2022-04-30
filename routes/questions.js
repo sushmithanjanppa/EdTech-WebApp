@@ -3,6 +3,28 @@ const router = express.Router();
 const data = require('../data');
 const questionData = data.questions;
 
+
+router.get('/:id', async (req, res) => {
+    try {
+        if (!req.params.id) {
+            res.status(400).json({ error: `courseId must be passed` });
+            return;
+        }
+        if (typeof req.params.id != 'string' || req.params.id.trim() === '') {
+            res.status(400).json({ error: `courseId must be valid` });
+            return;
+        }
+        const allQuestions = await questionData.getAll(req.params.id);
+        res.json(allQuestions);
+    } catch (error) {
+        if (error.message.includes("Unable to find course")) {
+            res.status(404).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: error.message });
+        }
+    }
+});
+
 router.post('/:id', async (req, res) => {
     const createQuestionData = req.body;
     try {
