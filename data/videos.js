@@ -1,32 +1,66 @@
 const mongoCollections = require("../config/mongoCollections");
 const videos = mongoCollections.videos;
+const courses = mongoCollections.courses;
+const users = mongoCollections.users;
+const courses_func = require('./courses')
 // const validation = require('../tasks/validation')
 const { ObjectId } = require("mongodb");
 // const bcrypt = require('bcrypt');
 // const saltRounds = 12;
 
 module.exports = {
-    async createVideo(title,id){
-        const videocollection = await videos()
+    async createVideo(title,id, course_name){
+        // const videocollection = await videos()
         let newvideo = {
             title: title,
             video_id: id
         }
-        const insertInfo = await videocollection.insertOne(newvideo);
-        if (!insertInfo.acknowledged || !insertInfo.insertedId)
+        const coursescollection = await courses()
+        let courseinfo = await coursescollection.findOne({ courseName: course_name})
+        // console.log(courseinfo)
+        if (courseinfo.videos){
+            var found = courseinfo.videos.some(el => el.video_id === id)
+        }
+        else{
+            var found = false
+        }
+        if(!found){
+            courseinfo.videos.push(newvideo)
+            var insertInfo = await coursescollection.updateOne({_id: ObjectId(courseinfo._id)},[{$set: {videos: courseinfo.videos} }])
+        }
+        else{
+            throw " Video already exists"
+        }
+        // console.log(courseinfo)
+        // console.log(insertInfo)
+        // const insertInfo = await videocollection.insertOne(newvideo);
+        if (insertInfo.modifiedCount === 0)
             throw "Could not add video";
         else
             return {videoInserted: true}
     },
 
-    async getVideos(){
-        const videocollection = await videos();
-        let data = await videocollection.find({}).toArray();
-        // console.log(data)
-        return data
+    // async getVideos(){
+    //     const videocollection = await videos();
+    //     let data = await videocollection.find({}).toArray();
+    //     // console.log(data)
+    //     return data
+    // },
+
+    async getVideos(email,course_name){
+        // validate.validateEmail(email);
+        email = email.trim();
+        email = email.toLowerCase();
+        // const userCollection = await users();
+        // const user = await userCollection.findOne({email: email});
+        const userCollection = await users()
+        const coursedata = courses_func.getCourseByName(course_name)
+        let courseinfo = await userCollection.find({ email:email },{courses:{$elemMatch:{_id:coursedata._id} }, "courses.vdeos":1}).toArray();
+        // console.log(courseinfo[0]["courses"])
+        return courseinfo[0].courses[0].videos
     },
 
-    async addtime(data){
+    async addtime(email,data){
         const videocollection = await videos();
         let data_up = await videocollection.findOne({video_id:data.video_id});
         data_up.resume = data.resume;
@@ -84,7 +118,12 @@ async function main(){
         // console.log(await module.exports.createVideo('fourth Video', 'fqdidduTuZM'))
         // console.log(await module.exports.getVideos());
         // console.log(await module.exports.addtime('3JluqTojuME',250));
-        await module.exports.getprogress();
+        console.log(await module.exports.createVideo('Demo Video', 'M7lc1UVf-VE', 'Web Programming'))
+        console.log(await module.exports.createVideo('First Video', '3JluqTojuME','Web Programming'))
+
+        // console.log(await module.exports.getVideos('pjhangl1@stevens.edu','Web Programming'))
+
+        // await module.exports.getprogress();
         process.exit(0)
         
     }catch(e){

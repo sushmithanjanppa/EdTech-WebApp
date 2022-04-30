@@ -38,6 +38,11 @@ module.exports = {
         const courseCollection = await courses();
         const flag = await courseCollection.deleteOne( { "_id" : ObjectId(id) } );
         return flag;
+    },
+    async getCourseByName(name){
+        const courseCollection = await courses();
+        const course = await courseCollection.findOne({ courseName: name});
+        return course;
     }
 
 }
