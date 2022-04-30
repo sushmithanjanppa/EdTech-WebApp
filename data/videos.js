@@ -1,4 +1,4 @@
-const mongoCollections = require("../config/mongoCollections");
+const mongoCollections = require("../config/mongoCollection");
 const videos = mongoCollections.videos;
 const courses = mongoCollections.courses;
 const users = mongoCollections.users;
@@ -61,8 +61,11 @@ module.exports = {
     },
 
     async addtime(email,data){
-        const videocollection = await videos();
-        let data_up = await videocollection.findOne({video_id:data.video_id});
+        // const videocollection = await videos();
+        const userCollection = await users();
+        // let data_up = await videocollection.findOne({video_id:data.video_id});
+        let data_up = await userCollection.find({email:email},{'courses.videos':{$elemMatch:{video_id:data.video_id}}}).toArray();
+        console.log(data_up)
         data_up.resume = data.resume;
         data_up.duration = data.duration;
         data_up.done = data.done;
