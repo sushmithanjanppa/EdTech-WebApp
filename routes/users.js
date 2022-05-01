@@ -149,6 +149,8 @@ router.post('/video', async(req,res) => {
     // console.log(req.body)
     // let timeupdated = await videos.addtime(id = req.body.video_id, time = req.body.resume)
     let email = req.session.user.email
+    email = email.trim();
+    email = email.toLowerCase();
     let timeupdated = await videos.addtime(email,req.body)
     if (!timeupdated.TimeUpdated){
         console.log("Updation Failed")

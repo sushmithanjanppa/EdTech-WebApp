@@ -55,7 +55,7 @@ module.exports = {
         // const user = await userCollection.findOne({email: email});
         const userCollection = await users()
         const coursedata = courses_func.getCourseByName(course_name)
-        let courseinfo = await userCollection.find({ email:email },{courses:{$elemMatch:{_id:coursedata._id} }, "courses.vdeos":1}).toArray();
+        let courseinfo = await userCollection.find({ email:email },{courses:{$elemMatch:{_id:coursedata._id} }, "courses.videos":1}).toArray();
         // console.log(courseinfo[0]["courses"])
         return courseinfo[0].courses[0].videos
     },
@@ -63,15 +63,41 @@ module.exports = {
     async addtime(email,data){
         // const videocollection = await videos();
         const userCollection = await users();
+        // console.log(email)
+        email = email.trim();
+        email = email.toLowerCase();
         // let data_up = await videocollection.findOne({video_id:data.video_id});
-        let data_up = await userCollection.find({email:email},{'courses.videos':{$elemMatch:{video_id:data.video_id}}}).toArray();
-        console.log(data_up)
-        data_up.resume = data.resume;
-        data_up.duration = data.duration;
-        data_up.done = data.done;
-        const updatedInfo = await videocollection.updateOne(
-            {video_id:data.video_id},
-            { $set: data_up }
+        let data_up = await userCollection.aggregate([
+            {
+                "$match": {
+                    "email":email,
+                    "courses.videos.video_id": data.video_id
+                }
+            },{
+                $project:{"courses.videos":1, "courses._id":1}
+            }
+            
+            ]).toArray();
+        // console.log(data_up)
+        for(var i in data_up[0].courses){
+            if(data_up[0].courses[i].videos){
+            for (var j in data_up[0].courses[i].videos){
+                if(data_up[0].courses[i].videos[j].video_id === data.video_id)
+                {
+                    data_up[0].courses[i].videos[j].resume = data.resume;
+                    data_up[0].courses[i].videos[j].duration = data.duration;
+                    data_up[0].courses[i].videos[j].done = data.done;
+                }
+            }
+        }
+        }
+        // console.log(data_up[0])
+        // data_up.resume = data.resume;
+        // data_up.duration = data.duration;
+        // data_up.done = data.done;
+        const updatedInfo = await userCollection.updateOne(
+            {_id:data_up[0]._id},
+            { $set: {courses:data_up[0].courses} }
         );
         if (updatedInfo.modifiedCount === 0) {
             throw "could not update video successfully";
@@ -121,10 +147,11 @@ async function main(){
         // console.log(await module.exports.createVideo('fourth Video', 'fqdidduTuZM'))
         // console.log(await module.exports.getVideos());
         // console.log(await module.exports.addtime('3JluqTojuME',250));
-        console.log(await module.exports.createVideo('Demo Video', 'M7lc1UVf-VE', 'Web Programming'))
-        console.log(await module.exports.createVideo('First Video', '3JluqTojuME','Web Programming'))
+        // console.log(await module.exports.createVideo('Demo Video', 'M7lc1UVf-VE', 'Web Programming'))
+        // console.log(await module.exports.createVideo('First Video', '3JluqTojuME','Web Programming'))
 
         // console.log(await module.exports.getVideos('pjhangl1@stevens.edu','Web Programming'))
+        console.log(await module.exports.addtime('pjhangl1@stevens.edu',''))
 
         // await module.exports.getprogress();
         process.exit(0)
