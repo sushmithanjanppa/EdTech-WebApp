@@ -119,7 +119,7 @@ router.get('/video', async(req,res) => {
     let email = req.session.user.email
     // console.log(req)
     let data = await videos.getVideos(email,course_name);
-    // console.log(data);
+    console.log(data);
     // res.locals.videodata = JSON.stringify(data)
     // console.log(res.locals.videodata)
     return res.render('edu/video',{videodata : JSON.stringify(data)});

@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 14;
 const validate = require('../validation/userValidate');
 const courses_func = require('./courses');
+const videos = require('../data/videos');
 const courses = mongoCollections.courses
 
 
@@ -106,6 +107,29 @@ module.exports = {
         }
     }
         
-    }
+    },
+
+    async get_user_course_progress(email){
+        validate.validateEmail(email);
+        email = email.trim();
+        email = email.toLowerCase();
+        const userCollection = await users();
+        const user = await userCollection.findOne({email: email},{$project:{courses:1}});
+        // console.log(user)
+        var prog_data = []
+        for (var i of user.courses){
+            if (i.courseName){
+                let prog = await videos.getprogress(email,i.courseName)
+                prog_data.push(prog)
+            }
+        }
+        return prog_data
+    } 
 
 }
+
+async function main(){
+    console.log(await module.exports.get_user_course_progress("pjhangl1@stevens.edu"))
+}
+
+// main();

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const userData = require("../data/users");
 const validate = require('../validation/userValidate');
+const videos = require('../data/videos');
 
 const samePageNavs = {
   top: "#top",
@@ -21,7 +22,8 @@ router.get('/', async (req, res) => {
       if(req.session.user){
         let uemail = req.session.user.email;
         const userInfo = await userData.getUser(uemail);
-        res.render("users/userPage",{data: userInfo ,title: "Profile", location: crossPageNavs});
+        const progress = await userData.get_user_course_progress(uemail);
+        res.render("users/userPage",{data: userInfo ,title: "Profile", location: crossPageNavs, progress_data: JSON.stringify(progress)});
       }
     }catch(e){
       res.status(400).render('users/index', {error: e});
