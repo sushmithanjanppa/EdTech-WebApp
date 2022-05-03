@@ -1,0 +1,35 @@
+.text-center-userpage {
+    text-align: center;
+}
+
+
+* {
+	box-sizing: border-box;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+.email {
+    border: 2px solid;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 300px;
+}
+
+
+.name {
+    border: 2px solid;
+    box-sizing: border-box;
+    border-radius: 6px;
+    width: 300px;
+}
+
+.age {
+    border: 2px solid;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 300px;
+}
