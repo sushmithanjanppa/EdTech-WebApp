@@ -68,7 +68,7 @@ module.exports = {
     },
 
     async getUser(email){
-        console.log('inside getuser, mail:',email)
+        // console.log('inside getuser, mail:',email)
         validate.validateEmail(email);
         email = email.trim();
         email = email.toLowerCase();

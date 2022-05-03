@@ -98,13 +98,15 @@ app.use('/userPage', (req, res, next) => {
   if(req.session.user){
     next();
   }else{
-    res.status(403).render('users/authError');
+    res.status(403).render('users/authError', { notLoggedIn: req.session.user ? false : true });
   }
 });
 
 app.use('/login', (req, res, next) => {
   if (req.session.user) {
     return res.redirect('/userPage');
+  } else if(req.method=='GET') {
+    res.redirect("/")
   } else {
     req.method = 'POST';
     next();

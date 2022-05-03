@@ -1,4 +1,8 @@
 <div class="text-center-course3">
+<<<<<<< HEAD
+=======
+    {{> navbar this}}
+>>>>>>> d1cc2e62d973472e5b27c9dcc39a0f71c8792f84
 <h1>
 Introduction to Java
 </h1>
@@ -7,8 +11,9 @@ Introduction to Java
     Course Description:  <br>
                          This Course is the first of a series of courses that make up the Core Java Specialization.  The Core Java Specialization, in turn, is part of a series of programming specializations, derived from LearnQuest's private Java Bootcamps, designed to provide the skill set necessary to be hired as an IT developer using Java in many corporate environments.</h2>
 
-<form>
-    <button class="red" type="submit"><i class="icon ion-md-lock"></i>Enroll Now!</button>
+<form method = "post" action = "/enroll">
+    <input name = "Data" value = "Introduction to Java" hidden>
+    <input type = "submit" id = "enroll" class="enroll" name = "enroll"  value = "Enroll Now" >
 </form>
 
 </div>
