@@ -1,10 +1,4 @@
-/*
 
-Known Template 
-
-https://templatemo.com/tm-516-known
-
-*/
 
   @import url('https://fonts.googleapis.com/css?family=Muli:300,700|Nunito');
 
@@ -15,10 +9,6 @@ https://templatemo.com/tm-516-known
     padding-top: 70px;
   }
 
-
-  /*---------------------------------------
-     TYPOGRAPHY              
-  -----------------------------------------*/
 
   h1,h2,h3,h4,h5,h6 {
     font-family: 'Muli', sans-serif;
@@ -55,11 +45,6 @@ https://templatemo.com/tm-516-known
     line-height: 24px;
   }
 
-
-
-  /*---------------------------------------
-     GENERAL               
-  -----------------------------------------*/
 
   html{
     -webkit-font-smoothing: antialiased;
@@ -179,11 +164,6 @@ https://templatemo.com/tm-516-known
   }
 
 
-
-  /*---------------------------------------
-     BUTTONS               
-  -----------------------------------------*/
-
   .section-btn {
     background: transparent;
     border-radius: 50px;
@@ -201,10 +181,6 @@ https://templatemo.com/tm-516-known
   }
 
 
-
-  /*---------------------------------------
-       PRE LOADER              
-  -----------------------------------------*/
 
   .preloader {
     position: fixed;
@@ -252,9 +228,7 @@ https://templatemo.com/tm-516-known
 
 
 
-  /*---------------------------------------
-      MENU              
-  -----------------------------------------*/
+
 
   .custom-navbar {
     background: #ffffff;
@@ -334,9 +308,6 @@ https://templatemo.com/tm-516-known
 
 
 
-  /*---------------------------------------
-      HOME  & SLIDER            
-  -----------------------------------------*/
 
   #home {
     padding: 0;
@@ -396,9 +367,6 @@ https://templatemo.com/tm-516-known
 
 
 
-  /*---------------------------------------
-      FEATURE              
-  -----------------------------------------*/
 
   .feature-thumb {
     border: 1px solid #f0f0f0;
@@ -425,9 +393,6 @@ https://templatemo.com/tm-516-known
 
 
 
-  /*---------------------------------------
-      ABOUT              
-  -----------------------------------------*/
 
   #about figure {
     display: inline-block;
@@ -456,9 +421,6 @@ https://templatemo.com/tm-516-known
 
 
 
-  /*---------------------------------------
-      TEAM              
-  -----------------------------------------*/
 
   .team-thumb {
     background: #ffffff;
@@ -489,10 +451,6 @@ https://templatemo.com/tm-516-known
     margin: 0;
   }
 
-
-  /*---------------------------------------
-      COURSES             
-  -----------------------------------------*/
 
   #courses .section-title {
     text-align: center;
@@ -593,11 +551,7 @@ https://templatemo.com/tm-516-known
 
 
 
-  /*---------------------------------------
-     NEWS              
-  -----------------------------------------*/
-
-  .news-thumb {
+    .news-thumb {
     clear: both;
     position: relative;
     overflow: hidden;
@@ -621,10 +575,6 @@ https://templatemo.com/tm-516-known
   }
 
 
-
-  /*---------------------------------------
-      TESTIMONIAL             
-  -----------------------------------------*/
 
   #testimonial .item {
     background: #ffffff;
@@ -678,9 +628,6 @@ https://templatemo.com/tm-516-known
 
 
 
-  /*---------------------------------------
-      CONTACT             
-  -----------------------------------------*/
 
   #contact {
     background: #3f51b5;
@@ -730,13 +677,7 @@ https://templatemo.com/tm-516-known
     border-color: #ffffff;
     color: #ffffff;
   }
-  
 
-
-
-  /*---------------------------------------
-     FOOTER              
-  -----------------------------------------*/
 
   footer {
     background: #252020;
@@ -827,9 +768,6 @@ https://templatemo.com/tm-516-known
 
 
 
-  /*---------------------------------------
-     SOCIAL ICON              
-  -----------------------------------------*/
 
   .social-icon {
     position: relative;
@@ -864,9 +802,6 @@ https://templatemo.com/tm-516-known
 
 
 
-  /*---------------------------------------
-     RESPONSIVE STYLES              
-  -----------------------------------------*/
 
   @media screen and (max-width: 1170px) {
     .custom-navbar .navbar-nav.navbar-nav-first {

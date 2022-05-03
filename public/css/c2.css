@@ -1,0 +1,108 @@
+body {
+    margin: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    background: url("../images/background.jpg");
+    background-size: cover;
+  }
+  
+  .sign-up-container {
+    display: flex;
+    align-items: center;
+    width: 900px;
+    padding: 20px;
+    box-sizing: border-box;
+    line-height: 1.4;
+    color: #333333;
+    background: #ffffff;
+    border-top: 5px solid #009578;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+  }
+  
+  .sign-up-container * {
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .sign-up-left,
+  .sign-up-right {
+    padding: 40px;
+    box-sizing: border-box;
+  }
+  
+  .sign-up-logo {
+    width: 200px;
+  }
+  
+  .sign-up-title {
+    margin-top: 0;
+    font-size: 2.7em;
+    font-family: "Inconsolata", monospace;
+    font-weight: 900;
+  }
+  
+  .sign-up-link {
+    color: #009578;
+  }
+  
+  .sign-up-errors {
+    color: rgb(201, 0, 0);
+  }
+  
+  .sign-up-label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .sign-up-input {
+    width: 100%;
+    padding: 0.75em;
+    box-sizing: border-box;
+    font-size: 1em;
+    outline: none;
+    border: 2px solid #dddddd;
+  }
+  
+  .sign-up-input:focus {
+    border-color: #009578;
+  }
+  
+  .sign-up-button {
+    display: block;
+    margin-left: auto;
+    margin-top: 15px;
+    padding: 0.8em 1.6em;
+    font-weight: bold;
+    font-size: 1.25em;
+    background: #009578;
+    color: #ffffff;
+    cursor: pointer;
+    border: none;
+    outline: none;
+  }
+  
+  .sign-up-button:active {
+    background: #007b63;
+  }
+  
+  @media screen and (max-width: 768px) {
+    body {
+      display: block;
+      padding: 0;
+    }
+  
+    .sign-up-container {
+      display: block;
+      width: 100%;
+      padding: 0;
+    }
+  }
+
+  .btn-css {
+      text-align: center;
+  }

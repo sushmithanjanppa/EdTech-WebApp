@@ -1,28 +1,87 @@
-<div class="segment">
 
-<h1>
-    SignUp Page 
-</h1>
-</div>
- 
-  <form action="/signup" method="POST" id="signup-form" class="signup-form">
-  <label for='name'>Full Name:
-      <input type="name" name="name" placeholder="Enter Full Name" id="name" class="full-width-input"/>
-      </label>
-      <br>
-    <label for='email'>Email:
-      <input type="text" name="email" placeholder="Enter Email" id="email" class="full-width-input"/>
-      </label>
-      <br>
-      <label for="password">Password:
-      <input type="password" name="password" placeholder="Enter password" id="password" class="full-width-input"/>
-    </label>
-    <br>
-    <button class="red" type="submit"><i class="icon ion-md-lock"></i>Sign up</button>
-  </form>
-  {{#if hasErrors}}
-    <p class="error">{{error}}</p>
-  {{/if}}
-  <div class="signup">
-  <a href="/" class="signup">Already have an account? Click here to login</a>
-</div>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up Page </title>
+  <link rel="stylesheet" href="public/css/c2.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@900&family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  {{> navbar this}}
+  <div class="sign-up-container">
+   
+    <div class="sign-up-left">
+       <img class="sign-up-logo" src="public/images/EdTech-LOGO.png" alt="Logo">
+    </div>
+    <div class="sign-up-right">
+      <h1 class="sign-up-title">Ready to kick start your coding career?</h1>
+
+      <p class="sign-up-desc">
+        Already have an account? <a class="sign-up-link" href="/">Login here.</a>
+      </p>
+
+      <form action="/signup" method="post" id="sign-up-label" class="sign-up-label">
+        
+        <div>
+          <label for="name" class="sign-up-label">Full Name:
+          <input type="text" name="name"  class="sign-up-input" >
+          </label>
+        </div>
+
+        <div>
+          <label for="age" class="sign-up-label">Age:
+          <input type="number" name="age"  class="sign-up-input" >
+          </label>
+        </div>
+
+        <div>
+          <label for="email" class="sign-up-label">Email Address:
+          <input type="text" name="email" class="sign-up-input" >
+          </label>
+        </div>
+
+        <div>
+          <label for="Password" class="sign-up-label">Password:</label>
+          <input type="password" name="password" class="sign-up-input">
+        </div>
+
+         <div>
+          <label for="gender" class="sign-up-label">Gender:
+          <select name="gender" id="gender">
+              <option value="Man">Man</option>
+              <option value="Woman">Woman</option>
+              <option value="Transgender">Transgender</option>
+              <option value="other">other</option>
+          </select>
+          </label>
+        </div>
+
+        <div>
+              <label for="userType">User Type:
+              <select name="userType" id="userType">
+                <option value="0">Student</option>
+                <option value="1">Teacher</option>
+              </label>
+              </select>
+        </div>
+
+
+        <div class="btn-css">
+          <button type="submit" class="btn btn-success">Sign Up</button>
+           <br><br>
+           {{#if hasErrors}}
+              <p class="error">{{error}}</p>
+            {{/if}}
+
+        </div>
+
+      </form>
+
+
+    </div>
+  </div>
+</body>

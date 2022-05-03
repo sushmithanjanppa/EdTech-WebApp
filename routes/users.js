@@ -1,16 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
-const session = require("express-session");
-const { user } = require("../config/mongoCollection");
-const connection = require("../config/mongoConnection");
-const emailValidate = require('email-validator')
-const data = require("../data");
-const videos = require('../data/videos')
-const courses = require('../data/courses')
-const validate = require('../data/validate')
+const userData = require("../data/users");
+const videos = require('../data/videos');
+const courses = require('../data/courses');
+const validate = require('../validation/userValidate');
+const { users } = require("../config/mongoCollection");
 
-const ud = data.users;
 const samePageNavs = {
   top: "#top",
   about: "#about",
@@ -25,44 +20,40 @@ const crossPageNavs = {
 };
 
 
-
-
 // USER ROUTES
 router.get("/", async (req, res) => {
-  if (req.session.user) {
-    return res.redirect("/private");
-  } else {
-    res.render("users/index", { title: "Login Page", location: samePageNavs });
-  }
+  res.render("users/index", { title: "Login Page", location: samePageNavs, notLoggedIn: req.session.user ? false : true });
 });
 
 router.get("/signup", async (req, res) => {
   if (req.session.user) {
     return res.redirect("/login");
   } else {
-    res.render("users/signup", { title: "Signup Page" });
+    res.render("users/signup", { title: "Signup Page" , notLoggedIn: req.session.user ? false : true });
   }
 });
 
-router.get("/login", async (req, res) => {
-  res.redirect("/")
-});
-
 router.post("/signup", async (req, res) => {
-  name= req.body.name;
-  email = req.body.email;
-  password = req.body.password;
-
-  
+  let name= req.body.name;
+  let email = req.body.email;
+  let password = req.body.password;
+  let age = req.body.age;
+  let gender = req.body.gender;
+  let userType = req.body.userType;
 
   try {
-    await validate.validateUserEmailPasswordName(name, email, password)
-    const p = await ud.createUser(name, email, password);
-    if (p.userInserted) {
+    await validate.validateName(name);
+    await validate.validateEmail(email);
+    await validate.validatePassword(password);
+    await validate.validateAge(age);
+    await validate.validateGender(gender);
+    await validate.validateUserType(userType);
+
+    const newUser = await userData.createUser(name, email, password, gender, age, userType);
+    if (newUser.userInserted) {
       return res.redirect("/");
     }
   } catch (e) {
-    
     return res.status(e.b || 500).render("users/signup", {
       title: "Signup Page",
       error: e || "Internal Server Error",
@@ -71,18 +62,19 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
-  email = req.body.email;
-  password = req.body.password;
 
+router.post("/login", async (req, res) => {
+  let email = req.body.email;
+  let password = req.body.password;
 
   try {
-    await validate.validateUserEmailPassword(email, password)
-    let xyz = await ud.checkUser(email, password);
+    await validate.validateEmail(email);
+    await validate.validatePassword(password);
 
-    if (xyz) {
-      req.session.user = { email: email };
-      res.redirect("/index");
+    const existingUser = await userData.checkUser(email,password);
+    if (existingUser) {
+      req.session.user = { email: req.body.email };
+      res.redirect("/userPage");
       return;
     } else {
       res.render("users/index", {
@@ -105,49 +97,34 @@ router.post("/login", async (req, res) => {
 
 router.get("/logout", async (req, res) => {
   req.session.destroy();
-  return res.render("users/logout", { title: "Logged out" });
+  return res.render("users/logout", { title: "Logged out", notLoggedIn: false });
 });
-
-router.get("/course1web", async (req, res) => {
-  res.render("users/course1web", {
-    title: "course1web",
-    location: crossPageNavs,
-  });
-  return;
-});
-
-router.get("/course2", async (req, res) => {
-  res.render("users/course2", { title: "course2", location: crossPageNavs });
-  return;
-});
-
-router.get("/course3", async (req, res) => {
-  res.render("users/course3", { title: "course3", location: crossPageNavs });
-  return;
-});
-
-
-
-
-
 
 // VIDEOS ROUTES
 
 // const validation = require('../tasks/validation')
 
 router.get('/video', async(req,res) => {
-    let data = await videos.getVideos();
+    if(req.body.data){
+      var course_name = req.body.data
+    }
+    else{
+      var course_name = "Web Programming"
+    }
+    let email = req.session.user.email
+    // console.log(req)
+    let data = await videos.getVideos(email,course_name);
     // console.log(data);
     // res.locals.videodata = JSON.stringify(data)
     // console.log(res.locals.videodata)
-    return res.render('edu/video',{videodata : JSON.stringify(data)});
+    return res.render('edu/video',{videodata : JSON.stringify(data), notLoggedIn: req.session.user ? false : true});
 })
 router.get('/courseForm',async(req,res)=>{
-     res.render('edu/addCourseForm')
+     res.render('edu/addCourseForm', {notLoggedIn: req.session.user ? false : true})
 })
 router.get('/allCourses',async(req,res)=>{
     let courseList = await courses.getAllCourses();
-    res.render('edu/coursesPage',{data:courseList})
+    res.render('edu/coursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true})
 })
 router.post('/delete/:_id',async(req,res)=>{
     let flag = await courses.deleteCourse(req.params._id);
@@ -155,7 +132,7 @@ router.post('/delete/:_id',async(req,res)=>{
 })
 router.get('/courses/:_id', async(req,res) => {
     let course=await courses.getCourseById(req.params._id);
-    res.render('edu/courseContent',{data:course });
+    res.render('edu/courseContent',{data:course, notLoggedIn: req.session.user ? false : true });
   })
 router.post('/courseForm', async(req,res) => {
   let courseAdded=await courses.addCourse(req.body.courseName,req.body.description);
@@ -166,7 +143,8 @@ router.post('/video', async(req,res) => {
     // console.log("post")
     // console.log(req.body)
     // let timeupdated = await videos.addtime(id = req.body.video_id, time = req.body.resume)
-    let timeupdated = await videos.addtime(req.body)
+    let email = req.session.user.email
+    let timeupdated = await videos.addtime(email,req.body)
     if (!timeupdated.TimeUpdated){
         console.log("Updation Failed")
     }
@@ -177,7 +155,20 @@ router.post('/video', async(req,res) => {
 
 router.get('/progress', async(req, res) => {
     let data = await videos.getprogress();
-    return res.render('edu/progress',{videodata : JSON.stringify(data)});
+    return res.render('edu/progress',{videodata : JSON.stringify(data), notLoggedIn: req.session.user ? false : true});
+})
+
+router.post("/enroll", async(req,res) => {
+  let course_name = req.body.Data
+  let email = req.session.user.email
+  // console.log("In Enroll")
+  // console.log([course_name,email])
+  try {
+    userData.enroll(email,course_name)
+  } catch(e) {
+    console.log(e);
+  } 
+  return;
 })
 
 
