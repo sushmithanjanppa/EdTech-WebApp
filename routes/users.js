@@ -136,8 +136,10 @@ router.post('/delete/:_id',async(req,res)=>{
     let flag = await courses.deleteCourse(req.params._id);
     if(flag)res.redirect('/allCourses');
 })
-router.get('/courses/:_id', async(req,res) => {
-    let course=await courses.getCourseById(req.params._id);
+router.get('/course/:Name', async(req,res) => {
+    // let course=await courses.getCourseById(req.params._id);
+    // console.log(req.params.Name)
+    let course = await courses.getCourseByName(req.params.Name)
     res.render('edu/courseContent',{data:course, notLoggedIn: req.session.user ? false : true });
   })
 router.post('/courseForm', async(req,res) => {
@@ -180,8 +182,10 @@ router.post("/enroll", async(req,res) => {
   // console.log([course_name,email])
   try {
     await userData.enroll(email,course_name)
+
   } catch(e) {
-    console.log(e);
+    // console.log(e);
+
   } 
   return;
 })
