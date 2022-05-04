@@ -134,36 +134,7 @@ module.exports = {
         }
     },
 
-    async getprogress(email,course_name){
-        email = email.trim();
-        email = email.toLowerCase();
-        // const userCollection = await users();
-        // const user = await userCollection.findOne({email: email});
-        const userCollection = await users()
-        const coursedata = await courses_func.getCourseByName(course_name)
-        // console.log(coursedata._id)
-        let courseinfo = await userCollection.find({ email:email },{courses:{$elemMatch:{_id:coursedata._id} }, "courses.videos":1}).toArray();
-        // console.log(courseinfo[0].courses)
-        for(var i of courseinfo[0].courses){
-            // console.log(i._id)
-            if(i._id.equals(coursedata._id)){
-                // console.log("IF")
-                var data = i.videos
-            }
-        }
-        // console.log(data);
-        count = 0
-        for(var i = 0; i < data.length; i++){
-            if(data[i].done === true){
-                count += 1
-            }
-        }
-        var arr = []
-        var obj = {}
-        obj[course_name] = parseInt(count*100/data.length)
-        arr.push(obj)
-        return arr
-    }
+    
 }
 
 async function main(){
