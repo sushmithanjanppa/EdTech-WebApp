@@ -3,6 +3,13 @@
 <div class="row">
     <div class="col-sm-12">
      <div style="margin-left: 25px;">
-         <p>{{data.description}}</p>
+         <h3>
+            Course Description:  <br> <br>
+         {{data.description}}</h3>
+         <form method = "post" action = "/enroll">
+        <input name = "Data" value = {{data.courseName}} hidden>
+        <input type = "submit" id = "enroll" class="enroll" name = "enroll"  value = "Enroll Now" >
+        </form>
     </div>
 </div>
+
