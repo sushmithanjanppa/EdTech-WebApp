@@ -22,7 +22,12 @@ const crossPageNavs = {
 
 // USER ROUTES
 router.get("/", async (req, res) => {
-  res.render("users/index", { title: "Login Page", location: samePageNavs, notLoggedIn: req.session.user ? false : true });
+  var course_i = await courses.getAllCourses()
+  // console.log(course_i)
+  if(!req.session.user_type){
+    req.session.user_type = {type: 0}
+  }
+  res.render("users/index", { title: "Login Page", location: samePageNavs, notLoggedIn: req.session.user ? false : true, course_info:JSON.stringify(course_i) , userType: req.session.user_type.type});
 });
 
 router.get("/signup", async (req, res) => {
@@ -73,9 +78,10 @@ router.post("/login", async (req, res) => {
 
     const existingUser = await userData.checkUser(email,password);
     if (existingUser) {
-      req.session.user = { email: req.body.email };
-      res.redirect("/userPage");
-      return;
+      const user_info = await userData.getUser(email);
+      req.session.user = { email: user_info.email };
+      req.session.user_type = {type: user_info.userType};
+      return res.redirect("/userPage");
     } else {
       res.render("users/index", {
         title: "Login Page",
@@ -109,7 +115,7 @@ router.get('/video', async(req,res) => {
       var course_name = req.body.data
     }
     else{
-      var course_name = "Web Programming"
+      var course_name = "Web Development"
     }
     let email = req.session.user.email
     // console.log(req)
@@ -135,7 +141,14 @@ router.get('/courses/:_id', async(req,res) => {
     res.render('edu/courseContent',{data:course, notLoggedIn: req.session.user ? false : true });
   })
 router.post('/courseForm', async(req,res) => {
-  let courseAdded=await courses.addCourse(req.body.courseName,req.body.description);
+  console.log(req.body)
+  if(req.body.image){
+    var image_link = req.body.image
+  }
+  else{
+    image_link = "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg"
+  }
+  let courseAdded=await courses.addCourse(req.body.courseName,req.body.description, image_link, req.body.video_id);
   if(courseAdded.courseInserted)  
   res.redirect('/allCourses');
 })
@@ -166,7 +179,7 @@ router.post("/enroll", async(req,res) => {
   // console.log("In Enroll")
   // console.log([course_name,email])
   try {
-    userData.enroll(email,course_name)
+    await userData.enroll(email,course_name)
   } catch(e) {
     console.log(e);
   } 

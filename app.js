@@ -94,6 +94,27 @@ app.use(session({
 }))
 
 //Authentication Middleware
+
+app.use('/courseForm', async (req, res, next) => {
+    if (req.session.user_type.type != 1) {
+        return res.redirect('/');
+    } else {
+      //here I',m just manually setting the req.method to post since it's usually coming from a form
+        // return res.redirect('/');
+        next();
+    }
+});
+
+app.use('/allCourses', async (req, res, next) => {
+  if (req.session.user_type.type != 1) {
+      return res.redirect('/');
+  } else {
+    //here I',m just manually setting the req.method to post since it's usually coming from a form
+      // return res.redirect('/');
+      next();
+  }
+});
+
 app.use('/userPage', (req, res, next) => {
   if(req.session.user){
     next();
@@ -106,6 +127,7 @@ app.use('/login', (req, res, next) => {
   if (req.session.user) {
     return res.redirect('/userPage');
   } else if(req.method=='GET') {
+    console.log("in else if")
     res.redirect("/")
   } else {
     req.method = 'POST';
