@@ -133,6 +133,10 @@ router.get('/allCourses',async(req,res)=>{
     let courseList = await courses.getAllCourses();
     res.render('edu/coursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true})
 })
+router.get('/viewAllCourses',async(req,res)=>{
+  let courseList = await courses.getAllCourses();
+  return res.render('edu/allCoursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true})
+})
 router.post('/delete/:_id',async(req,res)=>{
     let flag = await courses.deleteCourse(req.params._id);
     if(flag)res.redirect('/allCourses');
