@@ -101,6 +101,11 @@
     color: #fff;
   }
 
+.text-center-userpage {
+    text-align: center;
+}
+
+
 .error {
     color: red;
     font-weight: bold;
@@ -118,6 +123,7 @@
     border: 2px solid;
     box-sizing: border-box;
     border-radius: 4px;
+
     width: 300px;
 }
 

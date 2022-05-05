@@ -21,18 +21,19 @@ const crossPageNavs = {
 
 // USER ROUTES
 router.get("/", async (req, res) => {
-  if (req.session.user) {
-    return res.redirect("/private");
-  } else {
-    res.render("users/index", { title: "Login Page", location: samePageNavs });
+  var course_i = await courses.getAllCourses()
+  // console.log(course_i)
+  if(!req.session.user_type){
+    req.session.user_type = {type: 0}
   }
+  res.render("users/index", { title: "Login Page", location: samePageNavs, notLoggedIn: req.session.user ? false : true, course_info:JSON.stringify(course_i) , userType: req.session.user_type.type});
 });
 
 router.get("/signup", async (req, res) => {
   if (req.session.user) {
     return res.redirect("/login");
   } else {
-    res.render("users/signup", { title: "Signup Page" });
+    res.render("users/signup", { title: "Signup Page" , notLoggedIn: req.session.user ? false : true });
   }
 });
 
@@ -76,9 +77,11 @@ router.post("/login", async (req, res) => {
 
     const existingUser = await userData.checkUser(email,password);
     if (existingUser) {
-      req.session.user = { email: req.body.email };
-      res.redirect("/userPage");
-      return;
+
+      const user_info = await userData.getUser(email);
+      req.session.user = { email: user_info.email };
+      req.session.user_type = {type: user_info.userType};
+      return res.redirect("/userPage");
     } else {
       res.render("users/index", {
         title: "Login Page",
@@ -100,7 +103,8 @@ router.post("/login", async (req, res) => {
 
 router.get("/logout", async (req, res) => {
   req.session.destroy();
-  return res.render("users/logout", { title: "Logged out" });
+  return res.render("users/logout", { title: "Logged out", notLoggedIn: false });
+
 });
 
 // VIDEOS ROUTES
@@ -108,29 +112,46 @@ router.get("/logout", async (req, res) => {
 // const validation = require('../tasks/validation')
 
 router.get('/video', async(req,res) => {
-    let data = await videos.getVideos();
+    if(req.body.data){
+      var course_name = req.body.data
+    }
+    else{
+      var course_name = "Web Development"
+    }
+    let email = req.session.user.email
+    // console.log(req)
+    let data = await videos.getVideos(email,course_name);
     // console.log(data);
     // res.locals.videodata = JSON.stringify(data)
     // console.log(res.locals.videodata)
-    return res.render('edu/video',{videodata : JSON.stringify(data)});
+    return res.render('edu/video',{videodata : JSON.stringify(data), notLoggedIn: req.session.user ? false : true});
 })
 router.get('/courseForm',async(req,res)=>{
-     res.render('edu/addCourseForm')
+     res.render('edu/addCourseForm', {notLoggedIn: req.session.user ? false : true})
 })
 router.get('/allCourses',async(req,res)=>{
     let courseList = await courses.getAllCourses();
-    res.render('edu/coursesPage',{data:courseList})
+    res.render('edu/coursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true})
 })
 router.post('/delete/:_id',async(req,res)=>{
     let flag = await courses.deleteCourse(req.params._id);
     if(flag)res.redirect('/allCourses');
 })
-router.get('/courses/:_id', async(req,res) => {
-    let course=await courses.getCourseById(req.params._id);
-    res.render('edu/courseContent',{data:course });
+router.get('/course/:Name', async(req,res) => {
+    // let course=await courses.getCourseById(req.params._id);
+    // console.log(req.params.Name)
+    let course = await courses.getCourseByName(req.params.Name)
+    res.render('edu/courseContent',{data:JSON.stringify(course), notLoggedIn: req.session.user ? false : true });
   })
 router.post('/courseForm', async(req,res) => {
-  let courseAdded=await courses.addCourse(req.body.courseName,req.body.description);
+  console.log(req.body)
+  if(req.body.image){
+    var image_link = req.body.image
+  }
+  else{
+    image_link = "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg"
+  }
+  let courseAdded=await courses.addCourse(req.body.courseName,req.body.description, image_link, req.body.video_id);
   if(courseAdded.courseInserted)  
   res.redirect('/allCourses');
 })
@@ -138,7 +159,10 @@ router.post('/video', async(req,res) => {
     // console.log("post")
     // console.log(req.body)
     // let timeupdated = await videos.addtime(id = req.body.video_id, time = req.body.resume)
-    let timeupdated = await videos.addtime(req.body)
+    let email = req.session.user.email
+    email = email.trim();
+    email = email.toLowerCase();
+    let timeupdated = await videos.addtime(email,req.body)
     if (!timeupdated.TimeUpdated){
         console.log("Updation Failed")
     }
@@ -149,7 +173,22 @@ router.post('/video', async(req,res) => {
 
 router.get('/progress', async(req, res) => {
     let data = await videos.getprogress();
-    return res.render('edu/progress',{videodata : JSON.stringify(data)});
+    return res.render('edu/progress',{videodata : JSON.stringify(data), notLoggedIn: req.session.user ? false : true});
+})
+
+router.post("/enroll", async(req,res) => {
+  let course_name = req.body.Data
+  let email = req.session.user.email
+  // console.log("In Enroll")
+  // console.log([course_name,email])
+  try {
+    await userData.enroll(email,course_name)
+
+  } catch(e) {
+    // console.log(e);
+
+  } 
+  return;
 })
 
 

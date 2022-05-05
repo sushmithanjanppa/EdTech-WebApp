@@ -1,7 +1,22 @@
-<h2 style="margin-left: 25px;">{{data.courseName}}</h2>
+<h2 style="margin-left: 25px;" id="course_name"></h2>
+{{> navbar this}}
 <div class="row">
     <div class="col-sm-12">
      <div style="margin-left: 25px;">
-         <p>{{data.description}}</p>
+         <h3>
+            Course Description:  <br> <br>
+         <p id="desc"></p></h3>
+         <form method = "post" action = "/enroll">
+        <input name = "Data" id="data" hidden>
+        <input type = "submit" id = "enroll" class="enroll" name = "enroll"  value = "Enroll Now" >
+        </form>
     </div>
 </div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script>
+    var course = {{{data}}}
+    $("#course_name").html(course.courseName)
+    $("#desc").html(course.description)
+    $("#data").attr("value",course.courseName)
+</script>

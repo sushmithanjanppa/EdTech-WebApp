@@ -1,19 +1,28 @@
 <!-- MENU -->
 <div class="text-center-course1web">
+
+    {{> navbar this}}
 <h1>
     Web Development:
 </h1>
+<br>
+
+    
 
 <h2>
-    Course Description:  <br> 
+    Course Description:  <br> <br>
         Do you realize that the only functionality of a web application that the user directly interacts with is through the web page? Implement it poorly and, to the user, the server-side becomes irrelevant! Today’s user expects a lot out of the web page: it has to load fast, expose the desired service, and be comfortable to view on all devices: from a desktop computers to tablets and mobile phones.
 
 </h2>
 
 <div>
 
-<form>
-    <button class="red" type="submit"><i class="icon ion-md-lock"></i>Enroll Now!</button>
+
+<form method = "post" action = "/enroll">
+    <input name = "Data" value = "Web Development" hidden>
+    <input type = "submit" id = "enroll" class="enroll" name = "enroll"  value = "Enroll Now" >
 </form>
 
 </div>
+
+

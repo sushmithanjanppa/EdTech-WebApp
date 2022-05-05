@@ -4,11 +4,8 @@ const { ObjectId } = require('mongodb');
 const bcrypt = require('bcrypt');
 const saltRounds = 14;
 const validate = require('../validation/userValidate');
-<<<<<<< Updated upstream
-=======
 const courses_func = require('./courses');
-const courses = mongoCollections.courses;
->>>>>>> Stashed changes
+const courses = mongoCollections.courses
 
 
 module.exports = {
@@ -70,7 +67,7 @@ module.exports = {
     },
 
     async getUser(email){
-        console.log('inside getuser, mail:',email)
+        // console.log('inside getuser, mail:',email)
         validate.validateEmail(email);
         email = email.trim();
         email = email.toLowerCase();
@@ -79,26 +76,23 @@ module.exports = {
         if (user === null) throw 'No such user found';
         return user;
     },
-<<<<<<< Updated upstream
 
-=======
- 
     async enroll(email,course_name){
         validate.validateEmail(email);
         email = email.trim();
         email = email.toLowerCase();
         const userCollection = await users();
         const user = await userCollection.findOne({email: email});
-        // console.log(course_name)
+        // console.log({"cn":course_name})
         let course_info = await courses_func.getCourseByName(course_name)
-        console.log(course_info)
+        // console.log(course_info)
         if(!course_info){
             throw "Course not found"
         }
         else{
         const found = user.courses.some(el => el._id.equals(course_info._id))
-        console.log(found)
-        if (!found){
+        // console.log(found)
+        if (found !== null){
             user.courses.push(course_info)
             let update = await userCollection.updateOne({email:email},[{$set:{courses : user.courses}}])
             if (update.modifiedCount === 0){
@@ -160,65 +154,12 @@ module.exports = {
             }
         }
         return prog_data
-    },
-     
-    async editUserInfo(email, name, gender, age){
-        validate.validateEmail(email);
-        email = email.trim();
-        email = email.toLowerCase();
-        let newName;
-        let newGender;
-        let newAge;
-        var user = this.getUser(email);
-
-        if(!name || typeof(name)=='undefined'){
-            newName = user.name
-        }else{
-            newName = name;
-        }
-        validate.validateName(newName);
-        newName = newName.trim();
-
-        if(!gender || typeof(gender)=='undefined'){
-            newGender = user.gender
-        }else{
-            newGender = gender;
-        }
-        validate.validateGender(newGender);
-        newGender = newGender.trim();
-        
-        if(!age || typeof(age)=='undefined'){
-            newAge = user.age
-        }else{
-            newAge = age;
-        }
-        validate.validateAge(newAge);
-        newAge = Number(newAge);
-
-        const userCollection = await users();
-        const updatedBandName = {
-            name: newName,
-            gender: newGender, 
-            age: newAge,
-        };
-
-        const updatedInfo = await userCollection.updateOne(
-            { _id: user.id },
-            { $set: updatedBandName }
-        );
-
-        if (updatedInfo.modifiedCount === 0) {
-            throw 'could not update the user';
-        }
-
-        return await this.getUser(email);
-    }
+    } 
 
 }
 
 async function main(){
     console.log(await module.exports.getUser("pjhangl1@stevens.edu"))
 }
->>>>>>> Stashed changes
 
-}
+// main();
