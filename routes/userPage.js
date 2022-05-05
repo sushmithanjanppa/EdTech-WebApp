@@ -28,4 +28,15 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/editinfo', async (req, res) => {
+  try{
+    if(req.session.user){
+      let uemail = req.session.user.email;
+    }
+  }catch(e){
+    console.log(e)
+      res.status(400).render('users/userPage', {error: e, notLoggedIn: req.session.user ? false : true});
+  }
+});
+
 module.exports = router;

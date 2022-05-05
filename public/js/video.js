@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 
 // // 2. This code loads the IFrame Player API code asynchronously.
 // var tag = document.createElement('script');
@@ -148,3 +149,11 @@ function stopVideo() {
 //     el.stopVideo();
 //   });
 // });
+=======
+let user = require('../../data/users')
+
+$('enroll').on("click", function(event) {
+    event.preventDefault();
+    var course_id = $(this).prop("value")
+}) 
+>>>>>>> Stashed changes

@@ -8,7 +8,7 @@ module.exports = {
         let videos=[];
         let newCourse={
            courseName:courseName,
-        //    userId:userId,
+        //     userId:userId,
            description:description,
            videos:videos
         }
