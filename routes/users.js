@@ -140,7 +140,7 @@ router.get('/course/:Name', async(req,res) => {
     // let course=await courses.getCourseById(req.params._id);
     // console.log(req.params.Name)
     let course = await courses.getCourseByName(req.params.Name)
-    res.render('edu/courseContent',{data:course, notLoggedIn: req.session.user ? false : true });
+    res.render('edu/courseContent',{data:JSON.stringify(course), notLoggedIn: req.session.user ? false : true });
   })
 router.post('/courseForm', async(req,res) => {
   console.log(req.body)

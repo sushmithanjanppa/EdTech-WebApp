@@ -83,16 +83,16 @@ module.exports = {
         email = email.toLowerCase();
         const userCollection = await users();
         const user = await userCollection.findOne({email: email});
-        // console.log(course_name)
+        // console.log({"cn":course_name})
         let course_info = await courses_func.getCourseByName(course_name)
-        console.log(course_info)
+        // console.log(course_info)
         if(!course_info){
             throw "Course not found"
         }
         else{
         const found = user.courses.some(el => el._id.equals(course_info._id))
-        console.log(found)
-        if (!found){
+        // console.log(found)
+        if (found !== null){
             user.courses.push(course_info)
             let update = await userCollection.updateOne({email:email},[{$set:{courses : user.courses}}])
             if (update.modifiedCount === 0){
