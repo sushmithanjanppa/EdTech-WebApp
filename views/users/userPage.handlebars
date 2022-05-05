@@ -1,27 +1,88 @@
 <!-- MENU -->
-{{> navbar this}}
 <div class="text-center-userpage">
-<h1 class="name">
-    {{data.name}}
-</h1>
+    <h1 id="name" class="name">
+        {{data.name}}
+    </h1>
 
-<h2 class="email">
-    Email:  <br> 
-    {{data.email}}
-</h2>
+    <h2 id="email" class="email">
+        Email:  <br> 
+        {{data.email}}
+    </h2>
 
-<h2 calss="age">
-    Age:  <br> 
-    {{data.age}}
-</h2>
+    <h2 id="age" class="age">
+        Age:  <br> 
+        {{data.age}}
+    </h2>
 
-<div class = "wrapper"></div>
-    
+    <h2 id="gender" class="gender">
+        Gender:  <br> 
+        {{data.gender}}
+    </h2>
+
 <div>
+    
+    <h2 id="uType" class="uType">
+        User Type:  
+        <div id="userType" data-utype="{{data.userType}}">
+        </div>
+    </h2>
 
-<form>
-    <button class="red" type="submit"><i class="icon ion-md-lock"></i>Edit Info!</button>
-</form>
+    <div class = "wrapper"></div>
+
+    <div class="btn f-right" id="fox-popup-triger">
+        <div>
+            <button id="editUserInfo" class="btn btn-default f-right"><i class="icon ion-md-lock"></i>Edit Info!</button>
+        </div>
+        </div>
+        <div class="fox-popup-wrap">
+        <div class="fox-close-btn">
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <div class="fox-form-wrap">
+            <form>
+            <div class="col col-md-6">
+                <div class="form-group">
+                <label for="email">Email:</label>
+                <input class="form-control" id="newEmail" type="email" value="{{data.email}}" disabled/>
+                </div>
+            </div>
+            <div class="col col-md-6">
+                <div class="form-group">
+                <label for="name">Name:</label>
+                <input class="form-control" id="newName" type="text" value="{{data.name}}"/>
+                </div>
+            </div>
+
+            <div class="col col-md-6">
+                <div class="form-group">
+                <label for="Age">Age:</label>
+                <input class="form-control" id="newAge" type="number" value="{{data.age}}"/>
+                </div>
+            </div>
+
+            <div class="col col-md-6">
+                <div class="form-group">
+                <label for="gender">Gender:</label>
+                {{!-- <input class="form-control" id="age" type="number" value="{{data.age}}"/> --}}
+                <select class="form-control" name="gender" id="gender">
+                    <option value="Man">Man</option>
+                    <option value="Woman" selected>Woman</option>
+                    <option value="Transgender">Transgender</option>
+                    <option value="other">other</option>
+                </select>
+                </div>
+            </div>
+                      
+            <div class="col col-md-12"> 
+                <button id="editUserInfo" class="btn btn-default f-right" type="submit">Submit</button>
+            </div>
+            </form>
+        </div>
+    </div>
+
+
+</div>
 
 </div>
 
@@ -46,3 +107,5 @@
     }
     progress()
 </script>
+<script src="/public/js/userPage.js"></script>
+
