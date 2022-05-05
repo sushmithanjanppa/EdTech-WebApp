@@ -83,15 +83,16 @@ module.exports = {
         email = email.toLowerCase();
         const userCollection = await users();
         const user = await userCollection.findOne({email: email});
-        console.log(course_name)
+        // console.log({"cn":course_name})
         let course_info = await courses_func.getCourseByName(course_name)
-        // console.log(course_info, course_name)
+        // console.log(course_info)
         if(!course_info){
             throw "Course not found"
         }
         else{
-        const found = user.courses.some(el => el._id === course_info.course_id)
-        if (!found){
+        const found = user.courses.some(el => el._id.equals(course_info._id))
+        // console.log(found)
+        if (found !== null){
             user.courses.push(course_info)
             let update = await userCollection.updateOne({email:email},[{$set:{courses : user.courses}}])
             if (update.modifiedCount === 0){
@@ -106,6 +107,59 @@ module.exports = {
         }
     }
         
-    }
+    },
+    async getprogress(email,course_name){
+        email = email.trim();
+        email = email.toLowerCase();
+        // const userCollection = await users();
+        // const user = await userCollection.findOne({email: email});
+        const userCollection = await users()
+        const coursedata = await courses_func.getCourseByName(course_name)
+        // console.log(coursedata._id)
+        let courseinfo = await userCollection.find({ email:email },{courses:{$elemMatch:{_id:coursedata._id} }, "courses.videos":1}).toArray();
+        // console.log(courseinfo[0].courses)
+        for(var i of courseinfo[0].courses){
+            // console.log(i._id)
+            if(i._id.equals(coursedata._id)){
+                // console.log("IF")
+                var data = i.videos
+            }
+        }
+        // console.log(data);
+        count = 0
+        for(var i = 0; i < data.length; i++){
+            if(data[i].done === true){
+                count += 1
+            }
+        }
+        var arr = []
+        var obj = {}
+        obj[course_name] = parseInt(count*100/data.length)
+        arr.push(obj)
+        return arr
+    },
+
+    async get_user_course_progress(email){
+        validate.validateEmail(email);
+        email = email.trim();
+        email = email.toLowerCase();
+        const userCollection = await users();
+        const user = await userCollection.findOne({email: email},{$project:{courses:1}});
+        // console.log(user)
+        var prog_data = []
+        for (var i of user.courses){
+            if (i.courseName){
+                let prog = await this.getprogress(email,i.courseName)
+                prog_data.push(prog)
+            }
+        }
+        return prog_data
+    } 
 
 }
+
+async function main(){
+    console.log(await module.exports.getUser("pjhangl1@stevens.edu"))
+}
+
+// main();
