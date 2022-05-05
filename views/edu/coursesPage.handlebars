@@ -4,7 +4,7 @@
     <div class="col-sm-12">
      <div style="margin-left: 25px;">
     {{#data}}    
-     <a href="/courses/{{_id}}">{{courseName}}</a>
+     <a href="/course/{{courseName}}">{{courseName}}</a>
      <p id={{_id}}>{{description}}</p>
      <form action="/delete/{{_id}}" method="post">
       <input type="submit" value="delete" /></form>
