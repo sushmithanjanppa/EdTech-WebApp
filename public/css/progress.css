@@ -52,7 +52,7 @@ body {
   height: 115px;
   background: #000;
   border-radius: 50%;
-  font-size: 1.85em;
-  font-weight: 300;
+  font-size: 1em;
+  font-weight: 100;
   color: rgba(255, 255, 255, 0.75);
 }

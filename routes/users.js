@@ -1,16 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
-const session = require("express-session");
-const { user } = require("../config/mongoCollection");
-const connection = require("../config/mongoConnection");
-const emailValidate = require('email-validator')
-const data = require("../data");
-const videos = require('../data/videos')
-const courses = require('../data/courses')
-const validate = require('../data/validate')
+const userData = require("../data/users");
+const videos = require('../data/videos');
+const courses = require('../data/courses');
+const validate = require('../validation/userValidate');
 
-const ud = data.users;
 const samePageNavs = {
   top: "#top",
   about: "#about",
@@ -25,44 +19,45 @@ const crossPageNavs = {
 };
 
 
-
-
 // USER ROUTES
 router.get("/", async (req, res) => {
-  if (req.session.user) {
-    return res.redirect("/private");
-  } else {
-    res.render("users/index", { title: "Login Page", location: samePageNavs });
+  var course_i = await courses.getAllCourses()
+  // console.log(course_i)
+  if(!req.session.user_type){
+    req.session.user_type = {type: 0}
   }
+  res.render("users/index", { title: "Login Page", location: samePageNavs, notLoggedIn: req.session.user ? false : true, course_info:JSON.stringify(course_i) , userType: req.session.user_type.type});
 });
 
 router.get("/signup", async (req, res) => {
   if (req.session.user) {
     return res.redirect("/login");
   } else {
-    res.render("users/signup", { title: "Signup Page" });
+    res.render("users/signup", { title: "Signup Page" , notLoggedIn: req.session.user ? false : true });
   }
 });
 
-router.get("/login", async (req, res) => {
-  res.redirect("/")
-});
-
 router.post("/signup", async (req, res) => {
-  name= req.body.name;
-  email = req.body.email;
-  password = req.body.password;
-
-  
+  let name= req.body.name;
+  let email = req.body.email;
+  let password = req.body.password;
+  let age = req.body.age;
+  let gender = req.body.gender;
+  let userType = req.body.userType;
 
   try {
-    await validate.validateUserEmailPasswordName(name, email, password)
-    const p = await ud.createUser(name, email, password);
-    if (p.userInserted) {
+    await validate.validateName(name);
+    await validate.validateEmail(email);
+    await validate.validatePassword(password);
+    await validate.validateAge(age);
+    await validate.validateGender(gender);
+    await validate.validateUserType(userType);
+
+    const newUser = await userData.createUser(name, email, password, gender, age, userType);
+    if (newUser.userInserted) {
       return res.redirect("/");
     }
   } catch (e) {
-    
     return res.status(e.b || 500).render("users/signup", {
       title: "Signup Page",
       error: e || "Internal Server Error",
@@ -71,19 +66,22 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
-  email = req.body.email;
-  password = req.body.password;
 
+router.post("/login", async (req, res) => {
+  let email = req.body.email;
+  let password = req.body.password;
 
   try {
-    await validate.validateUserEmailPassword(email, password)
-    let xyz = await ud.checkUser(email, password);
+    await validate.validateEmail(email);
+    await validate.validatePassword(password);
 
-    if (xyz) {
-      req.session.user = { email: email };
-      res.redirect("/index");
-      return;
+    const existingUser = await userData.checkUser(email,password);
+    if (existingUser) {
+
+      const user_info = await userData.getUser(email);
+      req.session.user = { email: user_info.email };
+      req.session.user_type = {type: user_info.userType};
+      return res.redirect("/userPage");
     } else {
       res.render("users/index", {
         title: "Login Page",
@@ -105,60 +103,67 @@ router.post("/login", async (req, res) => {
 
 router.get("/logout", async (req, res) => {
   req.session.destroy();
-  return res.render("users/logout", { title: "Logged out" });
+  return res.render("users/logout", { title: "Logged out", notLoggedIn: false });
+
 });
-
-router.get("/course1web", async (req, res) => {
-  res.render("users/course1web", {
-    title: "course1web",
-    location: crossPageNavs,
-  });
-  return;
-});
-
-router.get("/course2", async (req, res) => {
-  res.render("users/course2", { title: "course2", location: crossPageNavs });
-  return;
-});
-
-router.get("/course3", async (req, res) => {
-  res.render("users/course3", { title: "course3", location: crossPageNavs });
-  return;
-});
-
-
-
-
-
 
 // VIDEOS ROUTES
 
 // const validation = require('../tasks/validation')
 
-router.get('/video', async(req,res) => {
-    let data = await videos.getVideos();
+router.get('/video/:course', async(req,res) => {
+    // console.log(req.params)
+    if(req.params){
+      var course_name = req.params.course
+    }
+    else{
+      var course_name = "Web Development"
+    }
+    // let email = req.session.user.email
+    // console.log(course_name)
+    let email = 'pjhangl1@stevens.edu'
+    // console.log(req)
+    try{
+      var data = await videos.getVideos(email,course_name);
+    }
+    catch(e){
+      console.log(e)
+    }
     // console.log(data);
     // res.locals.videodata = JSON.stringify(data)
     // console.log(res.locals.videodata)
-    return res.render('edu/video',{videodata : JSON.stringify(data)});
+    return res.render('edu/video',{videodata : JSON.stringify(data), notLoggedIn: req.session.user ? false : true});
 })
 router.get('/courseForm',async(req,res)=>{
-     res.render('edu/addCourseForm')
+     res.render('edu/addCourseForm', {notLoggedIn: req.session.user ? false : true})
 })
 router.get('/allCourses',async(req,res)=>{
     let courseList = await courses.getAllCourses();
-    res.render('edu/coursesPage',{data:courseList})
+    res.render('edu/coursesPage',{data:JSON.stringify(courseList), notLoggedIn: req.session.user ? false : true})
+})
+router.get('/viewAllCourses',async(req,res)=>{
+  let courseList = await courses.getAllCourses();
+  return res.render('edu/allCoursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true})
 })
 router.post('/delete/:_id',async(req,res)=>{
     let flag = await courses.deleteCourse(req.params._id);
     if(flag)res.redirect('/allCourses');
 })
-router.get('/courses/:_id', async(req,res) => {
-    let course=await courses.getCourseById(req.params._id);
-    res.render('edu/courseContent',{data:course });
+router.get('/course/:Name', async(req,res) => {
+    // let course=await courses.getCourseById(req.params._id);
+    // console.log(req.params.Name)
+    let course = await courses.getCourseByName(req.params.Name)
+    res.render('edu/courseContent',{data:JSON.stringify(course), notLoggedIn: req.session.user ? false : true });
   })
 router.post('/courseForm', async(req,res) => {
-  let courseAdded=await courses.addCourse(req.body.courseName,req.body.description);
+  console.log(req.body)
+  if(req.body.image){
+    var image_link = req.body.image
+  }
+  else{
+    image_link = "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg"
+  }
+  let courseAdded=await courses.addCourse(req.body.courseName,req.body.description, image_link, req.body.video_id);
   if(courseAdded.courseInserted)  
   res.redirect('/allCourses');
 })
@@ -166,18 +171,42 @@ router.post('/video', async(req,res) => {
     // console.log("post")
     // console.log(req.body)
     // let timeupdated = await videos.addtime(id = req.body.video_id, time = req.body.resume)
-    let timeupdated = await videos.addtime(req.body)
+    let email = req.session.user.email
+    email = email.trim();
+    email = email.toLowerCase();
+    let timeupdated = await videos.addtime(email,req.body)
     if (!timeupdated.TimeUpdated){
         console.log("Updation Failed")
     }
     else{
-        console.log("Updated")
+        // console.log("Updated")
     }
 })
 
 router.get('/progress', async(req, res) => {
     let data = await videos.getprogress();
-    return res.render('edu/progress',{videodata : JSON.stringify(data)});
+    return res.render('edu/progress',{videodata : JSON.stringify(data), notLoggedIn: req.session.user ? false : true});
+})
+
+router.post("/enroll", async(req,res) => {
+  // console.log("In Route")
+  // console.log(req.body)
+  let course_name = req.body.course_name
+  let email = req.session.user.email
+  // console.log("In Enroll")
+  // console.log([course_name,email])
+  try {
+    await userData.enroll(email,course_name)
+    // res.send('_callback(\'{"message": "Enrolled"}\')');
+    res.send({message:"Enrolled"})
+  } catch(e) {
+    // console.log(e);
+    if (e === 'Already Enrolled')
+      // res.send('_callback(\'{"message": "Already Enrolled"}\')');
+      res.send({message:"Already Enrolled."})
+
+  } 
+  return;
 })
 
 

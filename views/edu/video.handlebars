@@ -2,6 +2,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="/public/css/video.css" crossorigin="anonymous">
     <div>
+        {{> navbar this}}
     <button id="stop">Stop All Videos</button>
     </div>
     
@@ -16,11 +17,12 @@
         <div id="player5"></div>
         <div id="player6"></div>
     </div> --}}
-
+ 
     {{!-- <div class="wrapper" id="wrapper"></div> --}}
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script>
         var playerInfoList = {{{videodata}}}
+        {{!-- console.log(playerInfoList) --}}
         for (var i = 0; i < playerInfoList.length; i++) {
             {{!-- p = document.createElement('p') --}}
             {{!-- p.innerHTML = 'I am P' --}}
@@ -143,7 +145,7 @@
                 var duration = event.target.getDuration()
                 var requestConfig = {
                     method: 'POST',
-                    url: '/video',
+                    url: '/video/',
                     contentType: 'application/json',
                     data: JSON.stringify({
                         resume: time,

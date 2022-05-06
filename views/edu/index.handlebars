@@ -1,28 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-     
-     <title>EdTech</title>
-
-     <meta charset="UTF-8">
-     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-     <meta name="description" content="">
-     <meta name="keywords" content="">
-     <meta name="author" content="">
-     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-</head>
-<body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
-
+<!-- PRE LOADER -->
      {{> navbar this}}
 
-     <!-- PRE LOADER -->
      <section class="preloader">
           <div class="spinner">
 
                <span class="spinner-rotate"></span>
                
+          </div>
+     </section>
+
+
+     <!-- MENU -->
+     <section class="navbar custom-navbar navbar-fixed-top" role="navigation">
+          <div class="container">
+
+               <div class="navbar-header">
+                    <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                         <span class="icon icon-bar"></span>
+                         <span class="icon icon-bar"></span>
+                         <span class="icon icon-bar"></span>
+                    </button>
+
+                    <!-- lOGO TEXT HERE -->
+                    <a href="#" class="navbar-brand">Known</a>
+               </div>
+
+               <!-- MENU LINKS -->
+               <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-nav-first">
+                         <li><a href="#top" class="smoothScroll">Home</a></li>
+                         <li><a href="#about" class="smoothScroll">About</a></li>
+                         <li><a href="#team" class="smoothScroll">Our Teachers</a></li>
+                         <li><a href="#courses" class="smoothScroll">Courses</a></li>
+                         <li><a href="#testimonial" class="smoothScroll">Reviews</a></li>
+                         <li><a href="#contact" class="smoothScroll">Contact</a></li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                         <li><a href="#"><i class="fa fa-phone"></i> +65 2244 1100</a></li>
+                    </ul>
+               </div>
+
           </div>
      </section>
 
@@ -56,7 +74,7 @@
                               </div>
                          </div>
 
-                         {{!-- <div class="item item-third">
+                         <div class="item item-third">
                               <div class="caption">
                                    <div class="container">
                                         <div class="col-md-6 col-sm-12">
@@ -66,7 +84,7 @@
                                         </div>
                                    </div>
                               </div>
-                         </div> --}}
+                         </div>
                     </div>
           </div>
      </section>
@@ -81,15 +99,15 @@
                          <div class="feature-thumb">
                               <span>01</span>
                               <h3>Trending Courses</h3>
-                              <p>Break into a new field like information technology or data science. No prior experience necessary to get started.</p>
+                              <p>Known is free education HTML Bootstrap Template. You can download and use this for your website.</p>
                          </div>
                     </div>
 
                     <div class="col-md-4 col-sm-4">
                          <div class="feature-thumb">
                               <span>02</span>
-                              <h3>Certified Courses</h3>
-                              <p>Find a top degree that fits your life.</p>
+                              <h3>Books & Library</h3>
+                              <p>Lorem ipsum dolor sit amet, consectetur adipisicing eiusmod tempor incididunt ut labore et dolore magna.</p>
                          </div>
                     </div>
 
@@ -97,7 +115,7 @@
                          <div class="feature-thumb">
                               <span>03</span>
                               <h3>Certified Teachers</h3>
-                              <p>Get job-ready for an in-demand career.</p>
+                              <p>templatemo provides a wide variety of free Bootstrap Templates for you. Please tell your friends about us. Thank you.</p>
                          </div>
                     </div>
 
@@ -115,60 +133,46 @@
                          <div class="about-info">
                               <h2>Start your journey to a better life with online practical courses</h2>
 
-                              {{!-- <figure>
-                                   <span><i class="fa fa-users"></i></span>
-                                   <figcaption>
-                                        <h3>Professional Trainers</h3>
-                                        <p>We have world-class trainers at EdTech.</p>
-                                   </figcaption>
-                              </figure> --}}
-
                               <figure>
                                    <span><i class="fa fa-users"></i></span>
                                    <figcaption>
                                         <h3>Professional Trainers</h3>
-                                        <p>We have world-class trainers at EdTech who can prepare you for the job market and make you industry ready.</p>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint ipsa voluptatibus.</p>
                                    </figcaption>
                               </figure>
 
                               <figure>
                                    <span><i class="fa fa-certificate"></i></span>
                                    <figcaption>
-                                        <h3>Learn without limits</h3>
-                                        <p>Get that "ready for anything" feeling with more than 5,000 courses.</p>
+                                        <h3>International Certifications</h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint ipsa voluptatibus.</p>
                                    </figcaption>
                               </figure>
 
+                              <figure>
+                                   <span><i class="fa fa-bar-chart-o"></i></span>
+                                   <figcaption>
+                                        <h3>Free for 3 months</h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint ipsa voluptatibus.</p>
+                                   </figcaption>
+                              </figure>
                          </div>
                     </div>
 
+                    <div class="col-md-offset-1 col-md-4 col-sm-12">
+                         <div class="entry-form">
+                              <form action="#" method="post">
+                                   <h2>Signup today</h2>
+                                   <input type="text" name="full name" class="form-control" placeholder="Full name" required="">
 
-                              
+                                   <input type="email" name="email" class="form-control" placeholder="Your email address" required="">
 
-                                   {{!-- LOGIN PAGE --}}
-                    {{#if notLoggedIn}}
-                         <div class="col-md-offset-1 col-md-4 col-sm-12">
-                              <div class="entry-form">
-                                   <form action="/login" method="post" id="login-form" class="login-form">
-                                        <h2>Login Now</h2>
-                                        
+                                   <input type="password" name="password" class="form-control" placeholder="Your password" required="">
 
-                                        <input type="email" name="email" class="form-control" placeholder="Your Email" required="">
-
-                                        <input type="password" name="password" class="form-control" placeholder="Your password" required="">
-
-                                        <button class="submit-btn form-control" id="form-submit">Login</button>
-                                   </form>
-
-                                   {{#if hasErrors}}
-                                   <p class="error">{{error}}</p>
-                                   {{/if}}
-                                   <div class="signup">
-                                   <a href="/signup">Need to register? Click here to SignUp</a>
-                              </div>
+                                   <button class="submit-btn form-control" id="form-submit">Get started</button>
+                              </form>
                          </div>
-                    {{/if}}
-
+                    </div>
 
                </div>
           </div>
@@ -189,67 +193,67 @@
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="public/images/author-image1.jpg" class="img-responsive" alt="">
+                                   <img src="/public/images/author-image1.jpg" class="img-responsive" alt="">
                               </div>
                               <div class="team-info">
-                                   <h3>Achal</h3>
+                                   <h3>Mark Wilson</h3>
                                    <span>I love Teaching</span>
                               </div>
-                              {{!-- <ul class="social-icon">
+                              <ul class="social-icon">
                                    <li><a href="#" class="fa fa-facebook-square" attr="facebook icon"></a></li>
                                    <li><a href="#" class="fa fa-twitter"></a></li>
                                    <li><a href="#" class="fa fa-instagram"></a></li>
-                              </ul> --}}
+                              </ul>
                          </div>
                     </div>
 
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="public/images/author-image2.jpg" class="img-responsive" alt="">
+                                   <img src="/public/images/author-image2.jpg" class="img-responsive" alt="">
                               </div>
                               <div class="team-info">
-                                   <h3>Preet</h3>
+                                   <h3>Catherine</h3>
                                    <span>Education is the key!</span>
                               </div>
-                              {{!-- <ul class="social-icon">
+                              <ul class="social-icon">
                                    <li><a href="#" class="fa fa-google"></a></li>
                                    <li><a href="#" class="fa fa-instagram"></a></li>
-                              </ul> --}}
+                              </ul>
                          </div>
                     </div>
 
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="public/images/author-image3.jpg" class="img-responsive" alt="">
+                                   <img src="/public/images/author-image3.jpg" class="img-responsive" alt="">
                               </div>
                               <div class="team-info">
-                                   <h3>Sushmitha</h3>
+                                   <h3>Jessie Ca</h3>
                                    <span>I like Online Courses</span>
                               </div>
-                              {{!-- <ul class="social-icon">
+                              <ul class="social-icon">
                                    <li><a href="#" class="fa fa-twitter"></a></li>
                                    <li><a href="#" class="fa fa-envelope-o"></a></li>
                                    <li><a href="#" class="fa fa-linkedin"></a></li>
-                              </ul> --}}
+                              </ul>
                          </div>
                     </div>
 
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="public/images/author-image4.jpg" class="img-responsive" alt="">
+                                   <img src="/public/images/author-image4.jpg" class="img-responsive" alt="">
                               </div>
                               <div class="team-info">
-                                   <h3>Marvin</h3>
+                                   <h3>Andrew Berti</h3>
                                    <span>Learning is fun</span>
                               </div>
-                              {{!-- <ul class="social-icon">
+                              <ul class="social-icon">
                                    <li><a href="#" class="fa fa-twitter"></a></li>
                                    <li><a href="#" class="fa fa-google"></a></li>
                                    <li><a href="#" class="fa fa-behance"></a></li>
-                              </ul> --}}
+                              </ul>
                          </div>
                     </div>
 
@@ -263,25 +267,18 @@
           <div class="container">
                <div class="row">
 
-                    <div class="col-md-12 col-sm-12" >
+                    <div class="col-md-12 col-sm-12">
                          <div class="section-title">
                               <h2>Popular Courses <small>Upgrade your skills with newest courses</small></h2>
                          </div>
-                         <div id="modify" hidden>
-                              <h5><a href="/allCourses">Modify Courses</a></h5>
-                         </div>
 
-                         <div id="viewall" >
-                              <h5><a href="/viewAllCourses">View all Courses</a></h5>
-                         </div>
-
-                         <div class="owl-carousel owl-theme owl-courses" id="course_row">
-                              {{!-- <div class="col-md-4 col-sm-4">
+                         <div class="owl-carousel owl-theme owl-courses">
+                              <div class="col-md-4 col-sm-4">
                                    <div class="item">
                                         <div class="courses-thumb">
                                              <div class="courses-top">
                                                   <div class="courses-image">
-                                                       <img src="public/images/Webdevcourse.jpeg" class="img-responsive" alt="">
+                                                       <img src="/public/images/courses-image1.jpg" class="img-responsive" alt="">
                                                   </div>
                                                   <div class="courses-date">
                                                        <span><i class="fa fa-calendar"></i> 12 / 7 / 2018</span>
@@ -290,18 +287,18 @@
                                              </div>
 
                                              <div class="courses-detail">
-                                                  <h3><a href="/course/1">Web Development</a></h3>
-                                                  <p>HTML, CSS, and Javascript for Web Developers</p>
+                                                  <h3><a href="#">Social Media Management</a></h3>
+                                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                                              </div>
 
                                              <div class="courses-info">
                                                   <div class="courses-author">
-                                                       <img src="public/images/author-image1.jpg" class="img-responsive" alt="">
+                                                       <img src="/public/images/author-image1.jpg" class="img-responsive" alt="">
                                                        <span>Mark Wilson</span>
                                                   </div>
-                                                  <!-- <div class="courses-price">
+                                                  <div class="courses-price">
                                                        <a href="#"><span>USD 25</span></a>
-                                                  </div> -->
+                                                  </div>
                                              </div>
                                         </div>
                                    </div>
@@ -312,7 +309,7 @@
                                         <div class="courses-thumb">
                                              <div class="courses-top">
                                                   <div class="courses-image">
-                                                       <img src="public/images/Python Course.png" class="img-responsive" alt="">
+                                                       <img src="/public/images/courses-image2.jpg" class="img-responsive" alt="">
                                                   </div>
                                                   <div class="courses-date">
                                                        <span><i class="fa fa-calendar"></i> 20 / 7 / 2018</span>
@@ -321,20 +318,18 @@
                                              </div>
 
                                              <div class="courses-detail">
-
-                                                  <h3><a href="/course/2">  Python for Everybody   </a></h3>
-
-                                                  <p>Python Programming, Python Syntax, Basic Programming Language, Tuple</p>
+                                                  <h3><a href="/video">Graphic & Web Design</a></h3>
+                                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                                              </div>
 
                                              <div class="courses-info">
                                                   <div class="courses-author">
-                                                       <img src="public/images/author-image2.jpg" class="img-responsive" alt="">
+                                                       <img src="/public/images/author-image2.jpg" class="img-responsive" alt="">
                                                        <span>Jessica</span>
                                                   </div>
-                                                  <!-- <div class="courses-price">
+                                                  <div class="courses-price">
                                                        <a href="#"><span>USD 80</span></a>
-                                                  </div> -->
+                                                  </div>
                                              </div>
                                         </div>
                                    </div>
@@ -345,7 +340,7 @@
                                         <div class="courses-thumb">
                                              <div class="courses-top">
                                                   <div class="courses-image">
-                                                       <img src="public/images/java.jpeg" class="img-responsive" alt="">
+                                                       <img src="/public/images/courses-image3.jpg" class="img-responsive" alt="">
                                                   </div>
                                                   <div class="courses-date">
                                                        <span><i class="fa fa-calendar"></i> 15 / 8 / 2018</span>
@@ -354,29 +349,29 @@
                                              </div>
 
                                              <div class="courses-detail">
-                                                  <h3><a href="/course/3">Introduction to Java</a></h3>
-                                                  <p>Java Database Connectivity (JDBC), Java Class Library, Java Programming </p>
+                                                  <h3><a href="#">Marketing Communication</a></h3>
+                                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                                              </div>
 
                                              <div class="courses-info">
                                                   <div class="courses-author">
-                                                       <img src="public/images/author-image3.jpg" class="img-responsive" alt="">
+                                                       <img src="/public/images/author-image3.jpg" class="img-responsive" alt="">
                                                        <span>Catherine</span>
                                                   </div>
-                                                  <!-- <div class="courses-price free">
+                                                  <div class="courses-price free">
                                                        <a href="#"><span>Free</span></a>
-                                                  </div> -->
+                                                  </div>
                                              </div>
                                         </div>
                                    </div>
-                              </div> --}}
-{{!-- #### --}}
-                              <!-- <div class="col-md-4 col-sm-4">
+                              </div>
+
+                              <div class="col-md-4 col-sm-4">
                                    <div class="item">
                                         <div class="courses-thumb">
                                              <div class="courses-top">
                                                   <div class="courses-image">
-                                                       <img src="images/courses-image4.jpg" class="img-responsive" alt="">
+                                                       <img src="/public/images/courses-image4.jpg" class="img-responsive" alt="">
                                                   </div>
                                                   <div class="courses-date">
                                                        <span><i class="fa fa-calendar"></i> 10 / 8 / 2018</span>
@@ -391,7 +386,7 @@
 
                                              <div class="courses-info">
                                                   <div class="courses-author">
-                                                       <img src="images/author-image1.jpg" class="img-responsive" alt="">
+                                                       <img src="/public/images/author-image1.jpg" class="img-responsive" alt="">
                                                        <span>Mark Wilson</span>
                                                   </div>
                                                   <div class="courses-price">
@@ -400,14 +395,14 @@
                                              </div>
                                         </div>
                                    </div>
-                              </div> -->
+                              </div>
 
-                              <!-- <div class="col-md-4 col-sm-4">
+                              <div class="col-md-4 col-sm-4">
                                    <div class="item">
                                         <div class="courses-thumb">
                                              <div class="courses-top">
                                                   <div class="courses-image">
-                                                       <img src="images/courses-image5.jpg" class="img-responsive" alt="">
+                                                       <img src="/public/images/courses-image5.jpg" class="img-responsive" alt="">
                                                   </div>
                                                   <div class="courses-date">
                                                        <span><i class="fa fa-calendar"></i> 5 / 10 / 2018</span>
@@ -422,7 +417,7 @@
 
                                              <div class="courses-info">
                                                   <div class="courses-author">
-                                                       <img src="images/author-image2.jpg" class="img-responsive" alt="">
+                                                       <img src="/public/images/author-image2.jpg" class="img-responsive" alt="">
                                                        <span>Jessica</span>
                                                   </div>
                                                   <div class="courses-price free">
@@ -431,7 +426,7 @@
                                              </div>
                                         </div>
                                    </div>
-                              </div> -->
+                              </div>
 
                          </div>
 
@@ -454,76 +449,76 @@
                               <div class="col-md-4 col-sm-4">
                                    <div class="item">
                                         <div class="tst-image">
-                                             <img src="public/images/tst-image1.jpg" class="img-responsive" alt="image">
+                                             <img src="/public/images/tst-image1.jpg" class="img-responsive" alt="">
                                         </div>
                                         <div class="tst-author">
                                              <h4>Jackson</h4>
-                                             <span>Web Developer</span>
+                                             <span>Shopify Developer</span>
                                         </div>
-                                        <p>“Not only does my resume look impressive—filled with the names and logos of world-class institutions—but these certificates also bring me closer to my career goals by validating the skills I’ve learned.”</p>
-                                        {{!-- <div class="tst-rating">
+                                        <p>You really do help young creative minds to get quality education and professional job search assistance. I’d recommend it to everyone!</p>
+                                        <div class="tst-rating">
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
-                                        </div> --}}
+                                        </div>
                                    </div>
                               </div>
 
                               <div class="col-md-4 col-sm-4">
                                    <div class="item">
                                         <div class="tst-image">
-                                             <img src="public/images/tst-image2.jpg" class="img-responsive" alt="">
+                                             <img src="/public/images/tst-image2.jpg" class="img-responsive" alt="">
                                         </div>
                                         <div class="tst-author">
                                              <h4>Camila</h4>
-                                             <span>Python</span>
+                                             <span>Marketing Manager</span>
                                         </div>
-                                        <p>“Getting into IT always felt insurmountable, because it was either I had the time but not the money, or I had the money but not the time. When I discovered the course python for everyone I knew: this is my gateway. This is my path. This is how I can get into IT.”</p>
-                                        {{!-- <div class="tst-rating">
+                                        <p>Trying something new is exciting! Thanks for the amazing law course and the great teacher who was able to make it interesting.</p>
+                                        <div class="tst-rating">
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
-                                        </div> --}}
+                                        </div>
                                    </div>
                               </div>
 
                               <div class="col-md-4 col-sm-4">
                                    <div class="item">
                                         <div class="tst-image">
-                                             <img src="public/images/tst-image3.jpg" class="img-responsive" alt="">
+                                             <img src="/public/images/tst-image3.jpg" class="img-responsive" alt="">
                                         </div>
                                         <div class="tst-author">
                                              <h4>Barbie</h4>
-                                             <span>AI</span>
+                                             <span>Art Director</span>
                                         </div>
-                                        <p>"EdTech introduced me to the world of AI and now I can’t stay away! I’m a medical student exploring how AI can be used to solve healthcare delivery problems in West Africa. So far, I have taken 5 AI-related courses and a writing course.”</p>
-                                        {{!-- <div class="tst-rating">
+                                        <p>Donec erat libero, blandit vitae arcu eu, lacinia placerat justo. Sed sollicitudin quis felis vitae hendrerit.</p>
+                                        <div class="tst-rating">
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
-                                        </div> --}}
+                                        </div>
                                    </div>
                               </div>
 
                               <div class="col-md-4 col-sm-4">
                                    <div class="item">
                                         <div class="tst-image">
-                                             <img src="public/images/tst-image4.jpg" class="img-responsive" alt="">
+                                             <img src="/public/images/tst-image4.jpg" class="img-responsive" alt="">
                                         </div>
                                         <div class="tst-author">
                                              <h4>Andrio</h4>
-                                             <span>Java Developer</span>
+                                             <span>Web Developer</span>
                                         </div>
-                                        <p>"We were looking for scale, credibility, and something we didn’t have to build in-house. EdTech not only offers training from very prestigious institutions but also a platform that allows you to do the tracking that you want."</p>
-                                        {{!-- <div class="tst-rating">
+                                        <p>Nam eget mi eu ante faucibus viverra nec sed magna. Vivamus viverra sapien ex, elementum varius ex sagittis vel.</p>
+                                        <div class="tst-rating">
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
-                                        </div> --}}
+                                        </div>
                                    </div>
                               </div>
 
@@ -534,7 +529,7 @@
      </section> 
 
 
-     {{!-- <!-- CONTACT -->
+     <!-- CONTACT -->
      <section id="contact">
           <div class="container">
                <div class="row">
@@ -562,13 +557,13 @@
 
                     <div class="col-md-6 col-sm-12">
                          <div class="contact-image">
-                              <img src="public/images/contact-image.jpg" class="img-responsive" alt="Smiling Two Girls">
+                              <img src="/public/images/contact-image.jpg" class="img-responsive" alt="Smiling Two Girls">
                          </div>
                     </div>
 
                </div>
           </div>
-     </section>        --}}
+     </section>       
 
 
      <!-- FOOTER -->
@@ -582,18 +577,19 @@
                                    <h2>Headquarter</h2>
                               </div>
                               <address>
-                                   <p>1 Castle Point Terrace,<br> Hoboken, NJ 07030</p>
+                                   <p>1800 dapibus a tortor pretium,<br> Integer nisl dui, ABC 12000</p>
                               </address>
 
-                              {{!-- <ul class="social-icon">
+                              <ul class="social-icon">
                                    <li><a href="#" class="fa fa-facebook-square" attr="facebook icon"></a></li>
                                    <li><a href="#" class="fa fa-twitter"></a></li>
                                    <li><a href="#" class="fa fa-instagram"></a></li>
-                              </ul> --}}
+                              </ul>
 
                               <div class="copyright-text"> 
-                                   <p>Copyright &copy; 2022 EdTech</p>
+                                   <p>Copyright &copy; 2019 Company Name</p>
                                    
+                                   <p>Design: TemplateMo</p>
                               </div>
                          </div>
                     </div>
@@ -604,11 +600,11 @@
                                    <h2>Contact Info</h2>
                               </div>
                               <address>
-                                   <p>+1 (900) 900 9000</p>
-                                   <p><a href="hello@edtech.com">hello@edtech.com</a></p>
+                                   <p>+65 2244 1100, +66 1800 1100</p>
+                                   <p><a href="mailto:youremail.co">hello@youremail.co</a></p>
                               </address>
 
-                              {{!-- <div class="footer_menu">
+                              <div class="footer_menu">
                                    <h2>Quick Links</h2>
                                    <ul>
                                         <li><a href="#">Career</a></li>
@@ -616,18 +612,22 @@
                                         <li><a href="#">Terms & Conditions</a></li>
                                         <li><a href="#">Refund Policy</a></li>
                                    </ul>
-                              </div> --}}
+                              </div>
                          </div>
                     </div>
 
                     <div class="col-md-4 col-sm-12">
                          <div class="footer-info newsletter-form">
                               <div class="section-title">
-                                   <h2>EdTech</h2>
+                                   <h2>Newsletter Signup</h2>
                               </div>
                               <div>
                                    <div class="form-group">
-                                        <span><sup>*</sup> EdTech is the global online learning platform that offers anyone, anywhere access to online courses and degrees from world-class universities and companies.</span>
+                                        <form action="#" method="get">
+                                             <input type="email" class="form-control" placeholder="Enter your email" name="email" id="email" required="">
+                                             <input type="submit" class="form-control" name="submit" id="form-submit" value="Send me">
+                                        </form>
+                                        <span><sup>*</sup> Please note - we do not spam your email.</span>
                                    </div>
                               </div>
                          </div>
@@ -636,61 +636,3 @@
                </div>
           </div>
      </footer>
-
-</body>
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
-<script>
-     if ({{{course_info}}}){
-          var courses = {{{course_info}}}
-     }
-     else{
-          var courses = {}
-     }
-     var count = 1
-     for (var i of courses){
-          console.log(i)
-          const html_temp = `<div class="col-md-4 col-sm-4">
-                                   <div class="item">
-                                        <div class="courses-thumb">
-                                             <div class="courses-top">
-                                                  <div class="courses-image">
-                                                       {{!-- <img src="public/images/${i.courseName}.jpeg" class="img-responsive" alt=""> --}}
-                                                       <img src=${i.image} class="img-responsive" alt="">
-                                                       
-                                                  </div>
-                                                  <div class="courses-date">
-                                                       <span><i class="fa fa-calendar"></i> 12 / 7 / 2018</span>
-                                                       <span><i class="fa fa-clock-o"></i> 7 Hours</span>
-                                                  </div>
-                                             </div>
-
-                                             <div class="courses-detail">
-                                                  <h3><a href="/course/${i.courseName}">${i.courseName}</a></h3>
-                                                  <p>${i.description}</p>
-                                             </div>
-
-                                             <div class="courses-info">
-                                                  <div class="courses-author">
-                                                       <img src="public/images/author-image1.jpg" class="img-responsive" alt="">
-                                                       <span>Mark Wilson</span>
-                                                  </div>
-                                                  <!-- <div class="courses-price">
-                                                       <a href="#"><span>USD 25</span></a>
-                                                  </div> -->
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div>`
-          $("#course_row").append(html_temp)
-          count = count + 1
-          if(!{{notLoggedIn}}){
-               if({{userType}}){
-                    $('#modify').show();
-               }
-               else{
-                    $('#modify').hide();
-               }
-          }
-     }
-</script>
-</html>

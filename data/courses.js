@@ -1,25 +1,36 @@
 const mongoCollections = require("../config/mongoCollection");
 const courses = mongoCollections.courses;
+const video_func = require("./videos");
 const { ObjectId } = require("mongodb");
 
 
 module.exports = {
-    async addCourse(courseName,description){
+    async addCourse(courseName,description, image, video_id){
         const courseCollection = await courses();
         let videos=[];
         let newCourse={
            courseName:courseName,
            branch:branch,
-        //    userId:userId,
            description:description,
            videos:videos,
-           questions: []
+           questions: [],
+           image:image,
+           videos:videos
         }
         const insertInfo = await courseCollection.insertOne(newCourse);
         if (!insertInfo.insertedId)
         throw "Could not add course";
-        else
-        return {courseInserted: true};
+        else{
+            try{
+                for(var i in video_id){
+                    await video_func.createVideo(title='video '+ i, id=video_id[i], course_name = courseName)
+                }
+            }
+            catch(e){
+                throw "couldnt add course"
+            }
+            return {courseInserted: true};
+        }
 
     },
     async getAllCourses(){
@@ -27,7 +38,7 @@ module.exports = {
         const courseList = [];
         await courseCollection.find({}).toArray().then((courses) => {
             courses.forEach(course => {
-                courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description});
+                courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description, 'image':course.image});
             });
         });
         return courseList;
@@ -42,16 +53,7 @@ module.exports = {
         const flag = await courseCollection.deleteOne( { "_id" : ObjectId(id) } );
         return flag;
     },
-    async getcourseByName(courseName) {
-        try {
-            const courseCollection = await courses();
-            const response = await courseCollection.findOne({courseName: courseName});
-            return response;
-        } catch (error) {
-            throw new Error(`Unable to retrieve course. Check again later..`)
-        }
-    },
-
+   
     async getfilterByBranch(branch) {
         try {
             const result = data.filter(d => d.branch == branch);
@@ -62,5 +64,10 @@ module.exports = {
             throw new Error(`Unable to retrieve course. Check again later..`)
         }
     },
+    async getCourseByName(name){
+        const courseCollection = await courses();
+        const course = await courseCollection.findOne({ courseName: name});
+        return course;
+    }
 
 }
