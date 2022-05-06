@@ -105,6 +105,7 @@ app.use(session({
 
 //Authentication Middleware
 
+
 app.use('/courseForm', async (req, res, next) => {
     if (req.session.user_type.type != 1) {
         return res.redirect('/');
@@ -142,6 +143,7 @@ app.use('/login', (req, res, next) => {
   } else {
     req.method = 'POST';
     next();
+
   }
 });
 
