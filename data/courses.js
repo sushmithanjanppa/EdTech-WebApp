@@ -1,6 +1,8 @@
 const mongoCollections = require("../config/mongoCollection");
 const courses = mongoCollections.courses;
 const { ObjectId } = require("mongodb");
+const video_func = require("./videos");
+const { users } = require(".");
 
 
 module.exports = {
@@ -29,7 +31,8 @@ module.exports = {
                 }
             }
             catch(e){
-                throw "couldnt add course"
+                // throw "couldnt add course"
+                console.log(e)
             }
             return {courseInserted: true};
         }
@@ -40,7 +43,7 @@ module.exports = {
         const courseList = [];
         await courseCollection.find({email:email}).toArray().then((courses) => {
             courses.forEach(course => {
-                courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description, 'image':course.image});
+                courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description});
             });
         });
         return courseList;
@@ -50,7 +53,7 @@ module.exports = {
         const courseList = [];
         await courseCollection.find({}).toArray().then((courses) => {
             courses.forEach(course => {
-                courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description});
+                courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description, 'image':course.image});
             });
         });
         return courseList;
@@ -62,6 +65,7 @@ module.exports = {
     },
     async deleteCourse(id){
         const courseCollection = await courses();
+        const userCollection = await users()
         const flag = await courseCollection.deleteOne( { "_id" : ObjectId(id) } );
         return flag;
     },
