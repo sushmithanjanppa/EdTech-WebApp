@@ -33,7 +33,7 @@ router.get("/signup", async (req, res) => {
   if (req.session.user) {
     return res.redirect("/login");
   } else {
-    res.render("users/signup", { title: "Signup Page" , notLoggedIn: req.session.user ? false : true });
+    res.render("users/signup", { title: "Signup Page", location: crossPageNavs , notLoggedIn: req.session.user ? false : true });
   }
 });
 
@@ -103,8 +103,7 @@ router.post("/login", async (req, res) => {
 
 router.get("/logout", async (req, res) => {
   req.session.destroy();
-  return res.render("users/logout", { title: "Logged out", notLoggedIn: false });
-
+  return res.render("users/logout",  { title: "Logged out", notLoggedIn: false, location: crossPageNavs });
 });
 
 // VIDEOS ROUTES
@@ -132,19 +131,19 @@ router.get('/video/:course', async(req,res) => {
     // console.log(data);
     // res.locals.videodata = JSON.stringify(data)
     // console.log(res.locals.videodata)
-    return res.render('edu/video',{videodata : JSON.stringify(data), notLoggedIn: req.session.user ? false : true});
+    return res.render('edu/video',{videodata : JSON.stringify(data), location: crossPageNavs, notLoggedIn: req.session.user ? false : true});
 })
 router.get('/courseForm',async(req,res)=>{
-     res.render('edu/addCourseForm', {notLoggedIn: req.session.user ? false : true})
+     res.render('edu/addCourseForm', {notLoggedIn: req.session.user ? false : true, location: crossPageNavs})
 })
 router.get('/allCourses',async(req,res)=>{
     let email = req.session.user.email
     let courseList = await courses.getInstCourses(email);
-    res.render('edu/coursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true})
+    res.render('edu/coursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true, location: crossPageNavs})
 })
 router.get('/viewAllCourses',async(req,res)=>{
   let courseList = await courses.getAllCourses();
-  return res.render('edu/allCoursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true})
+  return res.render('edu/allCoursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true, location: crossPageNavs})
 })
 router.post('/delete/:_id',async(req,res)=>{
     let flag = await courses.deleteCourse(req.params._id);
@@ -154,7 +153,7 @@ router.get('/course/:Name', async(req,res) => {
     // let course=await courses.getCourseById(req.params._id);
     // console.log(req.params.Name)
     let course = await courses.getCourseByName(req.params.Name)
-    res.render('edu/courseContent',{data:JSON.stringify(course), notLoggedIn: req.session.user ? false : true });
+    res.render('edu/courseContent',{data:JSON.stringify(course), notLoggedIn: req.session.user ? false : true, location: crossPageNavs });
   })
 router.post('/courseForm', async(req,res) => {
   // console.log(req.body)
@@ -193,7 +192,7 @@ router.post('/video', async(req,res) => {
 
 router.get('/progress', async(req, res) => {
     let data = await videos.getprogress();
-    return res.render('edu/progress',{videodata : JSON.stringify(data), notLoggedIn: req.session.user ? false : true});
+    return res.render('edu/progress',{videodata : JSON.stringify(data), notLoggedIn: req.session.user ? false : true, location: crossPageNavs});
 })
 
 router.post("/enroll", async(req,res) => {
