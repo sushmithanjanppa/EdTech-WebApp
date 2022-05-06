@@ -1,16 +1,14 @@
-<h2>AllCourses</h2>
+<h2>List of All Courses</h2>
+
 {{> navbar this}}
+
 <div class="row">
     <div class="col-sm-12">
      <div style="margin-left: 25px;">
     {{#data}}    
      <a href="/course/{{{courseName}}}">{{courseName}}</a>
      <p id={{_id}}>{{description}}</p>
-     <form action="/delete/{{_id}}" method="post">
-      <input type="submit" value="delete" /></form>
-     {{!-- <a href="/delete/{{_id}}" action="post">delete {{courseName}} </a> --}}
      {{/data}}   
      </div>      
-     <a href="/courseForm">+ Add a Course</a>
     </div>
 </div>

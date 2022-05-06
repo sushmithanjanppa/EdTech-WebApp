@@ -4,7 +4,6 @@ const userData = require("../data/users");
 const videos = require('../data/videos');
 const courses = require('../data/courses');
 const validate = require('../validation/userValidate');
-const { users } = require("../config/mongoCollection");
 
 const samePageNavs = {
   top: "#top",
@@ -78,6 +77,7 @@ router.post("/login", async (req, res) => {
 
     const existingUser = await userData.checkUser(email,password);
     if (existingUser) {
+
       const user_info = await userData.getUser(email);
       req.session.user = { email: user_info.email };
       req.session.user_type = {type: user_info.userType};
@@ -104,6 +104,7 @@ router.post("/login", async (req, res) => {
 router.get("/logout", async (req, res) => {
   req.session.destroy();
   return res.render("users/logout", { title: "Logged out", notLoggedIn: false });
+
 });
 
 // VIDEOS ROUTES
@@ -139,6 +140,10 @@ router.get('/courseForm',async(req,res)=>{
 router.get('/allCourses',async(req,res)=>{
     let courseList = await courses.getAllCourses();
     res.render('edu/coursesPage',{data:JSON.stringify(courseList), notLoggedIn: req.session.user ? false : true})
+})
+router.get('/viewAllCourses',async(req,res)=>{
+  let courseList = await courses.getAllCourses();
+  return res.render('edu/allCoursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true})
 })
 router.post('/delete/:_id',async(req,res)=>{
     let flag = await courses.deleteCourse(req.params._id);
