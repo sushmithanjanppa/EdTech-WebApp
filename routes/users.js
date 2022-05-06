@@ -137,8 +137,9 @@ router.get('/courseForm',async(req,res)=>{
      res.render('edu/addCourseForm', {notLoggedIn: req.session.user ? false : true})
 })
 router.get('/allCourses',async(req,res)=>{
-    let courseList = await courses.getAllCourses();
-    res.render('edu/coursesPage',{data:JSON.stringify(courseList), notLoggedIn: req.session.user ? false : true})
+    let email = req.session.user.email
+    let courseList = await courses.getInstCourses(email);
+    res.render('edu/coursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true})
 })
 router.post('/delete/:_id',async(req,res)=>{
     let flag = await courses.deleteCourse(req.params._id);
@@ -151,14 +152,21 @@ router.get('/course/:Name', async(req,res) => {
     res.render('edu/courseContent',{data:JSON.stringify(course), notLoggedIn: req.session.user ? false : true });
   })
 router.post('/courseForm', async(req,res) => {
-  console.log(req.body)
+  // console.log(req.body)
+  var email = req.session.user.email
+  try{
+    validate.validateEmail(email)
+  }
+  catch(e){
+    console.log(e)
+  }
   if(req.body.image){
     var image_link = req.body.image
   }
   else{
     image_link = "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg"
   }
-  let courseAdded=await courses.addCourse(req.body.courseName,req.body.description, image_link, req.body.video_id);
+  let courseAdded=await courses.addCourse(req.body.courseName,req.body.description, image_link, req.body.video_id, email);
   if(courseAdded.courseInserted)  
   res.redirect('/allCourses');
 })

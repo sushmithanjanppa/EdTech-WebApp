@@ -6,11 +6,16 @@
     {{#data}}    
      <a href="/course/{{courseName}}">{{courseName}}</a>
      <p id={{_id}}>{{description}}</p>
-     <form action="/delete/{{_id}}" method="post">
-      <input type="submit" value="delete" /></form>
+     <form onsubmit="return confirm('Do you really want to delete the course?');" action="/delete/{{_id}}" method="post" >
+      <input type="submit" value="delete" id="delete"/></form>
      {{!-- <a href="/delete/{{_id}}" action="post">delete {{courseName}} </a> --}}
      {{/data}}   
      </div>      
      <a href="/courseForm">+ Add a Course</a>
     </div>
 </div>
+<script>
+    $("#delete").click(function(e){
+        var result = confirm("Want to delete?");
+    })
+</script>
