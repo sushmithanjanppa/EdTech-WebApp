@@ -111,16 +111,24 @@ router.get("/logout", async (req, res) => {
 
 // const validation = require('../tasks/validation')
 
-router.get('/video', async(req,res) => {
-    if(req.body.data){
-      var course_name = req.body.data
+router.get('/video/:course', async(req,res) => {
+    // console.log(req.params)
+    if(req.params){
+      var course_name = req.params.course
     }
     else{
       var course_name = "Web Development"
     }
-    let email = req.session.user.email
+    // let email = req.session.user.email
+    // console.log(course_name)
+    let email = 'pjhangl1@stevens.edu'
     // console.log(req)
-    let data = await videos.getVideos(email,course_name);
+    try{
+      var data = await videos.getVideos(email,course_name);
+    }
+    catch(e){
+      console.log(e)
+    }
     // console.log(data);
     // res.locals.videodata = JSON.stringify(data)
     // console.log(res.locals.videodata)
@@ -131,7 +139,7 @@ router.get('/courseForm',async(req,res)=>{
 })
 router.get('/allCourses',async(req,res)=>{
     let courseList = await courses.getAllCourses();
-    res.render('edu/coursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true})
+    res.render('edu/coursesPage',{data:JSON.stringify(courseList), notLoggedIn: req.session.user ? false : true})
 })
 router.get('/viewAllCourses',async(req,res)=>{
   let courseList = await courses.getAllCourses();
@@ -171,7 +179,7 @@ router.post('/video', async(req,res) => {
         console.log("Updation Failed")
     }
     else{
-        console.log("Updated")
+        // console.log("Updated")
     }
 })
 
@@ -181,15 +189,21 @@ router.get('/progress', async(req, res) => {
 })
 
 router.post("/enroll", async(req,res) => {
-  let course_name = req.body.Data
+  // console.log("In Route")
+  // console.log(req.body)
+  let course_name = req.body.course_name
   let email = req.session.user.email
   // console.log("In Enroll")
   // console.log([course_name,email])
   try {
     await userData.enroll(email,course_name)
-
+    // res.send('_callback(\'{"message": "Enrolled"}\')');
+    res.send({message:"Enrolled"})
   } catch(e) {
     // console.log(e);
+    if (e === 'Already Enrolled')
+      // res.send('_callback(\'{"message": "Already Enrolled"}\')');
+      res.send({message:"Already Enrolled."})
 
   } 
   return;
