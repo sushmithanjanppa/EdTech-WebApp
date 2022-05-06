@@ -37,7 +37,7 @@ router.post('/searchcourses', async (req, res) => {
     if (!bodyData.courseSearchTerm|| bodyData.courseSearchTerm.trim() === '') {
         return res.status(400).json({ status: 400, error: `No search term provided.`, home: "http://localhost:3000" });
     }
-    let result = await courseData.getcourseByName(bodyData.courseSearchTerm);
+    let result = await courseData.getCourseByName(bodyData.courseSearchTerm);
     let resultArr = [];
     for (let i = 0; i < result.length ; i++) {
         resultArr.push(result[i]);
@@ -72,4 +72,3 @@ router.get('/course/:id', async (req, res) => {
 
 
 module.exports = router;
-
