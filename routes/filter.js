@@ -5,7 +5,6 @@ const courseData = data.courses;
 
 router.get('/filter/:key', async (req, res) => {
 
-    
     let result = await courseData.getfilterByBranch(req.params.key);
     let resultArr = [];
     for (let i = 0; i < result.length ; i++) {
