@@ -10,22 +10,124 @@
           <span class="choice_error">Please select a choice</span></p>
            <p> {{question}} <span class="error"></span></p>
           
-        <label ><input type="radio" name={{_id}}  value="A">{{answer1}}<span></span></label>
-        <label ><input type="radio" name={{_id}} value="B">{{answer2}}<span></span></label>
-        <label ><input type="radio" name={{_id}} value="C">{{answer3}}<span></span></label> 
-        <label ><input type="radio" name={{_id}} value="D">{{answer4}}<span></span></label> 
-        <span id="{{setid}}"></span>
+        <label ><input type="radio" name={{_id}}  value={{answer1}}>{{answer1}}<span></span></label>
+        <label ><input type="radio" name={{_id}} value={{answer2}}>{{answer2}}<span></span></label>
+        <label ><input type="radio" name={{_id}} value={{answer3}}>{{answer3}}<span></span></label> 
+        <label ><input type="radio" name={{_id}} value={{answer4}}>{{answer4}}<span></span></label> 
+        
          <br>
         <br>
     </section>
     </li>
   {{/each}}
   </ul>
-  <input id="questionButton" type="button" value="Show Results" />
+  <input type = "hidden" id = "thingIWant" value = {{solution}} />
+  <input id="questionButton" type="button" onclick="returnResults()" value="Show Results" />
+  <br>
+        <br>
+   <button type="Retake" name ="Retake" > Retake Quiz</button>
   <br><br>
+  
   <p id="results"></p>
   <a href="/layouts/main">Click here to go Back</a>
 </fieldset>
   </form>
   </section>
+   
+   <script> 
+
+var solutions = {{{solution}}}
+console.log(solutions)
+sum = solutions.length;
+
+
+function getSolution(QuestID) {
+  var answer = document.querySelector(
+    "#" + QuestID + " input[type=radio]:checked"
+  );
+
+  if (answer === null) {
+    document.querySelector("#" + QuestID + " .error").style.display =
+      "inline";
+  } else {
+    document.querySelector("#" + QuestID + " .error").style.display =
+      "";
+    answer = answer.value;
+  }
+
+  return answer;
+}
+
+function getTotal() {
+  var score = 0;
+
+  for (var i = 0; i < sum; i++) {
+    {{!-- document.getElementById("set" + i).innerHTML = "";  --}}
+
+    
+     console.log(document.querySelector(
+      "#" + `section${i + 1}` + " input[type=radio]:checked"
+    ))    
+    var subSolution = document.querySelector(
+      "#" + `section${i + 1}` + " input[type=radio]:checked"
+    ).nextElementSibling;
+
+    
+    if (getSolution("section" + (i + 1)) == solutions[i]) {
+      score += 1;
+
+     subSolution.textContent = " (Correct!)";
+    } else {
+      subSolution.textContent = " (Incorrect!)";
+    }
+  } 
+
+  return score;
+}
+
+const questionButton = document.getElementById("questionButton");
+
+questionButton.addEventListener("click", () => {
+   getResults()
+})
+
+var getResults = function() {
+ 
+  var message = "";
+  var isValid = true;
+  var score_temp = 0
+  if (getTotal() == 0)
+   {
+    message = "your score is 0%, Retake the Quiz";
+  } 
+  else if (getTotal() ==1 ) 
+  {
+    message = "your score is 30%, Retake the Quiz";
+    score_temp = 30
+  } 
+  else if (getTotal() ==2 ) 
+  {
+    message = "your score is 50%, Retake the Quiz";
+    score_temp = 50
+  }
+  else if (getTotal() ==3 ) 
+  {
+    message = "your score is 70%, You have passed!";
+    score_temp = 70
+  }
+  else if (getTotal() == 4) 
+  {
+    message = "Perfect.your score is 100% ,You have passed!";
+    score_temp=100
+  }
+
+  return [message,score_temp];
+};
+
+function returnResults() {
+    var result = getResults();
+    console.log(result)
+  document.getElementById("results").innerHTML = result[0];
+}
+</script>
   
