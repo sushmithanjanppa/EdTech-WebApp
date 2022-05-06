@@ -4,7 +4,7 @@
     <div class="col-sm-12">
      <div style="margin-left: 25px;">
     {{#data}}    
-     <a href="/course/{{courseName}}">{{courseName}}</a>
+     <a href="/course/{{{courseName}}}">{{courseName}}</a>
      <p id={{_id}}>{{description}}</p>
      <form onsubmit="return confirm('Do you really want to delete the course?');" action="/delete/{{_id}}" method="post" >
       <input type="submit" value="delete" id="delete"/></form>
