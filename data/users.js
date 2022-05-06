@@ -91,7 +91,7 @@ module.exports = {
         }
         else{
         const found = user.courses.some(el => el._id.equals(course_info._id))
-        console.log(found)
+        // console.log(found)
         if (!found){
             user.courses.push(course_info)
             let update = await userCollection.updateOne({email:email},[{$set:{courses : user.courses}}])

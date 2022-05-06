@@ -45,4 +45,11 @@
         }
     }
     progress()
+    $('.inner').click(function(e){
+        {{!-- alert(this.text) --}}
+        {{!-- console.log(jQuery(this).text()) --}}
+        var course_data = jQuery(this).text().split(/\r?\n/)
+        {{!-- console.log(course_data) --}}
+        window.location = "http://localhost:3000/video/"+course_data[0];
+    })
 </script>

@@ -162,7 +162,7 @@ router.post('/courseForm', async(req,res) => {
   if(courseAdded.courseInserted)  
   res.redirect('/allCourses');
 })
-router.post('/video/:course', async(req,res) => {
+router.post('/video', async(req,res) => {
     // console.log("post")
     // console.log(req.body)
     // let timeupdated = await videos.addtime(id = req.body.video_id, time = req.body.resume)
@@ -174,7 +174,7 @@ router.post('/video/:course', async(req,res) => {
         console.log("Updation Failed")
     }
     else{
-        console.log("Updated")
+        // console.log("Updated")
     }
 })
 
