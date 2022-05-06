@@ -1,0 +1,15 @@
+ <button id="filterButton">Filter</button>
+  <ul id="courseList"></ul>
+<section>
+<a href="/" class="anotherSearch">Make another search</a>
+<h2 class="resultH2">Following are the results for "{{filterSearchTerm}}"</h2>
+ <ul>
+    {{#each data}}
+    <li class="courseList"><a class="courseAnchor" href="/course/{{courseName}}">{{courseName}} </a></li>
+    {{/each}}
+</ul>
+
+{{#if hasError}}
+<p class="notFound">{{error}}</p>
+{{/if}}
+</section>
