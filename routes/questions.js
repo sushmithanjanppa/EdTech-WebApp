@@ -59,7 +59,7 @@ router.post('/:id', async (req, res) => {
             return;
         }
 
-        const newQuestion= await questionData.create(req.params.id, createQuestionData.question, createQuestionData.answer1, createQuestionData.answer2, createQuestionData.answer3, createQuestionData.answer4);
+        const newQuestion= await questionData.create(req.params.id, createQuestionData.question, createQuestionData.answer1, createQuestionData.answer2, createQuestionData.answer3, createQuestionData.answer4, createQuestionData.sectionid, createQuestionData.answer);
         res.json(newQuestion);
     } catch (error) {
         if (error.message.includes("Unable to find question")) {

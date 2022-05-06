@@ -48,9 +48,22 @@ router.get('/:id', async (req, res) => {
             return;
         }
         const getRes = await courseData.getCourseById(req.params.id);
-        console.log(getRes)
-        console.log(getRes.questions)
-        res.render('tests/questions', { title: getRes.name, questions: getRes.questions });
+        len= getRes.questions.length
+        let resArr=[]
+        for(var i=0; i<len;i++){
+            resArr =  getRes.questions
+
+        }
+        let correct_Answer = []
+        for(var i=0; i < resArr.length; i++) 
+        {
+            
+            correct_Answer[i] = String(resArr[i].answer)
+        }
+       
+        console.log(correct_Answer)
+
+        res.render('tests/questions', { title: getRes.name, questions: getRes.questions, qlength:len, solution:JSON.stringify(correct_Answer) });
     } catch (error) {
         if (error.message === "Error in id. No course with the given id") {
             res.status(404).json({ error: `No course with the given id` });

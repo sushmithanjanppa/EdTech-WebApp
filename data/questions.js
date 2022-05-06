@@ -4,10 +4,9 @@ const course = require('./courses');
 const { ObjectId } = require('mongodb');
 
 
-//const errorMsg = "Argument passed in must be a single String of 12 bytes or a string of 24 hex characters";
 
 module.exports = {
-    async create(courseId, question, answer1, answer2, answer3, answer4, sectionid, setid) {
+    async create(courseId, question, answer1, answer2, answer3, answer4, sectionid, answer) {
         if (!courseId) throw 'courseId should be passed';
     if (typeof courseId != 'string' || courseId.trim() === '') throw 'courseId is not of type string';
     
@@ -17,7 +16,7 @@ module.exports = {
         if (!answer3) throw 'All fields need to have valid values';
         if (!answer4) throw 'All fields need to have valid values';
         if (!sectionid) throw 'All fields need to have valid values';
-        if (!setid) throw 'All fields need to have valid values';
+        if (!answer) throw 'All fields need to have valid values';
 
         if (typeof question !== 'string') throw 'question must be a string';
         if (typeof answer1 !== 'string') throw 'answer1 must be a string';
@@ -25,14 +24,14 @@ module.exports = {
         if (typeof answer3 !== 'string') throw 'answer3 must be a string';
         if (typeof answer4 !== 'string') throw 'answer4 must be a string';
         if (typeof sectionid !== 'string') throw 'website must be a string';
-        if (typeof setid !== 'string') throw 'website must be a string';
+        if (typeof answer !== 'string') throw 'website must be a string';
 
         if (answer1.trim() === '') throw 'answer1 must be a string';
         if (answer2.trim() === '') throw 'answer2 must be a string';
         if (answer3.trim() === '') throw 'answer3 must be a string';
         if (answer4.trim() === '') throw 'answer4 must be a string';
         if (sectionid.trim() === '') throw 'website must be a string';
-        if (setid.trim() === '') throw 'website must be a string';
+        if (answer.trim() === '') throw 'website must be a string';
         let parseId = ObjectId(courseId);
 
 
@@ -42,20 +41,20 @@ module.exports = {
 
             });
        
-        let questionObj = {
-            _id: ObjectId(),
-            question: question,
-            answer1: answer1,
-            answer2: answer2,
-            answer3: answer3,
-            answer4:answer4,
-            sectionid:sectionid,
-            setid:setid
+            let questionObj = {
+                _id: ObjectId(),
+                question: question,
+                answer1: answer1,
+                answer2: answer2,
+                answer3: answer3,
+                answer4:answer4,
+                sectionid:sectionid,
+                answer:answer
 
         };
         
         await courseCollection.updateOne({ _id: parseId }, { $push: { questions: questionObj } });
-        return await course.get(parseId.toString());
+        return await course.getCourseById(parseId.toString());
     },
 
     async getAll(courseId) {
