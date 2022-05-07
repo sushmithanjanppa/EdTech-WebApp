@@ -4,6 +4,7 @@ const userData = require("../data/users");
 const videos = require('../data/videos');
 const courses = require('../data/courses');
 const validate = require('../validation/userValidate');
+const validateReview = require("../validation/reviewValidate");
 
 const samePageNavs = {
   top: "#top",
@@ -33,7 +34,7 @@ router.get("/signup", async (req, res) => {
   if (req.session.user) {
     return res.redirect("/login");
   } else {
-    res.render("users/signup", { title: "Signup Page" , notLoggedIn: req.session.user ? false : true });
+    res.status(401).render("users/signup", { title: "Signup Page" , notLoggedIn: req.session.user ? false : true });
   }
 });
 
@@ -140,9 +141,41 @@ router.post('/delete/:_id',async(req,res)=>{
 router.get('/course/:Name', async(req,res) => {
     // let course=await courses.getCourseById(req.params._id);
     // console.log(req.params.Name)
-    let course = await courses.getCourseByName(req.params.Name)
-    res.render('edu/courseContent',{data:JSON.stringify(course), notLoggedIn: req.session.user ? false : true });
+    try{
+      let course = await courses.getCourseByName(req.params.Name)
+      let len = course.reviews.length<=0 ? -1 : course.reviews.length;
+      let comments = [];
+      let flag = false;
+      if(len>0){
+        for(let i=0; i<len; i++){
+          let tempUser = await userData.getUserById(`${course.reviews[i].userId}`);
+          comments[i] = {name: tempUser.name, rat: course.reviews[i].rating, txt: course.reviews[i].text}
+        }
+      }else{
+        flag = true;
+      }
+      res.render('edu/courseContent',{data:JSON.stringify(course), flag: flag, comments:comments, notLoggedIn: req.session.user ? false : true });
+    }catch(e){
+      console.log(e);
+    }
   })
+router.post('/course/:Name', async(req,res) => {
+    try{
+      let email = req.session.user.email
+      let user = await userData.getUser(email);
+      let uname = user.name;
+      let courseName = req.params.Name;
+      let text = req.body.text;
+      let rating = req.body.rating;
+      let course = await courses.getCourseByName(courseName);
+  
+      let udatedcourse = await courses.addReview(course._id, user._id, text, rating);
+      res.send({name:uname});
+    }catch(e){
+      console.log(e);
+    }
+})
+
 router.post('/courseForm', async(req,res) => {
   console.log(req.body)
   if(req.body.image){

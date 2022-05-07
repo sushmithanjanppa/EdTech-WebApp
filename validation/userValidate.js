@@ -2,7 +2,7 @@ const emailValidator = require('email-validator')
 const { ObjectId } = require('mongodb');
 
 module.exports = {
-    async validateEmail(email){
+    validateEmail(email){
         if(typeof(email)==='undefined') throw "Please enter a valid input for email";
         if(typeof(email) !== 'string') throw "Invalid email: email can only be string value";
         if(email.trim().length === 0) throw "Invalid email: email cannot be blank";
@@ -10,7 +10,7 @@ module.exports = {
         if(!emailValidator.validate(email)) throw "Invalid email";
     },
 
-    async validatePassword(pass){
+    validatePassword(pass){
         if(typeof(pass)==='undefined') throw 'Please enter a valid input for password';
         if(typeof(pass)!=='string') throw 'Invalid password: password must be a string';
         pass = pass.trim();
@@ -19,13 +19,13 @@ module.exports = {
         if(pass.length<6) throw 'Invalid password: Password must be at least 6 characters long';
     },
     
-    async validateName(name){
+    validateName(name){
         if(typeof(name)==='undefined') throw "Please enter a valid input for name";
         if(typeof(name) !== 'string') throw 'You must provide string value for name';
         if(name.trim().length === 0) throw "Name cannot be blank"
     },
 
-    async validateGender(gen){
+    validateGender(gen){
         if(typeof(gen)==='undefined') throw "Please select a gender from the gender field";
         if(typeof(gen) !== 'string') throw "Gender value mst be a string";
         gen = gen.trim();
@@ -33,7 +33,7 @@ module.exports = {
         if(gen!='Man' && gen!='Woman' && gen!='Transgender' && gen!='other') throw "Please select a proper gender identity";
     },
 
-    async validateAge(age){
+    validateAge(age){
         if(typeof(age)==='undefined') throw "Age cannot be blank";
         if(typeof(age)==='string' && typeof(parseInt(age))!='number') throw 'Invalid age';
         else if(typeof(age)!='number' && (typeof(age)!='string')) throw 'Invalid month'
@@ -42,16 +42,15 @@ module.exports = {
         if(age<12) throw "Minimum age to register is 12";
     },
 
-    async validateUserType(userType){
+    validateUserType(userType){
         if(typeof(userType)==='undefined') throw "Please select a user type";
-        if(typeof(userType)==='string' && typeof(parseInt(userType))!='number') throw 'Invalid user type';
-        userType = userType.trim();
+        if(typeof(userType)==='string' && Number.parseInt(userType)==='NaN') throw 'Invalid user type';
         if(userType.length===0) throw "User type field cannot be blank";
-        userType = Number(userType); 
+        userType = Number.parseInt(userType); 
         if(userType!=0 && userType!=1) throw "Invalid user type";
     },
 
-    async validateId(id){
+    validateId(id){
         if(typeof(id)==='undefined') throw 'Please provide an id';
         if(typeof(id)!='string') throw 'id is not string type';
         id = id.trim();
