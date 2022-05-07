@@ -62,9 +62,20 @@ module.exports = {
         const courseList = [];
         await courseCollection.find({}).toArray().then((courses) => {
             courses.forEach(course => {
-                courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description, 'image':course.image});
+                courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description, 'image':course.image, 'email':course.email});
             });
         });
+        const userCollection = await users();
+        for (var i in courseList){
+            const user = await userCollection.findOne({email: courseList[i].email}); 
+        if(user === null){
+            courseList[i].inst_name = "Instructor Not Found"
+        }
+        else{
+        courseList[i].inst_name = user.name
+        }
+        }
+
         return courseList;
     },
     async getCourseById(id){
@@ -81,10 +92,22 @@ module.exports = {
         const flag = await courseCollection.deleteOne( { "_id" : ObjectId(id) } );
         return flag;
     },
-    async getCourseByName(name){
-        const courseCollection = await courses();
-        const course = await courseCollection.findOne({ courseName: name});
-        return course;
+    async getCourseByName(name) {
+        try {
+        if (!name) throw 'All fields need to have valid values';
+        if (typeof name !== 'string') throw 'Name must be a string';
+        if (name.trim().length === 0) throw 'name cannot be an empty string or just spaces';
+            const courseCollection = await courses();
+            var uname = name.split(" ").map(cname => {
+                return cname[0].toUpperCase() + cname.slice(1);
+            })
+            var sname= uname.join(" ");
+            var course = await courseCollection.findOne({ courseName: sname });          
+        }
+        catch (error) {
+            throw `Unable to retrieve course. Check again later..`
+        }
+        return course;  
     },
 
     async addReview(courseId, uId, text, rating){

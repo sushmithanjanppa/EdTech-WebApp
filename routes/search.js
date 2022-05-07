@@ -3,6 +3,14 @@ const router = express.Router();
 const data = require('../data');
 const courseData = data.courses;
 
+const crossPageNavs = {
+    top: "/#top",
+    about: "/#about",
+    courses: "/#courses",
+    reviews: "/#reviews",
+    team: "/#team"
+  };  
+
 
 router.get('/', async (req, res) => {
     res.render('edu/searchIndex', { title: `course Finder` });
@@ -51,7 +59,7 @@ router.post('/searchcourses', async (req, res) => {
         hasError = true;
         error = `We're sorry, but no results were found for ${bodyData.courseSearchTerm}.`
     }
-    res.render('edu/allCoursesPage', { title: `courses Found`, data: result, courseSearchTerm: bodyData.courseSearchTerm, error: error, hasError: error!="", search: true });
+    res.render('edu/allCoursesPage', { title: `courses Found`, data: result, courseSearchTerm: bodyData.courseSearchTerm, error: error, hasError: error!="", search: true, location: crossPageNavs });
 });
 
 router.get('/course/:id', async (req, res) => {

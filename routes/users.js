@@ -30,6 +30,7 @@ router.get("/", async (req, res) => {
   if(!req.session.user_type){
     req.session.user_type = {type: 0}
   }
+  console.log(course_i)
   res.render("users/index", { title: "Login Page", location: samePageNavs, notLoggedIn: req.session.user ? false : true, course_info:JSON.stringify(course_i) , userType: req.session.user_type.type});
 });
 
