@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/editinfo', async (req, res) => {
+router.post('/editinfo', async (req, res) => {
   try{
     if(req.session.user){
       let uemail = req.session.user.email;
