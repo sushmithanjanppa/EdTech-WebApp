@@ -157,7 +157,7 @@ async function main(){
         // console.log(await module.exports.createVideo('Second Video', 'Q33KBiDriJY', 'Web Programming'))
         console.log(await module.exports.getVideos('pjhangl1@stevens.edu','Web Development'))
         // console.log(await module.exports.addtime('pjhangl1@stevens.edu',''))
-
+        console.log(await module.exports.getVideos('teacher@test.com','Graphic'))
         // console.log(await module.exports.getprogress('pjhangl1@stevens.edu','Web Programming'));
         process.exit(0)
         
