@@ -138,7 +138,7 @@ app.use('/login', (req, res, next) => {
   if (req.session.user) {
     return res.redirect('/userPage');
   } else if(req.method=='GET') {
-    console.log("in else if")
+    // console.log("in else if")
     res.redirect("/")
   } else {
     req.method = 'POST';

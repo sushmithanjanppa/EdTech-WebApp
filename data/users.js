@@ -166,15 +166,16 @@ module.exports = {
         return prog_data
     },
     
-    async editUserInfo(email, name, gender, age){
+    async editUserInfo(email, name, gender, age, userType){
         validate.validateEmail(email);
         email = email.trim();
         email = email.toLowerCase();
-        let newName;
-        let newGender;
-        let newAge;
-        var user = this.getUser(email);
-
+        // let newName;
+        // let newGender;
+        // let newAge;
+        // let newuserType;
+        var user = await this.getUser(email);
+        // console.log(user)
         if(!name || typeof(name)=='undefined'){
             newName = user.name
         }else{
@@ -199,23 +200,35 @@ module.exports = {
         validate.validateAge(newAge);
         newAge = Number.parseInt(newAge);
 
+        if(!userType || typeof(userType) == 'undefined'){
+            newuserType = user.userType
+        }else{
+            newuserType = userType
+        }
+        newuserType = Number.parseInt(newuserType)
+        validate.validateUserType(newuserType)
+
         const userCollection = await users();
-        const updatedBandName = {
-            name: newName,
-            gender: newGender, 
-            age: newAge,
-        };
-
+        // const updatedUserInfo = {
+        //     name: newName,
+        //     gender: newGender, 
+        //     age: newAge,
+        //     userType:newuserType
+        // };
+        user.name = newName;
+        user.age = newAge;
+        user.gender = newGender;
+        user.userType = newuserType;
         const updatedInfo = await userCollection.updateOne(
-            { _id: user.id },
-            { $set: updatedBandName }
+            { _id: user._id },
+            { $set: user}
         );
-
+        // console.log(updatedInfo)
         if (updatedInfo.modifiedCount === 0) {
             throw 'could not update the user';
         }
 
-        return await this.getUser(email);
+        return {UserUpdated: true} ;
     }
 
 }

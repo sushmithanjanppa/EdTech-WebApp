@@ -16,7 +16,7 @@
         {{#if notLoggedIn}}
             <br>
         {{else}}
-            <div id="reviews" style="margin-left: 25px;">
+            <div id="reviews" style="margin-left: 25px;" hidden>
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3">
@@ -39,7 +39,7 @@
             </div>                     
         {{/if}}
 
-        <div id="hiddenrev">
+        <div id="hiddenrev" hidden>
             <div class="container my-5 py-5">
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-12 col-lg-10">
@@ -105,13 +105,15 @@
             course_name: course.courseName
         },
         success: function(result) {
-            console.log(result)
+            {{!-- console.log(result) --}}
             alert(result.message);
             $('#enroll').hide()
             $('#video').show()
+            $('#reviews').show()
+            $('hiddenrev').show()
         },
         error: function(result) {
-            console.log(result)
+            {{!-- console.log(result) --}}
             alert('error');
         }
         });
@@ -124,10 +126,7 @@
     });
     
     });
-</script>
 
-<script>
-    var course = {{{data}}};
     $('#post-comment').on('click', function(event) {
         event.preventDefault();
         var sendData = {

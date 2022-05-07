@@ -101,14 +101,16 @@ module.exports = {
             rating: rating,
         }
 
-        console.log('inside addReview',text, rating)
-        console.log('inside addReview',currCourse.overallRating, currCourse.reviews.length)
+
+        // console.log('inside addReview',text, rating)
+        // console.log('inside addReview',currCourse.overallRating, currCourse.reviews.length)
         
         let newRating = ((currCourse.overallRating*currCourse.reviews.length)+rating)/(currCourse.reviews.length+1);
         if(currCourse.reviews.length===0)
             newRating = rating;
             
-        console.log('\n new rat: ',Number(newRating))
+        // console.log('\n new rat: ',Number(newRating))
+
         const updatedInfo = await courseCollection.updateOne(
             { _id: ObjectId(courseId) },
             { $addToSet: {reviews: newReview} }

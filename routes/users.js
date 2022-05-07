@@ -197,7 +197,7 @@ router.post('/course/:Name', async(req,res) => {
 })
 
 router.post('/courseForm', async(req,res) => {
-  console.log(req.body)
+  // console.log(req.body)
   var email = req.session.user.email
   try{
     validate.validateEmail(email)
@@ -230,7 +230,7 @@ router.post('/modify', async(req,res) => {
   catch(e){
     console.log(e)
   }
-  console.log(req.body)
+  // console.log(req.body)
   // var data = {}
   // if(req.body.courseName.trim()){
   //   data.courseName = req.body.courseName.trim()

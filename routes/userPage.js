@@ -26,10 +26,24 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/editinfo', async (req, res) => {
+router.post('/editinfo', async (req, res) => {
   try{
     if(req.session.user){
       let uemail = req.session.user.email;
+      // console.log(req.body)
+      const userinfo = await userData.getUser(uemail)
+      // console.log(userinfo)
+      userinfo.name = req.body.Name;
+      userinfo.age = req.body.Age;
+      userinfo.gender = req.body.Gender;
+      userinfo.userType = req.body.UserType;
+      const user = await userData.editUserInfo(uemail,req.body.Name,req.body.Gender,req.body.Age, req.body.UserType)
+      if (user.UserUpdated){
+        res.send({success:true})
+      }
+      else{
+        res.send({success:false})
+      }
     }
   }catch(e){
     console.log(e)
@@ -37,6 +51,7 @@ router.get('/editinfo', async (req, res) => {
   }
 });
 
+<<<<<<< Updated upstream
 
 
         const progress = await userData.get_user_course_progress(uemail);
@@ -48,4 +63,6 @@ router.get('/editinfo', async (req, res) => {
     }
 });
 
+=======
+>>>>>>> Stashed changes
 module.exports = router;
