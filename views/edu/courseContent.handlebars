@@ -10,7 +10,79 @@
         <input name = "Data" id="data" hidden>
         <input type = "submit" id = "enroll" class="enroll" name = "enroll"  value = "Enroll Now" >
         <button id="video" hidden>Go to Videos!</button>
+
         </form>
+
+        {{#if notLoggedIn}}
+            <br>
+        {{else}}
+            <div id="reviews" style="margin-left: 25px;" hidden>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <h3>Add review: </h3>
+                            <form id="addReview" method="POST">
+                                <div class="form-group">
+                                    <textarea name="reviewtext" id="reviewtext" class="form-control" placeholder="type here" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <h4>Rate Course: </h4>
+                                    <input type="number" min="0" max="5" id="reviewrating" class="form-control" placeholder="enter rating" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" id="post-comment" class="btn btn-primary" value="Submit">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>                     
+        {{/if}}
+
+        <div id="hiddenrev" hidden>
+            <div class="container my-5 py-5">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-12 col-lg-10">
+                        <div class="card text-dark">
+                            <div class="card-body p-4">
+                                <h4 class="mb-0">Recent comments</h4>
+                                <p class="fw-light mb-4 pb-2">Latest Comments section by users</p>
+                                <hr class="my-0" />
+                                <ul id="commentList" class="list-group"></ul>
+                                {{#if flag}}
+                                    <div class="card-body p-4">
+                                        <div class="d-flex flex-start">
+                                            <div>
+                                                <h6 class="fw-bold mb-1">This course has no reviews yet!</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{else}}
+                                    {{#each comments}}
+                                        <div class="card-body p-4">
+                                            <div class="d-flex flex-start">
+                                                <div>
+                                                    <h6 class="fw-bold mb-1">{{name}}</h6>
+                                                    <div class="d-flex align-items-center mb-3">
+                                                    </div>
+                                                    <p class="mb-0">
+                                                    Rating: {{rat}}
+                                                    <br>
+                                                    Review: {{txt}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {{/each}}
+                                {{/if}}
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 </div>
 
@@ -33,13 +105,15 @@
             course_name: course.courseName
         },
         success: function(result) {
-            console.log(result)
+            {{!-- console.log(result) --}}
             alert(result.message);
             $('#enroll').hide()
             $('#video').show()
+            $('#reviews').show()
+            $('hiddenrev').show()
         },
         error: function(result) {
-            console.log(result)
+            {{!-- console.log(result) --}}
             alert('error');
         }
         });
@@ -50,6 +124,66 @@
         window.location.href = "/video/"+course.courseName;
         return false;
     });
-        
+    
     });
+
+    $('#post-comment').on('click', function(event) {
+        event.preventDefault();
+        var sendData = {
+            courseName: course.courseName,
+            text: $('#reviewtext').val(),
+            rating: $('#reviewrating').val(),            
+        };
+
+        function checkText(text){
+        if(typeof(text)==='undefined') throw "Please provide a review";
+        if(typeof(text)!='string') throw "Review must be a string";
+        text = text.trim();
+        if(text.length===0) throw "Empty review, Please provide a review";
+        }
+
+        function checkRating(rating){
+        if(typeof(rating)==='undefined') throw "Please provide a rating";
+        if(rating.trim().length===0) throw "Must provide a rating";
+        rating = Number.parseInt(rating);
+        if(typeof(rating)!='number') throw 'Rating should be a number';
+        if(rating>5 || rating<0) throw 'Rating must be between 0-5';
+        }
+
+        try{
+            checkText(sendData.text);
+            checkRating(sendData.rating);
+
+            var ajaxReq = $.ajax({
+            type: "POST",
+            url: "http://localhost:3000/course/"+sendData.courseName,
+            data: sendData,
+            dataType: "json",
+        });
+
+        ajaxReq.success(function (data, status, jqXhr) {
+            $('#commentList').append(`
+            <div class="card-body p-4">
+                <div class="d-flex flex-start">
+                <div>
+                    <h6 class="fw-bold mb-1">${data.name}</h6>
+                    <div class="d-flex align-items-center mb-3">
+                    </div>
+                    <p class="mb-0">
+                    ${$('#reviewtext').val()}
+                    ${$('#reviewrating').val()}
+                    </p>
+                </div>
+                </div>
+            </div> `);
+        })
+
+        ajaxReq.error(function(jqXHR, textStatus, errorThrown) {
+            alert(textStatus + ": Failed ajax request" + errorThrown);
+        });
+        }catch(e){
+            console.log(e);
+            alert(e);
+        }
+});
 </script>
