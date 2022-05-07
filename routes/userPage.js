@@ -4,17 +4,12 @@ const userData = require("../data/users");
 const validate = require('../validation/userValidate');
 const videos = require('../data/videos');
 
-const samePageNavs = {
-  top: "#top",
-  about: "#about",
-  courses: "#courses",
-  reviews: "#reviews",
-};
 const crossPageNavs = {
-  top: "/#top",
-  about: "/#about",
-  courses: "/#courses",
-  reviews: "/#reviews",
+  top: "http://localhost:3000/#top",
+  // team: "http://localhost:3000/#team",
+  about: "http://localhost:3000/#about",
+  courses: "http://localhost:3000/#courses",
+  reviews: "http://localhost:3000/#reviews",
 };
 
 router.get('/', async (req, res) => {
@@ -40,7 +35,7 @@ router.get('/editinfo', async (req, res) => {
       }
     }catch(e){
       console.log(e)
-      res.status(400).render('users/index', {error: e, notLoggedIn: req.session.user ? false : true});
+      res.status(400).render('users/index', {error: e,location: crossPageNavs, notLoggedIn: req.session.user ? false : true});
     }
 });
 
