@@ -12,6 +12,7 @@ const crossPageNavs = {
   about: "http://localhost:3000/#about",
   courses: "http://localhost:3000/#courses",
   reviews: "http://localhost:3000/#reviews",
+  team: "http://localhost:3000/#team"
 };
 
 
@@ -138,8 +139,7 @@ app.use('/login', (req, res, next) => {
   if (req.session.user) {
     return res.redirect('/userPage');
   } else if(req.method=='GET') {
-    console.log("in else if")
-    res.redirect("/")
+    res.redirect("/#about")
   } else {
     req.method = 'POST';
     next();
