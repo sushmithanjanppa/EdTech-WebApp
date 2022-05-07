@@ -1,0 +1,76 @@
+.resultH2 {
+	color:rgb(221, 67, 93);
+	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+	font-style: italic;
+}
+.courseList {
+	color: olive;
+	font-family: monospace;
+	font-style: oblique;
+    font-size: large;
+}
+.courseAnchor {
+	color: rgb(52, 193, 113);
+}
+a:visited {
+	color: rgb(0, 255, 140);
+	font-family: monospace;
+	font-style: oblique;
+}
+.courseName{
+	color: rgb(2, 27, 249);
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+	font-style: italic;
+}
+.courseHeading {
+	color:rosybrown;
+	font-family: fantasy;
+}
+.courseDescription {
+	color:darkblue;
+	font-family:'Courier New', Courier, monospace
+}
+.courseFinder{
+	color: #1ded24;
+	font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.anotherSearch{
+	color: rgb(42, 42, 227);
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: large;
+}
+input[type=text] {
+	width: 100%;
+	padding: 10px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+  }
+  input[type=submit] {
+	background-color: #4CAF50;
+  	border: none;
+  	color: white;
+  	padding: 4px 25px;
+  	text-decoration: none;
+  	margin: 8px 10px;
+  	cursor: pointer;
+}
+.notFound{
+    color: salmon;
+}
+
+li{
+	padding: 10px;
+}
+
+.error{
+    color: red;
+    font-weight: bold;
+}
+.labelclass{
+	color: rgb(43, 226, 110);
+    font-weight: bold;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

@@ -63,17 +63,17 @@ module.exports = {
         if (typeof name !== 'string') throw 'Name must be a string';
         if (name.trim().length === 0) throw 'name cannot be an empty string or just spaces';
             const courseCollection = await courses();
-            let uname = name.split(" ").map(cname => {
+            var uname = name.split(" ").map(cname => {
                 return cname[0].toUpperCase() + cname.slice(1);
             })
             var sname= uname.join(" ");
-            const course = await courseCollection.findOne({ courseName: sname });
-            return course;
-    }
-        catch (error) {
-            throw new Error(error.message)
+            var course = await courseCollection.findOne({ courseName: sname });
+           
         }
-
+        catch (error) {
+            throw `Unable to retrieve course. Check again later..`
+        }
+        return course;  
     },
     async getfilterByBranch(branch) {
 

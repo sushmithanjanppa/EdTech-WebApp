@@ -221,7 +221,7 @@ router.post("/score", async(req,res) => {
   } catch(e) {
     
     
-      res.send({message:"Cannot update your score."})
+      res.send({message:"Cannot update your score. Please enroll to the course"})
 
   } 
   return;
