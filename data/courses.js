@@ -64,9 +64,20 @@ module.exports = {
         const courseList = [];
         await courseCollection.find({}).toArray().then((courses) => {
             courses.forEach(course => {
-                courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description, 'image':course.image});
+                courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description, 'image':course.image, 'email':course.email});
             });
         });
+        const userCollection = await users();
+        for (var i in courseList){
+            const user = await userCollection.findOne({email: courseList[i].email}); 
+        if(user === null){
+            courseList[i].inst_name = "Instructor Not Found"
+        }
+        else{
+        courseList[i].inst_name = user.name
+        }
+        }
+
         return courseList;
     },
     async getCourseById(id) {
@@ -89,8 +100,7 @@ module.exports = {
                 return cname[0].toUpperCase() + cname.slice(1);
             })
             var sname= uname.join(" ");
-            var course = await courseCollection.findOne({ courseName: sname });
-           
+            var course = await courseCollection.findOne({ courseName: sname });          
         }
         catch (error) {
             throw `Unable to retrieve course. Check again later..`
