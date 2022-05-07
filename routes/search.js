@@ -11,13 +11,15 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const createResData = req.body;
     try {
-        const { name, branch} = createResData;
+        const { name, branch } = createResData;
         try {
             if (!name) throw 'All fields need to have valid values';
             if (!branch) throw 'All fields need to have valid values';
 
             if (typeof name !== 'string') throw 'Name must be a string';
-            if (typeof branch !== 'string') throw 'Name must be a string';
+            if (typeof branch !== 'string') throw 'Branch must be a string';
+            if (name.trim().length === 0) throw 'name cannot be an empty string or just spaces';
+            if (branch.trim().length === 0) throw 'Branch cannot be an empty string or just spaces';
 
 
         } catch (error) {
@@ -66,7 +68,7 @@ router.get('/course/:id', async (req, res) => {
         error = `No courses found for the given id ${req.params.id}`
         return res.status(404).json({ error: error });
     }
-    
+
     res.render('edu/courseContent', { title: result.name, data: result, error: error, hasError: hasError });
 });
 
