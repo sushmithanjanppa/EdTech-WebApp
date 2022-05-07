@@ -75,6 +75,9 @@ router.post("/login", async (req, res) => {
   let password = req.body.password;
 
   var course_i = await courses.getAllCourses()
+  if(!req.session.user_type){
+    req.session.user_type = {type: 0}
+  }
 
   try {
     await validate.validateEmail(email);
@@ -93,7 +96,8 @@ router.post("/login", async (req, res) => {
         error: "Either the email or password is invalid",
         hasErrors: true,
         notLoggedIn: req.session.user ? false : true,
-        course_info:JSON.stringify(course_i)
+        course_info: JSON.stringify(course_i),
+        userType: req.session.user_type.type
       });
       return;
     }
@@ -103,7 +107,8 @@ router.post("/login", async (req, res) => {
       error: e,
       hasErrors: true,
       notLoggedIn: req.session.user ? false : true,
-      course_info:JSON.stringify(course_i)
+      course_info: JSON.stringify(course_i),
+      userType: req.session.user_type.type
     });
     return;
   }
