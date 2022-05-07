@@ -2,6 +2,20 @@
 
 {{> navbar this}}
 
+<form action='/search/searchcourses' method="POST">
+    <label class="labelclass">
+        Search for courses
+        <input type="text" name="courseSearchTerm" />
+    </label>
+    <button type="submit" name ="Submit" > Search </button>
+</form>
+{{#if search}}
+    <h2 class="resultH2">Following are the results for "{{courseSearchTerm}}"</h2>
+    {{#if hasError}}
+    <p class="notFound">{{error}}</p>
+    {{/if}}
+{{/if}}
+<br>
 <div class="row">
     <div class="col-sm-12">
      <div style="margin-left: 25px;">
@@ -12,3 +26,4 @@
      </div>      
     </div>
 </div>
+
