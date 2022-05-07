@@ -38,14 +38,4 @@ router.post('/editinfo', async (req, res) => {
 });
 
 
-
-        const progress = await userData.get_user_course_progress(uemail);
-        res.render("users/userPage",{data: userInfo ,title: "Profile", location: crossPageNavs,notLoggedIn: req.session.user ? false : true, progress_data: JSON.stringify(progress)});
-      }
-    }catch(e){
-      console.log(e)
-      res.status(400).render('users/index', {error: e,location: crossPageNavs, notLoggedIn: req.session.user ? false : true});
-    }
-});
-
 module.exports = router;
