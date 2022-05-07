@@ -32,7 +32,7 @@
 
     <div class="btn f-right" id="fox-popup-triger">
         <div>
-            <button id="editUserInfo" class="btn btn-default f-right"><i class="icon ion-md-lock"></i>Edit Info!</button>
+            <button id="editUser" class="btn btn-default f-right"><i class="icon ion-md-lock"></i>Edit Info!</button>
         </div>
         </div>
         <div class="fox-popup-wrap">
@@ -41,7 +41,7 @@
             <div class="bar"></div>
         </div>
         <div class="fox-form-wrap">
-            <form>
+            <form id="Edit">
             <div class="col col-md-6">
                 <div class="form-group">
                 <label for="email">Email:</label>
@@ -66,15 +66,22 @@
                 <div class="form-group">
                 <label for="gender">Gender:</label>
                 {{!-- <input class="form-control" id="age" type="number" value="{{data.age}}"/> --}}
-                <select class="form-control" name="gender" id="gender">
+                <select class="form-control" name="gender" id="newGender" value = "{{data.gender}}">
                     <option value="Man">Man</option>
-                    <option value="Woman" selected>Woman</option>
+                    <option value="Woman" >Woman</option>
                     <option value="Transgender">Transgender</option>
                     <option value="other">other</option>
                 </select>
                 </div>
             </div>
-                      
+            <div>
+            <label for="userType">User Type:
+            <select class="form-control" name="userType" id="newUserType" value = "{{data.userType}}">
+                <option value="0">Student</option>
+                <option value="1">Teacher</option>
+            </label>
+            </select>
+            </div>  
             <div class="col col-md-12"> 
                 <button id="editUserInfo" class="btn btn-default f-right" type="submit">Submit</button>
             </div>
@@ -114,6 +121,35 @@
         {{!-- console.log(course_data) --}}
         window.location = "http://localhost:3000/video/"+course_data[0];
     })
+
+    $('#editUserInfo').click(function(e){
+        {{!-- console.log({{data.userType}}) --}}
+        e.preventDefault();
+        var newData = {}
+        newData.Name = $('#newName').val()
+        newData.Age = $('#newAge').val()
+        newData.Gender = $('#newGender').val()
+        newData.UserType = $('#newUserType').val()
+        {{!-- console.log(newData) --}}
+        $.ajax({
+        type: "POST",
+        url: "/userPage/editinfo",
+        {{!-- jsonpCallback: "_callback", --}}
+        data: newData,
+        success: function(result) {
+            if (result.success){
+                alert("Updation Successful")
+                window.location.reload()}
+            else{alert("Updation Failed")
+                window.location = "/userPage"
+            }
+        },
+        error: function(result) {
+            console.log(result)
+            alert('error');
+        }
+        });
+        });
 </script>
-<script src="/public/js/userPage.js"></script>
+{{!-- <script src="/public/js/userPage.js"></script> --}}
 
