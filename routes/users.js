@@ -228,6 +228,7 @@ router.post('/courseForm', async(req,res) => {
   }
   try{
     let courseAdded=await courses.addCourse(req.body.courseName,req.body.description, image_link, req.body.video_id, email);
+    console.log(courseAdded)
     if(courseAdded.courseInserted)  
     // res.redirect('/allCourses');
     res.jsonp({success:true})
@@ -309,6 +310,26 @@ router.post("/enroll", async(req,res) => {
   } 
   return;
 })
+
+router.post("/score", async(req,res) => {
+  let email = req.session.user.email
+  let course_name = req.body.course_name
+  let score = req.body.score
+  console.log(req.body)
+  try {
+    await userData.score(email,score,course_name)
+   
+    res.send({message:"Score Updated"})
+  } catch(e) {
+    
+    
+      res.send({message:"Cannot update your score. Please enroll to the course"})
+
+  } 
+  return;
+})
+
+
 
 
 

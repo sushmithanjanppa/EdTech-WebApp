@@ -6,22 +6,34 @@ const video_func = require("./videos");
 const users = mongoCollections.users;
 
 module.exports = {
+    async addCourse(courseName, description, image, video_id, branch) {
+        if (!courseName) throw 'All fields need to have valid values';
+        if (!description) throw 'All fields need to have valid values';
+        if (!image) throw 'All fields need to have valid values';
+        if (!branch) throw 'All fields need to have valid values';
+        if (!video_id) throw 'All fields need to have valid values';
+        if (typeof courseName !== 'string') throw 'Name must be a string';
+        if (typeof description !== 'string') throw 'Description must be a string';
+        if (typeof branch !== 'string') throw 'Branch must be a string';
+        if (courseName.trim().length === 0) throw 'name cannot be an empty string or just spaces';
+        if (description.trim().length === 0) throw 'description cannot be an empty string or just spaces';
+        if (branch.trim().length === 0) throw 'branch cannot be an empty string or just spaces';
 
-    async addCourse(courseName,description, image, video_id, email){
         const courseCollection = await courses();
         const course = await courseCollection.findOne({ courseName: courseName});
         if(course){
             throw "Course with same name Already Exists"
         }
-        let videos=[];
-        let newCourse={
-           courseName:courseName,
-           email:email,
-           description:description,
-           image:image,
-           videos:videos,
-           reviews: [],
-           overallRating: 0.0,
+        let videos = [];
+        let newCourse = {
+             courseName:courseName,
+             email:email,
+             description:description,
+             image:image,
+             videos:videos,
+             reviews: [],
+             overallRating: 0.0,
+             questions: []
         }
         const insertInfo = await courseCollection.insertOne(newCourse);
         if (!insertInfo.insertedId)
@@ -78,12 +90,12 @@ module.exports = {
 
         return courseList;
     },
-    async getCourseById(id){
+    async getCourseById(id) {
         const courseCollection = await courses();
         const course = await courseCollection.findOne({ _id: ObjectId(id) });
         return course;
     },
-    async deleteCourse(id){
+    async deleteCourse(id) {
         const courseCollection = await courses();
         const userCollection = await users()
         const update = await userCollection.updateMany({},
@@ -151,12 +163,17 @@ module.exports = {
     },
 
     async getfilterByBranch(branch) {
+
+        if (!branch) throw 'All fields need to have valid values';
+        if (typeof branch !== 'string') throw 'branch must be a string';
+        if (branch.trim().length === 0) throw 'branch cannot be an empty string or just spaces';
         try {
-            
+
+
             const courseCollection = await courses();
-            const course = await courseCollection.find({ branch: branch}).toArray();
+            const course = await courseCollection.find({ branch: branch }).toArray();
             return course
-            
+
         }
         catch (error) {
             throw new Error(`Unable to retrieve course. Check again later..`)
@@ -228,4 +245,3 @@ async function main(){
 
 // main();
 
-// main();

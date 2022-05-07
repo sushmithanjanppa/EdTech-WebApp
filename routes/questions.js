@@ -37,23 +37,29 @@ router.post('/:id', async (req, res) => {
             return;
         }
 
-        const {question, answer1, answer2, answer3, answer4 } = createQuestionData;
+        const {question, answer1, answer2, answer3, answer4, sectionid, answer } = createQuestionData;
         try {
             if (!question) throw 'All fields need to have valid values';
             if (!answer1) throw 'All fields need to have valid values';
             if (!answer2) throw 'All fields need to have valid values';
             if (!answer3) throw 'All fields need to have valid values';
             if (!answer4) throw 'All fields need to have valid values';
+            if (!sectionid) throw 'All fields need to have valid values';
+            if (!answer) throw 'All fields need to have valid values';
     
             if (typeof question !== 'string') throw 'question must be a string';
             if (typeof answer1 !== 'string') throw 'answer1 must be a string';
             if (typeof answer2 !== 'string') throw 'answer2 must be a string';
             if (typeof answer3 !== 'string') throw 'answer3 must be a string';
             if (typeof answer4 !== 'string') throw 'answer4 must be a string';
+            if (typeof sectionid !== 'string') throw 'sectionid must be a string';
+            if (typeof answer !== 'string') throw 'answer must be a string';
             if (answer1.trim() === '') throw 'answer1 must be a string';
             if (answer2.trim() === '') throw 'answer2 must be a string';
             if (answer3.trim() === '') throw 'answer3 must be a string';
             if (answer4.trim() === '') throw 'answer4 must be a string';
+            if (sectionid.trim() === '') throw 'sectionid must be a string';
+            if (answer.trim() === '') throw 'answer must be a string';
         } catch (error) {
             res.status(400).json({ error: error.message });
             return;
