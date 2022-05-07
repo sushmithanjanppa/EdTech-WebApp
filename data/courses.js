@@ -18,7 +18,13 @@ module.exports = {
             email:email,
             description:description,
             image:image,
+<<<<<<< Updated upstream
             videos:videos
+=======
+            videos:videos,
+            reviews: [],
+            overallRating: 0.0,
+>>>>>>> Stashed changes
         }
         const insertInfo = await courseCollection.insertOne(newCourse);
         if (!insertInfo.insertedId)
@@ -81,6 +87,48 @@ module.exports = {
         const course = await courseCollection.findOne({ courseName: name});
         return course;
     },
+<<<<<<< Updated upstream
+=======
+
+    async addReview(courseId, uId, text, rating){
+        validateRev.checkRating(rating);
+        rating = Number.parseInt(rating);
+        validateRev.checkText(text);
+        text = text.trim();
+        const courseCollection = await courses();
+        const currCourse = await this.getCourseById(courseId);
+        
+        const newReview = {
+            _id: ObjectId(),
+            userId: uId,
+            text: text,
+            rating: rating,
+        }
+
+        // console.log('inside addReview',text, rating)
+        // console.log('inside addReview',currCourse.overallRating, currCourse.reviews.length)
+        
+        let newRating = ((currCourse.overallRating*currCourse.reviews.length)+rating)/(currCourse.reviews.length+1);
+        if(currCourse.reviews.length===0)
+            newRating = rating;
+            
+        // console.log('\n new rat: ',Number(newRating))
+        const updatedInfo = await courseCollection.updateOne(
+            { _id: ObjectId(courseId) },
+            { $addToSet: {reviews: newReview} }
+        );
+        if (updatedInfo.modifiedCount === 0) {
+            throw 'could not update course';
+        }
+        const updatedRating = await courseCollection.updateOne(
+            { _id: ObjectId(courseId) },
+            { $set: {overallRating: Number(newRating)} }
+        );
+
+        return {reviewAdded: true};
+    },
+
+>>>>>>> Stashed changes
     async getfilterByBranch(branch) {
         try {
             

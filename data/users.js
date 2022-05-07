@@ -154,7 +154,76 @@ module.exports = {
             }
         }
         return prog_data
+<<<<<<< Updated upstream
     } 
+=======
+    },
+    
+    async editUserInfo(email, name, gender, age, userType){
+        validate.validateEmail(email);
+        email = email.trim();
+        email = email.toLowerCase();
+        // let newName;
+        // let newGender;
+        // let newAge;
+        // let newuserType;
+        var user = await this.getUser(email);
+        // console.log(user)
+        if(!name || typeof(name)=='undefined'){
+            newName = user.name
+        }else{
+            newName = name;
+        }
+        validate.validateName(newName);
+        newName = newName.trim();
+
+        if(!gender || typeof(gender)=='undefined'){
+            newGender = user.gender
+        }else{
+            newGender = gender;
+        }
+        validate.validateGender(newGender);
+        newGender = newGender.trim();
+        
+        if(!age || typeof(age)=='undefined'){
+            newAge = user.age
+        }else{
+            newAge = age;
+        }
+        validate.validateAge(newAge);
+        newAge = Number.parseInt(newAge);
+
+        if(!userType || typeof(userType) == 'undefined'){
+            newuserType = user.userType
+        }else{
+            newuserType = userType
+        }
+        newuserType = Number.parseInt(newuserType)
+        validate.validateUserType(newuserType)
+
+        const userCollection = await users();
+        // const updatedUserInfo = {
+        //     name: newName,
+        //     gender: newGender, 
+        //     age: newAge,
+        //     userType:newuserType
+        // };
+        user.name = newName;
+        user.age = newAge;
+        user.gender = newGender;
+        user.userType = newuserType;
+        const updatedInfo = await userCollection.updateOne(
+            { _id: user._id },
+            { $set: user}
+        );
+        // console.log(updatedInfo)
+        if (updatedInfo.modifiedCount === 0) {
+            throw 'could not update the user';
+        }
+
+        return {UserUpdated: true} ;
+    }
+>>>>>>> Stashed changes
 
 }
 
