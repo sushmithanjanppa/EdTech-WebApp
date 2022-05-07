@@ -5,8 +5,8 @@ const validateRev = require("../validation/reviewValidate");
 const video_func = require("./videos");
 const users = mongoCollections.users;
 
-
 module.exports = {
+
     async addCourse(courseName,description, image, video_id, email){
         const courseCollection = await courses();
         const course = await courseCollection.findOne({ courseName: courseName});
@@ -46,6 +46,7 @@ module.exports = {
 
 
     },
+    
     async getInstCourses(email){
         const courseCollection = await courses();
         const courseList = [];
@@ -187,6 +188,7 @@ module.exports = {
     }
 
 }
+
 
 async function main(){
     // console.log(await module.exports.getInstCourses("courses@gmail.com"))
