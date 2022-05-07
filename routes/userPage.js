@@ -51,5 +51,5 @@ router.post('/editinfo', async (req, res) => {
       res.status(400).render('users/userPage', {error: e, notLoggedIn: req.session.user ? false : true});
   }
 });
-
 module.exports = router;
+

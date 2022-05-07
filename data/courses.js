@@ -1,23 +1,14 @@
 const mongoCollections = require("../config/mongoCollection");
 const courses = mongoCollections.courses;
+const video_func = require("./videos");
 const { ObjectId } = require("mongodb");
 const validateRev = require("../validation/reviewValidate");
+
 const video_func = require("./videos");
 const users = mongoCollections.users;
 
 module.exports = {
     async addCourse(courseName, description, image, video_id, branch) {
-        if (!courseName) throw 'All fields need to have valid values';
-        if (!description) throw 'All fields need to have valid values';
-        if (!image) throw 'All fields need to have valid values';
-        if (!branch) throw 'All fields need to have valid values';
-        if (!video_id) throw 'All fields need to have valid values';
-        if (typeof courseName !== 'string') throw 'Name must be a string';
-        if (typeof description !== 'string') throw 'Description must be a string';
-        if (typeof branch !== 'string') throw 'Branch must be a string';
-        if (courseName.trim().length === 0) throw 'name cannot be an empty string or just spaces';
-        if (description.trim().length === 0) throw 'description cannot be an empty string or just spaces';
-        if (branch.trim().length === 0) throw 'branch cannot be an empty string or just spaces';
 
         const courseCollection = await courses();
         const course = await courseCollection.findOne({ courseName: courseName});
@@ -37,7 +28,7 @@ module.exports = {
         }
         const insertInfo = await courseCollection.insertOne(newCourse);
         if (!insertInfo.insertedId)
-            throw "Could not add course";
+        throw "Could not add course";
         else{
             try{
                 if (Array.isArray(video_id)){
@@ -45,13 +36,12 @@ module.exports = {
                         await video_func.createVideo(title='video '+ i, id=video_id[i], course_name = courseName)
                     }
                 }
-                else{
-                    await video_func.createVideo(title='video 0', id=video_id, course_name = courseName)
-                }
+                // else{
+                //     await video_func.createVideo(title='video 0', id=video_id, course_name = courseName)
+                // }
             }
             catch(e){
-                // throw "couldnt add course"
-                console.log(e)
+                throw "couldnt add course"
             }
             return {courseInserted: true};
         }
@@ -86,10 +76,6 @@ module.exports = {
     },
     async deleteCourse(id) {
         const courseCollection = await courses();
-        const userCollection = await users()
-        const update = await userCollection.updateMany({},
-            {$pull : {courses : {_id:  ObjectId(id)}}})
-        // console.log(update)
         const flag = await courseCollection.deleteOne( { "_id" : ObjectId(id) } );
         return flag;
     },
@@ -126,7 +112,6 @@ module.exports = {
             text: text,
             rating: rating,
         }
-
 
         // console.log('inside addReview',text, rating)
         // console.log('inside addReview',currCourse.overallRating, currCourse.reviews.length)
