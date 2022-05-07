@@ -4,6 +4,7 @@ const userData = require("../data/users");
 const videos = require('../data/videos');
 const courses = require('../data/courses');
 const validate = require('../validation/userValidate');
+const e = require("express");
 
 const samePageNavs = {
   top: "#top",
@@ -118,9 +119,9 @@ router.get('/video/:course', async(req,res) => {
     else{
       var course_name = "Web Development"
     }
-    // let email = req.session.user.email
+    let email = req.session.user.email
     // console.log(course_name)
-    let email = 'pjhangl1@stevens.edu'
+    // let email = 'pjhangl1@stevens.edu'
     // console.log(req)
     try{
       var data = await videos.getVideos(email,course_name);
@@ -139,7 +140,13 @@ router.get('/courseForm',async(req,res)=>{
 router.get('/allCourses',async(req,res)=>{
     let email = req.session.user.email
     let courseList = await courses.getInstCourses(email);
-    res.render('edu/coursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true, location: crossPageNavs})
+    if (req.session.user){
+      if(req.session.user_type.type === 1)
+        var user_type = 1
+      else
+        var user_type = 0
+    }
+    res.render('edu/coursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true, user_type:user_type, location: crossPageNavs})
 })
 router.get('/viewAllCourses',async(req,res)=>{
   let courseList = await courses.getAllCourses();
@@ -152,11 +159,12 @@ router.post('/delete/:_id',async(req,res)=>{
 router.get('/course/:Name', async(req,res) => {
     // let course=await courses.getCourseById(req.params._id);
     // console.log(req.params.Name)
+    
     let course = await courses.getCourseByName(req.params.Name)
     res.render('edu/courseContent',{data:JSON.stringify(course), notLoggedIn: req.session.user ? false : true, location: crossPageNavs });
   })
 router.post('/courseForm', async(req,res) => {
-  // console.log(req.body)
+  console.log(req.body)
   var email = req.session.user.email
   try{
     validate.validateEmail(email)
@@ -170,10 +178,48 @@ router.post('/courseForm', async(req,res) => {
   else{
     image_link = "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg"
   }
-  let courseAdded=await courses.addCourse(req.body.courseName,req.body.description, image_link, req.body.video_id, email);
-  if(courseAdded.courseInserted)  
-  res.redirect('/allCourses');
+  try{
+    let courseAdded=await courses.addCourse(req.body.courseName,req.body.description, image_link, req.body.video_id, email);
+    if(courseAdded.courseInserted)  
+    // res.redirect('/allCourses');
+    res.jsonp({success:true})
+  }catch(e){
+    res.jsonp({error:e})
+  }
 })
+
+router.post('/modify', async(req,res) => {
+  // console.log(req.body)
+  var email = req.session.user.email
+  try{
+    validate.validateEmail(email)
+  }
+  catch(e){
+    console.log(e)
+  }
+  console.log(req.body)
+  // var data = {}
+  // if(req.body.courseName.trim()){
+  //   data.courseName = req.body.courseName.trim()
+  // }
+  // if(req.body.description.trim()){
+  //   data.description = req.body.description.trim()
+  // }
+  // if(req.body.image.trim()){
+  //   data.image = req.body.image.trim()
+  // }
+  // if(Array.isArray(req.body.video_id) && req.body.video_id.length > 0){
+  //   data.video_id = req.body.video_id
+  // }
+  let course_modify = await courses.modifyCourse(req.body)
+  if(course_modify.Modified){
+    res.redirect('/allCourses');
+  }
+  // let courseAdded=await courses.addCourse(req.body.courseName,req.body.description, image_link, req.body.video_id, email);
+  // if(courseAdded.courseInserted)  
+  // res.redirect('/allCourses');
+})
+
 router.post('/video', async(req,res) => {
     // console.log("post")
     // console.log(req.body)

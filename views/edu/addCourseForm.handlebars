@@ -2,7 +2,8 @@
 {{> navbar this}}
 <div class="row">
     <div class="col-sm-12">
-        <form id="login-form" method="post" action="/courseForm">
+        {{!-- <form id="login-form" method="post" action="/courseForm"> --}}
+        <form id="addcourse">
             <div class="form-group">
                 <label>
                     courseName:
@@ -53,6 +54,27 @@
             e.preventDefault();
             $(this).parent('div').remove();
             x--;
-        })
-    });
+        });
+
+        $('#addcourse').on('submit',function(e){
+            e.preventDefault();
+            $.ajax({
+            type: "POST",
+            url: "/courseForm",
+            {{!-- jsonpCallback: "_callback", --}}
+            data: $('#addcourse').serialize(),
+            success: function(result) {
+                if (result.error){
+                    alert(result.error)}
+                else(
+                    window.location = "/allcourses"
+                )
+            },
+            error: function(result) {
+                console.log(result)
+                alert('error');
+            }
+            });
+        });
+        });
 </script>
