@@ -20,10 +20,10 @@ module.exports = {
         name = name.trim();
         validate.validateGender(gender);
         gender = gender.trim();
-        validate.validateAge(age);
-        age = Number(age);
+        validate.validateAge(age);``
+        age = Number.parseInt(age);
         validate.validateUserType(userType);
-        userType = Number(userType); 
+        userType = Number.parseInt(userType); 
 
         const userCollection = await users();
         const duplicateEmail = await userCollection.findOne({email: email});
@@ -44,7 +44,7 @@ module.exports = {
         };
 
         const insertUser = await userCollection.insertOne(newUser);
-        if(insertUser.insertedCount === 0) throw "Could not add email";
+        if(insertUser.insertedCount === 0) throw "Could not add the user";
         return {userInserted : true};
     },
 
@@ -74,6 +74,16 @@ module.exports = {
         email = email.toLowerCase();
         const userCollection = await users();
         const user = await userCollection.findOne({email: email});
+        if (user === null) throw 'No such user found';
+        return user;
+    },
+
+    async getUserById(id){
+        // console.log('inside getuser, mail:',email)
+        validate.validateId(id)
+        id = id.trim();
+        const userCollection = await users();
+        const user = await userCollection.findOne({ _id: ObjectId(id)});
         if (user === null) throw 'No such user found';
         return user;
     },
@@ -156,7 +166,71 @@ module.exports = {
         }
         return prog_data
     },
+    
+    async editUserInfo(email, name, gender, age, userType){
+        validate.validateEmail(email);
+        email = email.trim();
+        email = email.toLowerCase();
+        // let newName;
+        // let newGender;
+        // let newAge;
+        // let newuserType;
+        var user = await this.getUser(email);
+        // console.log(user)
+        if(!name || typeof(name)=='undefined'){
+            newName = user.name
+        }else{
+            newName = name;
+        }
+        validate.validateName(newName);
+        newName = newName.trim();
 
+        if(!gender || typeof(gender)=='undefined'){
+            newGender = user.gender
+        }else{
+            newGender = gender;
+        }
+        validate.validateGender(newGender);
+        newGender = newGender.trim();
+        
+        if(!age || typeof(age)=='undefined'){
+            newAge = user.age
+        }else{
+            newAge = age;
+        }
+        validate.validateAge(newAge);
+        newAge = Number.parseInt(newAge);
+
+        if(!userType || typeof(userType) == 'undefined'){
+            newuserType = user.userType
+        }else{
+            newuserType = userType
+        }
+        newuserType = Number.parseInt(newuserType)
+        validate.validateUserType(newuserType)
+
+        const userCollection = await users();
+        // const updatedUserInfo = {
+        //     name: newName,
+        //     gender: newGender, 
+        //     age: newAge,
+        //     userType:newuserType
+        // };
+        user.name = newName;
+        user.age = newAge;
+        user.gender = newGender;
+        user.userType = newuserType;
+        const updatedInfo = await userCollection.updateOne(
+            { _id: user._id },
+            { $set: user}
+        );
+        // console.log(updatedInfo)
+        if (updatedInfo.modifiedCount === 0) {
+            throw 'could not update the user';
+        }
+
+        return {UserUpdated: true} ;
+    }
 
 async score(email, score, course_name) {
     validate.validateEmail(email);

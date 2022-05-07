@@ -5,6 +5,17 @@ const static = express.static(__dirname + '/public');
 const configRoutes = require('./routes');
 const exphbs = require('express-handlebars');
 const Handlebars = require('handlebars');
+
+const crossPageNavs = {
+  top: "http://localhost:3000/#top",
+  // team: "http://localhost:3000/#team",
+  about: "http://localhost:3000/#about",
+  courses: "http://localhost:3000/#courses",
+  reviews: "http://localhost:3000/#reviews",
+  team: "http://localhost:3000/#team"
+};
+
+
 // app.get('/private', async (req,res, next) =>{
 //     if(!req.session.user){
 //         return res.status(403).render("login/error", {error: "You are not logged in.", user:false})
@@ -120,7 +131,7 @@ app.use('/userPage', (req, res, next) => {
   if(req.session.user){
     next();
   }else{
-    res.status(403).render('users/authError', { notLoggedIn: req.session.user ? false : true });
+    res.status(403).render('users/authError', { notLoggedIn: req.session.user ? false : true, location: crossPageNavs });
   }
 });
 
@@ -128,8 +139,7 @@ app.use('/login', (req, res, next) => {
   if (req.session.user) {
     return res.redirect('/userPage');
   } else if(req.method=='GET') {
-    console.log("in else if")
-    res.redirect("/")
+    res.redirect("/#about")
   } else {
     req.method = 'POST';
     next();

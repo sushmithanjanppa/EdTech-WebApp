@@ -34,44 +34,27 @@ router.post('/', async (req, res) => {
 });
 
 router.post('/searchcourses', async (req, res) => {
-        let bodyData = req.body;
-        console.log(bodyData)
-        if (!bodyData.courseSearchTerm || bodyData.courseSearchTerm.trim() === '') {
-            return res.status(400).json({ status: 400, error: `No search term provided.`, home: "http://localhost:3000" });
+    let bodyData = req.body;
+    let error = ""
+    let hasError = false
+    if (!bodyData.courseSearchTerm|| bodyData.courseSearchTerm.trim() === '') {
+        return res.status(400).json({ status: 400, error: `No search term provided.`, home: "http://localhost:3000" });
+    }
+    
+    let result = await courseData.getCourseByName(bodyData.courseSearchTerm);
+    if(result != null) {
+        let resultArr = [];
+        for (let i = 0; i < result.length ; i++) {
+            resultArr.push(result[i]);
         }
-        try {
-            var result = await courseData.getCourseByName(bodyData.courseSearchTerm);
-        } catch (error) {
-            console.log(error)
-        }
-        let error = '';
-         let hasError = false;
-        if (!result) {
-            console.log( 'No course found for the given search term')
-             hasError = true;
-               error = `We're sorry, but no results were found for ${bodyData.courseSearchTerm}.`
-        } 
-       
-        res.render('edu/search', { title: `courses Found`, data: result, courseSearchTerm: bodyData.courseSearchTerm, error: error, hasError: hasError});
-
-        //     // let resultArr = [];
-        //     // for (let i = 0; i < result.length ; i++) {
-        //     //     resultArr.push(result[i]);
-        //     //      }
-        //     let error = '';
-        //     let hasError = false;
-        //     if (!result) {
-        //         hasError = true;
-        //         error = `We're sorry, but no results were found for ${bodyData.courseSearchTerm}.`
-        //     }
-        //     res.render('edu/search', { title: `courses Found`, data: result, courseSearchTerm: bodyData.courseSearchTerm, error: error, hasError: hasError });
-        // }
-
-        //     catch (error) {
-        //         console.log(error)
-        //         throw new Error(error.message);
-        // }
-    });
+        error = '';
+        hasError = false;
+    } else if (result == null || result.length == 0) {
+        hasError = true;
+        error = `We're sorry, but no results were found for ${bodyData.courseSearchTerm}.`
+    }
+    res.render('edu/allCoursesPage', { title: `courses Found`, data: result, courseSearchTerm: bodyData.courseSearchTerm, error: error, hasError: error!="", search: true });
+});
 
 router.get('/course/:id', async (req, res) => {
     if (!req.params.id && req.params.id.trim() === '') {
