@@ -10,8 +10,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/filter/:key', async (req, res) => {
-
-    // console.log(req.params)
+    
     let result = await courseData.getfilterByBranch(req.params.key);
     console.log(result)
     let resultArr = [];

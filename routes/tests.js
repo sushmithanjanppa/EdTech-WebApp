@@ -18,20 +18,23 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const createResData = req.body;
     try {
-        const { courseName, branch, description, videos, question, answer1, answer2, answer3, answer4 } = createResData;
+        const { courseName, branch, description, image, videos } = createResData;
         try {
             if (!courseName) throw 'All fields need to have valid values';
             if (!branch) throw 'All fields need to have valid values';
+            if (!image) throw 'All fields need to have valid values';
+            if (!videos) throw 'All fields need to have valid values';
+            if (!description) throw 'All fields need to have valid values';
 
             if (typeof courseName !== 'string') throw 'Name must be a string';
-            if (typeof branch !== 'string') throw 'Name must be a string';
+            if (typeof branch !== 'string') throw 'Branch must be a string';
 
 
         } catch (error) {
             res.status(400).json({ error: error.message });
             return;
         }
-        const newCourse = await courseData.addCourse(courseName, branch, description, videos);
+        const newCourse = await courseData.addCourse(courseName, branch, description, image, videos);
         res.status(200).json(newCourse);
     } catch (error) {
         res.status(500).json({ error: error.message });

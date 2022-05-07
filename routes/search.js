@@ -17,7 +17,9 @@ router.post('/', async (req, res) => {
             if (!branch) throw 'All fields need to have valid values';
 
             if (typeof name !== 'string') throw 'Name must be a string';
-            if (typeof branch !== 'string') throw 'Name must be a string';
+            if (typeof branch !== 'string') throw 'Branch must be a string';
+            if (name.trim().length === 0) throw 'name cannot be an empty string or just spaces';
+            if (branch.trim().length === 0) throw 'Branch cannot be an empty string or just spaces';
 
 
         } catch (error) {
@@ -37,15 +39,18 @@ router.post('/searchcourses', async (req, res) => {
     if (!bodyData.courseSearchTerm|| bodyData.courseSearchTerm.trim() === '') {
         return res.status(400).json({ status: 400, error: `No search term provided.`, home: "http://localhost:3000" });
     }
+    
     let result = await courseData.getCourseByName(bodyData.courseSearchTerm);
-    let resultArr = [];
-    for (let i = 0; i < result.length ; i++) {
-        resultArr.push(result[i]);
+    if(!result) throw 'No course found for the given search term';
         
-    }
+    
+    // let resultArr = [];
+    // for (let i = 0; i < result.length ; i++) {
+    //     resultArr.push(result[i]);
+    //      }
     let error = '';
     let hasError = false;
-    if (result.length == 0) {
+    if (!result) {
         hasError = true;
         error = `We're sorry, but no results were found for ${bodyData.courseSearchTerm}.`
     }
