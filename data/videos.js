@@ -57,9 +57,9 @@ module.exports = {
         // const coursedata = await courses_func.getCourseByName(course_name)
         const courseCollection = await courses();
         const coursedata = await courseCollection.findOne({ courseName: course_name});
-        // console.log(coursedata)
+        console.log(coursedata)
         let courseinfo = await userCollection.find({ email:email },{courses:{$elemMatch:{_id:coursedata._id} }, "courses.videos":1}).toArray();
-        // console.log(courseinfo[0].courses)
+        console.log(courseinfo)
         if(courseinfo){
             for(var i of courseinfo[0].courses){
                 // console.log(i._id)
