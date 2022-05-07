@@ -1,6 +1,7 @@
 const mongoCollections = require("../config/mongoCollection");
 const courses = mongoCollections.courses;
 const { ObjectId } = require("mongodb");
+const validateRev = require("../validation/reviewValidate");
 const video_func = require("./videos");
 const users = mongoCollections.users;
 
@@ -14,11 +15,13 @@ module.exports = {
         }
         let videos=[];
         let newCourse={
-            courseName:courseName,
-            email:email,
-            description:description,
-            image:image,
-            videos:videos
+           courseName:courseName,
+           email:email,
+           description:description,
+           image:image,
+           videos:videos,
+           reviews: [],
+           overallRating: 0.0,
         }
         const insertInfo = await courseCollection.insertOne(newCourse);
         if (!insertInfo.insertedId)
@@ -40,6 +43,7 @@ module.exports = {
             }
             return {courseInserted: true};
         }
+
 
     },
     async getInstCourses(email){
@@ -81,6 +85,45 @@ module.exports = {
         const course = await courseCollection.findOne({ courseName: name});
         return course;
     },
+
+    async addReview(courseId, uId, text, rating){
+        validateRev.checkRating(rating);
+        rating = Number.parseInt(rating);
+        validateRev.checkText(text);
+        text = text.trim();
+        const courseCollection = await courses();
+        const currCourse = await this.getCourseById(courseId);
+        
+        const newReview = {
+            _id: ObjectId(),
+            userId: uId,
+            text: text,
+            rating: rating,
+        }
+
+        console.log('inside addReview',text, rating)
+        console.log('inside addReview',currCourse.overallRating, currCourse.reviews.length)
+        
+        let newRating = ((currCourse.overallRating*currCourse.reviews.length)+rating)/(currCourse.reviews.length+1);
+        if(currCourse.reviews.length===0)
+            newRating = rating;
+            
+        console.log('\n new rat: ',Number(newRating))
+        const updatedInfo = await courseCollection.updateOne(
+            { _id: ObjectId(courseId) },
+            { $addToSet: {reviews: newReview} }
+        );
+        if (updatedInfo.modifiedCount === 0) {
+            throw 'could not update course';
+        }
+        const updatedRating = await courseCollection.updateOne(
+            { _id: ObjectId(courseId) },
+            { $set: {overallRating: Number(newRating)} }
+        );
+
+        return {reviewAdded: true};
+    },
+
     async getfilterByBranch(branch) {
         try {
             
@@ -138,6 +181,7 @@ module.exports = {
         if(user_update.modifiedCount === user_update.matchedCount){
             return {Modified:true}
         }
+
     }
 
 }
