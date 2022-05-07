@@ -1,0 +1,13 @@
+<section>
+<a href="/" class="anotherSearch">Make another search</a>
+<h2 class="resultH2">Following are the results for "{{courseSearchTerm}}"</h2>
+
+<ul>
+    
+    <li class="courseList"><a class="courseAnchor" href="/course/{{data.courseName}}">{{data.courseName}} </a></li>
+    
+</ul>
+{{#if hasError}}
+<p class="notFound">{{error}}</p>
+{{/if}}
+</section>

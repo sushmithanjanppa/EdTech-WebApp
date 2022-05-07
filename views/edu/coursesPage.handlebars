@@ -4,13 +4,88 @@
     <div class="col-sm-12">
      <div style="margin-left: 25px;">
     {{#data}}    
-     <a href="/courses/{{_id}}">{{courseName}}</a>
+     <a href="/course/{{{courseName}}}">{{courseName}}</a>
      <p id={{_id}}>{{description}}</p>
-     <form action="/delete/{{_id}}" method="post">
-      <input type="submit" value="delete" /></form>
-     {{!-- <a href="/delete/{{_id}}" action="post">delete {{courseName}} </a> --}}
-     {{/data}}   
-     </div>      
-     <a href="/courseForm">+ Add a Course</a>
+     <div class="center hideform">
+    <button id="close" style="float: right;">X</button>
+    <form class= {{_id}} id="modify_form" method="post" action="/modify">
+        <div class="form-group">
+                <label>
+                    courseName:
+                    <input type="text" name="courseName" />
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    description:
+                    <input type="text" name="description" />
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    Image Link
+                    <input type="text" name="image" />
+                </label>
+            </div>
+            <div class="container1">
+                <button class="add_form_field">Add Video &nbsp; 
+                    <span style="font-size:16px; font-weight:bold;">+ </span>
+                </button>
+                <div><input type="text" name="video_id"></div>
+            </div>
+            <button type="submit" class="submitButton" id="modify_submit">Modify!</button>
+            <input type="text" name="course_id" value={{_id}} hidden>
+    </form>
+    </div>
+    <button id="modify">Modify!</button>
+    <form onsubmit="return confirm('Do you really want to delete the course? This will delete for all users.');" action="/delete/{{_id}}" method="post" >
+    <input type="submit" value="delete" id="delete"/></form>
+
+    {{!-- <a href="/delete/{{_id}}" action="post">delete {{courseName}} </a> --}}
+    {{/data}}   
+    </div>      
+    <a href="/courseForm">+ Add a Course</a>
     </div>
 </div>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+<script>
+    {{!-- $("#delete").click(function(e){
+        var result = confirm("Want to delete?");
+    }) --}}
+    $('#modify').on('click', function () {
+        $('.center').show();
+        $(this).hide();
+    })
+
+    $('#close').on('click', function () {
+        $('.center').hide();
+        {{!-- $('#show').show(); --}}
+        $('#modify').show();
+    })
+    var max_fields = 5;
+    var wrapper = $(".container1");
+    var add_button = $(".add_form_field");
+
+    var x = 1;
+    $(add_button).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+            x++;
+            $(wrapper).append('<div><input type="text" name="video_id"/><a href="#" class="delete">Delete</a></div>'); //add input box
+        } else {
+            alert('You Reached the limits')
+        }
+    });
+    $(wrapper).on("click", ".delete", function(e) {
+            e.preventDefault();
+            $(this).parent('div').remove();
+            x--;
+        })
+    $('#modify_submit').on('click',function(e){
+        $('.center').hide();
+        {{!-- $('#show').show(); --}}
+        $('#modify').show();
+    })
+    
+</script>
