@@ -40,6 +40,7 @@ module.exports = {
             age: age,
             userType: userType,
             courses: [],
+            tests:[]
         };
 
         const insertUser = await userCollection.insertOne(newUser);
@@ -154,12 +155,44 @@ module.exports = {
             }
         }
         return prog_data
-    } 
+    },
+
+
+async score(email, score, course_name) {
+    validate.validateEmail(email);
+    email = email.trim();
+    email = email.toLowerCase();
+    const userCollection = await users();
+    const user = await userCollection.findOne({ email: email });
+    // console.log(user)
+    let course_info = await courses_func.getCourseByName(course_name)
+    if (!course_info) {
+        throw "Course not found"
+    }
+    else {
+        const found = user.courses.some(el => el._id.equals(course_info._id))
+        // console.log(found)
+        if (found) {
+            user.tests.push([course_info.courseName,score])
+            let update = await userCollection.updateOne({ email: email }, [{ $set: { tests:user.tests}}])
+            if (update.modifiedCount === 0) {
+                throw "Couldnt Send score"
+            }
+            else {
+                console.log({ "Score_sent": true })
+            }
+        }
+        else {
+            throw "Cannot send score, Course not found"
+        }
+    }
+}
 
 }
 
-async function main(){
-    console.log(await module.exports.getUser("pjhangl1@stevens.edu"))
-}
+// async function main(){
+//     // console.log(await module.exports.getUser("pjhangl1@stevens.edu"))
+//     console.log(await module.exports.score("sneha@gmail.com",'100','C'))
+// }
 
 // main();

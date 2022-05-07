@@ -209,6 +209,24 @@ router.post("/enroll", async(req,res) => {
   return;
 })
 
+router.post("/score", async(req,res) => {
+  let email = req.session.user.email
+  let course_name = req.body.course_name
+  let score = req.body.score
+  console.log(req.body)
+  try {
+    await userData.score(email,score,course_name)
+   
+    res.send({message:"Score Updated"})
+  } catch(e) {
+    
+    
+      res.send({message:"Cannot update your score."})
+
+  } 
+  return;
+})
+
 
 
 module.exports = router;

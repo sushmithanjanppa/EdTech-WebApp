@@ -60,10 +60,10 @@ router.get('/:id', async (req, res) => {
             
             correct_Answer[i] = String(resArr[i].answer)
         }
-       
-        console.log(correct_Answer)
-
-        res.render('tests/questions', { title: getRes.name, questions: getRes.questions, qlength:len, solution:JSON.stringify(correct_Answer) });
+    //    getRes.courseName = String(getRes.courseName)
+    //     console.log(getRes)
+        // res.render('tests/questions', { title: getRes.courseName, name:String(getRes.courseName, questions: getRes.questions, qlength:len, solution:JSON.stringify(correct_Answer) });
+        res.render('tests/questions', { course :JSON.stringify(getRes), data: getRes, qlength:len, solution:JSON.stringify(correct_Answer) });
     } catch (error) {
         if (error.message === "Error in id. No course with the given id") {
             res.status(404).json({ error: `No course with the given id` });
