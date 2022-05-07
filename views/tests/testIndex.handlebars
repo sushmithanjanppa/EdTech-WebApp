@@ -1,0 +1,9 @@
+<section>
+  <h1>Choose your Course</h1>
+  {{#each course}}  
+    <article class="course">
+      <h2><a href="/tests/{{_id}}">{{courseName}}</a></h2>
+      <p>{{body}}</p>
+    </article>
+  {{/each}}
+</section>

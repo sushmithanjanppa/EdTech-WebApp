@@ -2,7 +2,7 @@ const mongoCollections = require("../config/mongoCollection");
 const videos = mongoCollections.videos;
 const courses = mongoCollections.courses;
 const users = mongoCollections.users;
-const courses_func = require('./courses')
+// const courses_func = require('./courses')
 // const validation = require('../tasks/validation')
 const { ObjectId } = require("mongodb");
 // const bcrypt = require('bcrypt');
@@ -13,7 +13,7 @@ module.exports = {
         // const videocollection = await videos()
         let newvideo = {
             title: title,
-            video_id: id
+            video_id: id,
         }
         const coursescollection = await courses()
         let courseinfo = await coursescollection.findOne({ courseName: course_name})
@@ -54,16 +54,23 @@ module.exports = {
         // const userCollection = await users();
         // const user = await userCollection.findOne({email: email});
         const userCollection = await users()
-        const coursedata = await courses_func.getCourseByName(course_name)
-        // console.log(coursedata._id)
+        // const coursedata = await courses_func.getCourseByName(course_name)
+        const courseCollection = await courses();
+        const coursedata = await courseCollection.findOne({ courseName: course_name});
+        // console.log(coursedata)
         let courseinfo = await userCollection.find({ email:email },{courses:{$elemMatch:{_id:coursedata._id} }, "courses.videos":1}).toArray();
         // console.log(courseinfo[0].courses)
-        for(var i of courseinfo[0].courses){
-            // console.log(i._id)
-            if(i._id.equals(coursedata._id)){
-                // console.log("IF")
-                return i.videos
+        if(courseinfo){
+            for(var i of courseinfo[0].courses){
+                // console.log(i._id)
+                if(i._id.equals(coursedata._id)){
+                    // console.log("IF")
+                    return i.videos
+                }
             }
+        }
+        else{
+            throw `Not Enrolled in such course`
         }
         // return courseinfo
     },
@@ -148,10 +155,10 @@ async function main(){
         // console.log(await module.exports.createVideo('Demo Video', 'M7lc1UVf-VE', 'Web Programming'))
         // console.log(await module.exports.createVideo('First Video', '3JluqTojuME','Web Programming'))
         // console.log(await module.exports.createVideo('Second Video', 'Q33KBiDriJY', 'Web Programming'))
-        // console.log(await module.exports.getVideos('pjhangl1@stevens.edu','Web Programming'))
+        console.log(await module.exports.getVideos('pjhangl1@stevens.edu','Web Development'))
         // console.log(await module.exports.addtime('pjhangl1@stevens.edu',''))
-
-        console.log(await module.exports.getprogress('pjhangl1@stevens.edu','Web Programming'));
+        console.log(await module.exports.getVideos('teacher@test.com','Graphic'))
+        // console.log(await module.exports.getprogress('pjhangl1@stevens.edu','Web Programming'));
         process.exit(0)
         
     }catch(e){

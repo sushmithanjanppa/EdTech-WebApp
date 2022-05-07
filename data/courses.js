@@ -1,16 +1,22 @@
 const mongoCollections = require("../config/mongoCollection");
 const courses = mongoCollections.courses;
-const video_func = require("./videos");
 const { ObjectId } = require("mongodb");
 const validateRev = require("../validation/reviewValidate");
+const video_func = require("./videos");
+const users = mongoCollections.users;
+
 
 module.exports = {
-    async addCourse(courseName,description, image, video_id){
+    async addCourse(courseName,description, image, video_id, email){
         const courseCollection = await courses();
+        const course = await courseCollection.findOne({ courseName: courseName});
+        if(course){
+            throw "Course with same name Already Exists"
+        }
         let videos=[];
         let newCourse={
            courseName:courseName,
-        //     userId:userId,
+           email:email,
            description:description,
            image:image,
            videos:videos,
@@ -19,20 +25,37 @@ module.exports = {
         }
         const insertInfo = await courseCollection.insertOne(newCourse);
         if (!insertInfo.insertedId)
-        throw "Could not add course";
+            throw "Could not add course";
         else{
             try{
-                for(var i in video_id){
-                    await video_func.createVideo(title='video '+ i, id=video_id[i], course_name = courseName)
+                if (Array.isArray(video_id)){
+                    for(var i in video_id){
+                        await video_func.createVideo(title='video '+ i, id=video_id[i], course_name = courseName)
+                    }
+                }
+                else{
+                    await video_func.createVideo(title='video 0', id=video_id, course_name = courseName)
                 }
             }
             catch(e){
-                throw "couldnt add course"
+                // throw "couldnt add course"
+                console.log(e)
             }
             return {courseInserted: true};
         }
 
-    }, 
+
+    },
+    async getInstCourses(email){
+        const courseCollection = await courses();
+        const courseList = [];
+        await courseCollection.find({email:email}).toArray().then((courses) => {
+            courses.forEach(course => {
+                courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description});
+            });
+        });
+        return courseList;
+    },
     async getAllCourses(){
         const courseCollection = await courses();
         const courseList = [];
@@ -50,6 +73,10 @@ module.exports = {
     },
     async deleteCourse(id){
         const courseCollection = await courses();
+        const userCollection = await users()
+        const update = await userCollection.updateMany({},
+            {$pull : {courses : {_id:  ObjectId(id)}}})
+        // console.log(update)
         const flag = await courseCollection.deleteOne( { "_id" : ObjectId(id) } );
         return flag;
     },
@@ -95,6 +122,83 @@ module.exports = {
         );
 
         return {reviewAdded: true};
+    },
+
+    async getfilterByBranch(branch) {
+        try {
+            
+            const courseCollection = await courses();
+            const course = await courseCollection.find({ branch: branch}).toArray();
+            return course
+            
+        }
+        catch (error) {
+            throw new Error(`Unable to retrieve course. Check again later..`)
+        }
+    },
+    async modifyCourse(data){
+        const courseCollection = await courses();
+        const course = await courseCollection.findOne({"_id":ObjectId(data.course_id)})
+        const course_old = course.courseName
+        if(data.courseName.trim()){
+            course.courseName = data.courseName.trim()
+        }
+        if(data.description.trim()){
+            course.description = data.description.trim()
+        }
+        if(data.image.trim()){
+            course.image = data.trim()
+        }
+        let update = await courseCollection.updateOne({"_id":ObjectId(data.course_id)}, [{$set:course}])
+        if(update.modifiedCount){
+        var cnt = course.videos.length
+        try{
+            if (Array.isArray(data.video_id)){
+                for(var i in data.video_id){
+                    await video_func.createVideo(title='video '+ cnt, id=data.video_id[i], course_name = data.courseName)
+                    cnt = cnt + 1
+                }
+            }
+            else{
+                await video_func.createVideo(title='video '+(cnt+1), id=data.video_id, course_name = data.courseName)
+            }
+        }
+        catch(e){
+            // throw "couldnt add course"
+            console.log(e)
+        }
+        }
+        else(
+            console.log("Cant add course")
+        )
+        const course_up = await courseCollection.findOne({"_id":ObjectId(data.course_id)})
+        const userCollection = await users()
+        // const user_update = await userCollection.updateMany({"courses._id":  ObjectId(data.course_id)},
+        //     {"$push" : {"courses.$.videos" : {"$each": course_up.videos.slice(cnt)}}})
+        const user_update = await userCollection.updateMany({"courses._id":  ObjectId(data.course_id)},
+            {"$set" : {"courses.$" :  course_up}})
+        // console.log(user_update)
+        if(user_update.modifiedCount === user_update.matchedCount){
+            return {Modified:true}
+        }
+
     }
 
 }
+
+async function main(){
+    // console.log(await module.exports.getInstCourses("courses@gmail.com"))
+    // console.log(await module.exports.deleteCourse("627567e57fa68b4567ec4017"))
+    const data = {
+        courseName: 'Temp',
+        description: 'This is a temp course',
+        image: '',
+        video_id: [ '3JluqTojuME', 'rfscVS0vtbw' ],
+        course_id: '6275b26aeb6dba4d69c80d9e'
+    }
+    console.log(await module.exports.modifyCourse(data))
+}
+
+// main();
+
+// main();

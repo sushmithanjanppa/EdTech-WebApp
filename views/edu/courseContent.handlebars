@@ -2,13 +2,15 @@
 {{> navbar this}}
 <div class="row">
     <div class="col-sm-12">
-     <div style="margin-left: 25px;">
-         <h3>
+        <div style="margin-left: 25px;">
+            <h3>
             Course Description:  <br> <br>
-         <p id="desc"></p></h3>
-         <form method = "post" action = "/enroll">
-            <input name = "Data" id="data" hidden>
-            <input type = "submit" id = "enroll" class="enroll" name = "enroll"  value = "Enroll Now" >
+            <p id="desc"></p></h3>
+        <form method = "post">
+        <input name = "Data" id="data" hidden>
+        <input type = "submit" id = "enroll" class="enroll" name = "enroll"  value = "Enroll Now" >
+        <button id="video" hidden>Go to Videos!</button>
+
         </form>
 
         {{#if notLoggedIn}}
@@ -90,6 +92,38 @@
     $("#course_name").html(course.courseName)
     $("#desc").html(course.description)
     $("#data").attr("value",course.courseName)
+
+    $(document).ready(function() {
+    $("#enroll").click(function(e) {
+        e.preventDefault();
+        $.ajax({
+        type: "POST",
+        url: "/enroll",
+        dataType: "json",
+        {{!-- jsonpCallback: "_callback", --}}
+        data: {
+            course_name: course.courseName
+        },
+        success: function(result) {
+            console.log(result)
+            alert(result.message);
+            $('#enroll').hide()
+            $('#video').show()
+        },
+        error: function(result) {
+            console.log(result)
+            alert('error');
+        }
+        });
+    });
+
+    $("#video").click(function(e) {
+        e.preventDefault();
+        window.location.href = "/video/"+course.courseName;
+        return false;
+    });
+    
+    });
 </script>
 
 <script>

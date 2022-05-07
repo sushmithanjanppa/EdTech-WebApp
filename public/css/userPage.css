@@ -133,3 +133,7 @@
     border-radius: 4px;
     width: 300px;
 }
+
+.inner{
+    cursor: pointer;
+}
