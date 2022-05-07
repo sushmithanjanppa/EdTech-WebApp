@@ -10,12 +10,14 @@ const samePageNavs = {
   about: "#about",
   courses: "#courses",
   reviews: "#reviews",
+  team: "#team"
 };
 const crossPageNavs = {
   top: "/#top",
   about: "/#about",
   courses: "/#courses",
   reviews: "/#reviews",
+  team: "/#team"
 };
 
 
@@ -55,13 +57,14 @@ router.post("/signup", async (req, res) => {
 
     const newUser = await userData.createUser(name, email, password, gender, age, userType);
     if (newUser.userInserted) {
-      return res.redirect("/");
+      return res.redirect("/#about");
     }
   } catch (e) {
     return res.status(e.b || 500).render("users/signup", {
       title: "Signup Page",
       error: e || "Internal Server Error",
       hasErrors: true,
+      notLoggedIn: req.session.user ? false : true
     });
   }
 });
@@ -70,6 +73,8 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   let email = req.body.email;
   let password = req.body.password;
+
+  var course_i = await courses.getAllCourses()
 
   try {
     await validate.validateEmail(email);
@@ -87,6 +92,8 @@ router.post("/login", async (req, res) => {
         title: "Login Page",
         error: "Either the email or password is invalid",
         hasErrors: true,
+        notLoggedIn: req.session.user ? false : true,
+        course_info:JSON.stringify(course_i)
       });
       return;
     }
@@ -95,6 +102,8 @@ router.post("/login", async (req, res) => {
       title: "Login Page",
       error: e,
       hasErrors: true,
+      notLoggedIn: req.session.user ? false : true,
+      course_info:JSON.stringify(course_i)
     });
     return;
   }
@@ -118,9 +127,9 @@ router.get('/video/:course', async(req,res) => {
     else{
       var course_name = "Web Development"
     }
-    // let email = req.session.user.email
+    let email = req.session.user.email
     // console.log(course_name)
-    let email = 'pjhangl1@stevens.edu'
+    
     // console.log(req)
     try{
       var data = await videos.getVideos(email,course_name);
@@ -143,7 +152,7 @@ router.get('/allCourses',async(req,res)=>{
 })
 router.get('/viewAllCourses',async(req,res)=>{
   let courseList = await courses.getAllCourses();
-  return res.render('edu/allCoursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true, location: crossPageNavs})
+  return res.render('edu/allCoursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true, location: crossPageNavs, search: false})
 })
 router.post('/delete/:_id',async(req,res)=>{
     let flag = await courses.deleteCourse(req.params._id);

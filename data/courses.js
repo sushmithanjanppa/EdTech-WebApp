@@ -1,9 +1,11 @@
 const mongoCollections = require("../config/mongoCollection");
 const courses = mongoCollections.courses;
 const { ObjectId } = require("mongodb");
-
+const video_func = require("./videos");
+// const { users } = require(".");
 
 module.exports = {
+
     async addCourse(courseName,description, image, video_id, email){
         const courseCollection = await courses();
         let videos=[];
@@ -35,6 +37,7 @@ module.exports = {
         }
 
     },
+    
     async getInstCourses(email){
         const courseCollection = await courses();
         const courseList = [];
@@ -62,6 +65,7 @@ module.exports = {
     },
     async deleteCourse(id){
         const courseCollection = await courses();
+        // const userCollection = await users()
         const flag = await courseCollection.deleteOne( { "_id" : ObjectId(id) } );
         return flag;
     },
@@ -85,8 +89,8 @@ module.exports = {
 
 }
 
-async function main(){
-    console.log(await module.exports.getInstCourses("courses@gmail.com"))
-}
+// async function main(){
+//     console.log(await module.exports.getInstCourses("courses@gmail.com"))
+// }
 
 // main();
