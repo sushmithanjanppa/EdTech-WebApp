@@ -22,7 +22,7 @@ const constructorMethod = (app) => {
     app.use('/course', userRoutes);
 
     app.use('*', (req, res) => {
-      res.status(404).send("Page not found");
+      res.status(404).render("users/404");
     });
 
 };
