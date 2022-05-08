@@ -1,14 +1,19 @@
-<h2 style="margin-left: 25px;" id="course_name"></h2>
+<h1 style="margin-left: 25px;" id="course_name"></h1>
 {{> navbar this}}
 <div class="row">
     <div class="col-sm-12">
+
      <div style="margin-left: 25px;">
-         <h3>
+         <h2>
             Course Description:  <br> <br>
-         <p id="desc"></p></h3>
-         <form method = "post" action = "/enroll">
-            <input name = "Data" id="data" hidden>
-            <input type = "submit" id = "enroll" class="enroll" name = "enroll"  value = "Enroll Now" >
+         <p id="desc"></p></h2>
+      
+        <form method = "post">
+        <input name = "Data" id="data" hidden>
+        <input type = "submit" id = "enroll" class="enroll" name = "enroll"  value = "Enroll Now" >
+        <button id="video" hidden>Go to Videos!</button>
+
+
         </form>
 
         {{#if notLoggedIn}}
@@ -24,7 +29,7 @@
                                     <textarea name="reviewtext" id="reviewtext" class="form-control" placeholder="type here" required></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <h4>Rate Course: </h4>
+                                    <h3>Rate Course: </h3>
                                     <input type="number" min="0" max="5" id="reviewrating" class="form-control" placeholder="enter rating" required>
                                 </div>
                                 <div class="form-group">
@@ -37,21 +42,21 @@
             </div>                     
         {{/if}}
 
-        <div id="hiddenrev" hidden>
+        <div id="hiddenrev">
             <div class="container my-5 py-5">
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-12 col-lg-10">
                         <div class="card text-dark">
                             <div class="card-body p-4">
-                                <h4 class="mb-0">Recent reviews</h4>
+                                <h3 class="mb-0">Recent reviews</h3>
                                 <p class="fw-light mb-4 pb-2">Latest reviews by users</p>
                                 <hr class="my-0" />
                                 <ul id="commentList" class="list-group"></ul>
                                 {{#if flag}}
                                     <div class="card-body p-4">
-                                        <div class="d-flex flex-start">
+                                        <div class="d-flex flex-start" >
                                             <div>
-                                                <h6 class="fw-bold mb-1">This course has no reviews yet!</h6>
+                                                <h6 class="fw-bold mb-1" id = "NoReview">This course has no reviews yet!</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -60,7 +65,7 @@
                                         <div class="card-body p-4">
                                             <div class="d-flex flex-start">
                                                 <div>
-                                                    <h6 class="fw-bold mb-1">{{name}}</h6>
+                                                    <h5 class="fw-bold mb-1">{{name}}</h5>
                                                     <div class="d-flex align-items-center mb-3">
                                                     </div>
                                                     <p class="mb-0">
@@ -90,7 +95,6 @@
     $("#course_name").html(course.courseName)
     $("#desc").html(course.description)
     $("#data").attr("value",course.courseName)
-</script>
 
     $(document).ready(function() {
     $("#enroll").click(function(e) {
@@ -104,7 +108,7 @@
             course_name: course.courseName
         },
         success: function(result) {
-            {{!-- console.log(result) --}}
+            console.log('inside success')
             alert(result.message);
             $('#enroll').hide()
             $('#video').show()
@@ -133,6 +137,7 @@
 
     $('#post-comment').on('click', function(event) {
         event.preventDefault();
+        $('#NoReview').hide()
         var sendData = {
             courseName: course.courseName,
             text: $('#reviewtext').val(),
@@ -149,7 +154,7 @@
         function checkRating(rating){
         if(typeof(rating)==='undefined') throw "Please provide a rating";
         if(rating.trim().length===0) throw "Must provide a rating";
-        rating = Number.parseInt(rating);
+        rating = Number(rating);
         if(typeof(rating)!='number') throw 'Rating should be a number';
         if(rating>5 || rating<0) throw 'Rating must be between 0-5';
         }

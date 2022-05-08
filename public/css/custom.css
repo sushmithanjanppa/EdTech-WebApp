@@ -18,8 +18,8 @@
 	box-sizing: border-box;
 }
 
-.error {
-    color: red;
+p.error {
+    color: #ff3939;
     font-weight: bold;
 }
 
@@ -76,5 +76,5 @@ textarea:focus, input:focus {
 }
 
 input, select, textarea{
-    color: rgb(167, 233, 54);
+    color: #598200;
 }

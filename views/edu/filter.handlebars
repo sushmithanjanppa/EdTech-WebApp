@@ -1,8 +1,9 @@
+ {{> navbar this}}
  <button id="filterButton">Filter</button>
   <ul id="courseList"></ul>
 <section>
-<a href="/filter" class="anotherSearch">Make another search</a>
-<h2 class="resultH2">Following are the results for "{{filterSearchTerm}}"</h2>
+<a href="/viewAllCourses" class="anotherSearch">Make another search</a>
+<h1 class="resultH1">Following are the results for "{{filterSearchTerm}}"</h1>
  <ul>
     {{#each data}}
     <li class="courseList"><a class="courseAnchor" href="/course/{{courseName}}">{{courseName}} </a></li>

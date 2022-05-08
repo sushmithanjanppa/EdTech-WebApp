@@ -21,13 +21,18 @@
     font-size: 3em;
     line-height: normal;
   }
-
+  h1.info{
+    color: #000000;
+  }
   h2 {
     color: #353535;
     font-size: 2em;
     padding-bottom: 10px;
   }
 
+  h2.info{
+    color: #000000;
+  }
   h3 {
     font-size: 1.5em;
     margin-bottom: 0;
@@ -39,7 +44,7 @@
   }
 
   p {
-    color: #757575;
+    color: #737373;
     font-size: 14px;
     font-weight: normal;
     line-height: 24px;
@@ -65,7 +70,7 @@
   }
 
   a:hover, a:active, a:focus {
-    color: #29ca8e;
+    color: #008b00;
     outline: none;
   }
 
@@ -232,7 +237,7 @@
 
   .custom-navbar {
     background: #ffffff;
-    border-top: 5px solid #29ca8e;
+    border-top: 5px solid #008b00;
     border-bottom: 0;
     -webkit-box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
@@ -259,7 +264,7 @@
   }
 
   .custom-navbar .navbar-nav.navbar-right li a .fa {
-    background: #29ca8e;
+    background: #008b00;
     border-radius: 100%;
     color: #ffffff;
     width: 30px;
@@ -283,12 +288,12 @@
   }
 
   .custom-navbar .nav li a:hover {
-    background-color: #29ca8e;
+    background-color: #008b00;
     color: #ffffff;
   }
 
   .custom-navbar .nav li.active > a {
-    background-color: #29ca8e;
+    background-color: #008b00;
     color: #ffffff;
   }
 
@@ -353,16 +358,17 @@
   .caption h3 a:hover { color: #FF3; }
 
   .home-slider .item-first {
-    background-image: url(../images/slider-image1.jpg);
+    background-image: url(../images/slider3.jpg);
 	background-position: center;
   }
 
   .home-slider .item-second {
-    background-image: url(../images/slider-image2.jpg);
+    background-image: url(../images/EdTech1-01.png);
   }
 
   .home-slider .item-third {
-    background-image: url(../images/slider-image3.jpg);
+    background-image: url(../images/slider-image2.jpg);
+
   }
 
 
@@ -409,7 +415,7 @@
   }
 
   #about figure span i {
-    background: #29ca8e;
+    background: #008b00;
     border-radius: 50px;
     color: #ffffff;
     font-size: 25px;
@@ -538,7 +544,7 @@
   }
 
   .courses-price span {
-    background: #29ca8e;
+    background: #008b00;
     border-radius: 2px;
     color: #ffffff;
     display: block;
@@ -622,7 +628,7 @@
   }
 
   .tst-author span {
-    color: #808080;
+    color: #000000;
     font-size: 14px;
   }
 
@@ -755,7 +761,7 @@
   }
 
   .newsletter-form input[type="submit"]:hover {
-    background: #29ca8e;
+    background: #008b00;
     border-color: transparent;
   }
 
@@ -783,7 +789,7 @@
 
   .social-icon li a {
     border-radius: 100px;
-    color: #29ca8e;
+    color: #008b00;
     font-size: 15px;
     width: 35px;
     height: 35px;
@@ -796,7 +802,7 @@
   }
 
   .social-icon li a:hover {
-    background: #29ca8e;
+    background: #008b00;
     color: #ffffff;
   }
 
