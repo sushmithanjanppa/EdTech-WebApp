@@ -6,6 +6,7 @@ const courseData = data.courses;
 const user = require("../data/users")
 
 
+
 router.get('/', async (req, res) => {
     if(req.session.user){
     try {
