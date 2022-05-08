@@ -2,7 +2,11 @@ const mongoCollections = require("../config/mongoCollection");
 const courses = mongoCollections.courses;
 const { ObjectId } = require("mongodb");
 const validateRev = require("../validation/reviewValidate");
+<<<<<<< Updated upstream
 const video_func = require("./videos");
+=======
+
+>>>>>>> Stashed changes
 const users = mongoCollections.users;
 
 module.exports = {
