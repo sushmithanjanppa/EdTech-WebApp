@@ -6,13 +6,15 @@
     {{#data}}    
      <a href="/course/{{{courseName}}}">{{courseName}}</a>
      <p id={{_id}}>{{description}}</p>
-     <div class="center hideform">
-    <button id="close" style="float: right;">X</button>
-    <form class= {{_id}} id="modify_form" method="post" action="/modify">
+     {{!-- <div class="center hideform"> --}}
+    <div class="center{{_id}} hideform">
+    <button class="close" value = {{_id}} style="float: left">X</button>
+    <form class= 'mod_form' id="form{{_id}}" method="post" action="/modify">
+    {{!-- <button class="close" value = {{_id}}>X</button> --}}
         <div class="form-group">
                 <label>
                     courseName:
-                    <input type="text" name="courseName" />
+                    <input type="text" name="courseName" required/>
                 </label>
             </div>
             <div class="form-group">
@@ -33,11 +35,11 @@
                 </button>
                 <div><input type="text" name="video_id"></div>
             </div>
-            <button type="submit" class="submitButton" id="modify_submit">Modify!</button>
+            <button type="submit" class="submitButton" id="modify_submit" >Modify!</button>
             <input type="text" name="course_id" value={{_id}} hidden>
     </form>
     </div>
-    <button id="modify">Modify!</button>
+    <button class="modify" value={{_id}} id="modify{{_id}}">Modify!</button>
     <form onsubmit="return confirm('Do you really want to delete the course? This will delete for all users.');" action="/delete/{{_id}}" method="post" >
     <input type="submit" value="delete" id="delete"/></form>
 
@@ -53,15 +55,22 @@
     {{!-- $("#delete").click(function(e){
         var result = confirm("Want to delete?");
     }) --}}
-    $('#modify').on('click', function () {
-        $('.center').show();
+    $('.modify').on('click', function () {
+        {{!-- console.log($(this).val()) --}}
+        var form_id = '.center'+$(this).val()
+        {{!-- console.log(form_id) --}}
+        $(form_id).show();
         $(this).hide();
     })
 
-    $('#close').on('click', function () {
-        $('.center').hide();
+    $('.close').on('click', function () {
+        {{!-- console.log("click") --}}
+        var modi_id = '#modify'+$(this).val()
+        var form_id = '.center'+$(this).val()
+        {{!-- console.log(modi_id) --}}
+        $(form_id).hide();
         {{!-- $('#show').show(); --}}
-        $('#modify').show();
+        $(modi_id).show();
     })
     var max_fields = 5;
     var wrapper = $(".container1");

@@ -193,7 +193,7 @@ module.exports = {
                     cnt = cnt + 1
                 }
             }
-            else{
+            else if(data.video_id.trim()){
                 await video_func.createVideo(title='video '+(cnt+1), id=data.video_id, course_name = data.courseName)
             }
         }
@@ -240,7 +240,9 @@ async function main(){
         email:"teacher@test.com"
     }
     // console.log(await module.exports.addCourse(data.courseName,data.description,data.image,data.video_id,data.branch,data.email))
-    console.log(await module.exports.getAllCourses())
+    // console.log(await module.exports.getAllCourses())
+    const c = await module.exports.getCourseByName('Web Development')
+    console.log(c._id.toString())
 }
 
 // main();
