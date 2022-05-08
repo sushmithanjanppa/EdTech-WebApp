@@ -5,7 +5,7 @@ const static = express.static(__dirname + '/public');
 const configRoutes = require('./routes');
 const exphbs = require('express-handlebars');
 const Handlebars = require('handlebars');
-
+const validate = require('./validation/userValidate');
 const crossPageNavs = {
   top: "http://localhost:3000/#top",
   // team: "http://localhost:3000/#team",
@@ -54,14 +54,7 @@ const crossPageNavs = {
 //     }
 // });
 
-// app.use('/signup', async (req, res, next) => {
-//     if (req.session.user) {
-//         return res.redirect('/private');
-//     } else {
-//         //here I',m just manually setting the req.method to post since it's usually coming from a form
-//         // return res.redirect('/');
-//         next();
-// }});
+
 
 const handlebarsInstance = exphbs.create({
     defaultLayout: "main",
@@ -137,15 +130,32 @@ app.use('/userPage', (req, res, next) => {
 
 app.use('/login', (req, res, next) => {
   if (req.session.user) {
-    return res.redirect('/userPage');
+    return res.status(403).redirect('/userPage');
   } else if(req.method=='GET') {
     res.redirect("/#about")
   } else {
-    req.method = 'POST';
     next();
 
   }
 });
+
+app.use('/tests', async(req, res, next) => {
+  if (!req.session.user) {
+    return res.status(403).redirect('/userPage');
+} else {
+    //here I',m just manually setting the req.method to post since it's usually coming from a form
+    // return res.redirect('/');
+    next();
+}});
+
+app.use('/signup', async (req, res, next) => {
+  if (req.session.user) {
+      return res.status(403).redirect('/userPage');
+  } else {
+      //here I',m just manually setting the req.method to post since it's usually coming from a form
+      // return res.redirect('/');
+      next();
+}});
 
 configRoutes(app);
 

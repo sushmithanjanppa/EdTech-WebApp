@@ -46,8 +46,14 @@
 
 
 a:link {
-    color: #2d76e2;
+    color: #4f86e9;
 }
+a.sign-up-link{
+    color:#2074e1;
+}
+a.course{
+    color: #2074e1;
+} 
 a:visited {
     color: #90e36e;
 }
