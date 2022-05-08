@@ -1,58 +1,68 @@
-  <section>
+{{> navbar this}}
+<section>
   <h1>Take a Test</h1>
-   <form>
-         <fieldset>
-  <ul>
-  {{#each questions}}  
-    
-      <li class="tests"><a class="Anchor" href="/tests/{{_id}}/{{name}}"></a>
-      <section id="{{sectionid}}" class="questions">
-          <span class="choice_error">Please select a choice</span></p>
-           <p> {{question}} <span class="error"></span></p>
-          
-        <label ><input type="radio" name={{_id}}  value={{answer1}}>{{answer1}}<span></span></label>
-        <label ><input type="radio" name={{_id}} value={{answer2}}>{{answer2}}<span></span></label>
-        <label ><input type="radio" name={{_id}} value={{answer3}}>{{answer3}}<span></span></label> 
-        <label ><input type="radio" name={{_id}} value={{answer4}}>{{answer4}}<span></span></label> 
-        
-         <br>
-        <br>
-    </section>
-    </li>
-  {{/each}}
-  </ul>
-  <input type = "hidden" id = "thingIWant" value = {{solution}} />
-  <input id="questionButton" type="button" onclick="returnResults()" value="Show Results" />
+  <form>
+    <fieldset>
+      <ul>
+        {{#each data.questions}}
+
+        <li class="tests"><a class="Anchor" href="/tests/{{_id}}/{{name}}"></a>
+          <section id="{{sectionid}}" class="questions">
+            <span class="choice_error">Please select a choice</span></p>
+            <p> {{question}} <span class="error"></span></p>
+
+            <label><input type="radio" name={{_id}} value="{{answer1}}">{{answer1}}<span></span></label>
+            <label><input type="radio" name={{_id}} value="{{answer2}}">{{answer2}}<span></span></label>
+            <label><input type="radio" name={{_id}} value="{{answer3}}">{{answer3}}<span></span></label>
+            <label><input type="radio" name={{_id}} value="{{answer4}}">{{answer4}}<span></span></label>
+
+            <br>
+            <br>
+          </section>
+        </li>
+        {{/each}}
+      </ul>
+      <form method="post"></form>
+      <input type="hidden" id="result" class="result" name="result" value={{solution}} />
+      <input id="questionButton" type="button" value="Show Results" />
+
+  </form>
+  <p id="results"></p>
   <br>
         <br>
    <button type="Retake" name ="Retake" > Retake Quiz</button>
   <br><br>
   
-  <p id="results"></p>
-  <a href="/layouts/main">Click here to go Back</a>
-</fieldset>
+
+  <br><br>
+  <a href="/tests">Click here to go Back</a>
+  </fieldset>
   </form>
-  </section>
-   
-   <script> 
+</section>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 
-var solutions = {{{solution}}}
-console.log(solutions)
-sum = solutions.length;
+<script>
+
+  var solutions = {{{ solution }}}
+  {{!-- console.log(solutions) --}}
+  sum = solutions.length;
 
 
-function getSolution(QuestID) {
-  var answer = document.querySelector(
-    "#" + QuestID + " input[type=radio]:checked"
-  );
+  function getSolution(QuestID) {
+    var answer = document.querySelector(
+      "#" + QuestID + " input[type=radio]:checked"
+    );
 
-  if (answer === null) {
-    document.querySelector("#" + QuestID + " .error").style.display =
-      "inline";
-  } else {
-    document.querySelector("#" + QuestID + " .error").style.display =
-      "";
-    answer = answer.value;
+    if (answer === null) {
+      document.querySelector("#" + QuestID + " .error").style.display =
+        "inline";
+    } else {
+      document.querySelector("#" + QuestID + " .error").style.display =
+        "";
+      answer = answer.value;
+    }
+
+    return answer;
   }
 
   return answer;
@@ -61,8 +71,17 @@ function getSolution(QuestID) {
 function getTotal() {
   var score = 0;
 
-  for (var i = 0; i < sum; i++) {
-    {{!-- document.getElementById("set" + i).innerHTML = "";  --}}
+      {{!-- console.log(document.querySelector(
+        "#" + `section${i + 1}` + " input[type=radio]:checked"
+      )) --}}
+      try{
+      var subSolution = document.querySelector(
+        "#" + `section${i + 1}` + " input[type=radio]:checked"
+      ).nextElementSibling;
+      }
+      catch(e){
+          subSolution = {textContent:0}
+      }
 
     
      console.log(document.querySelector(
@@ -126,8 +145,31 @@ var getResults = function() {
 
 function returnResults() {
     var result = getResults();
-    console.log(result)
-  document.getElementById("results").innerHTML = result[0];
-}
-</script>
+    document.getElementById("results").innerHTML = result[0];
+    {{!-- console.log({{{data}}}) --}}
+    {{!-- var c_name = String({{{data.courseName}}}) --}}
+    var c_name = {{{course}}}
+      e.preventDefault();
+      $.ajax({
+        type: "POST",
+        url: "/score",
+        dataType: "json",
+        {{!-- jsonpCallback: "_callback", --}}
+        data: {
+           course_name: c_name.courseName,
+           score: result[1]
+              },
+    success: function (result_s) {
+      {{!-- console.log(result_s) --}}
+      alert(result_s.message);
+    },
+    error: function (result_s) {
+      {{!-- console.log(result_s) --}}
+      alert('error');
+    }
+        });
   
+
+    });
+ 
+</script>

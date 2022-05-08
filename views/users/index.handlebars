@@ -648,7 +648,7 @@
      }
      var count = 1
      for (var i of courses){
-          console.log(i)
+          {{!-- console.log(i) --}}
           const html_temp = `<div class="col-md-4 col-sm-4">
                                    <div class="item">
                                         <div class="courses-thumb">
@@ -658,10 +658,10 @@
                                                        <img src=${i.image} class="img-responsive" alt="">
                                                        
                                                   </div>
-                                                  <div class="courses-date">
+                                                  {{!-- <div class="courses-date">
                                                        <span><i class="fa fa-calendar"></i> 12 / 7 / 2018</span>
                                                        <span><i class="fa fa-clock-o"></i> 7 Hours</span>
-                                                  </div>
+                                                  </div> --}}
                                              </div>
 
                                              <div class="courses-detail">

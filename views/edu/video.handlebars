@@ -20,6 +20,60 @@
  
     {{!-- <div class="wrapper" id="wrapper"></div> --}}
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+    
+    <script>
+        var vidData = {{{videodata}}}
+        {{!-- console.log(vidData) --}}
+        $('#post-comment').on('click', function(event) {
+                event.preventDefault();
+                var sendData = {
+                    vidId: 0, 
+                    text: $('#reviewtext').val(),            
+                };
+
+                function checkText(text){
+                if(typeof(text)==='undefined') throw "Please provide a review";
+                if(typeof(text)!='string') throw "Review must be a string";
+                text = text.trim();
+                if(text.length===0) throw "Empty review, Please provide a review";
+                }
+
+                try{
+                    checkText(sendData.text);
+
+                    var ajaxReq = $.ajax({
+                    type: "POST",
+                    url: "http://localhost:3000/course/"+sendData.courseName,
+                    data: sendData,
+                    dataType: "json",
+                });
+
+                ajaxReq.success(function (data, status, jqXhr) {
+                    $('#commentList').append(`
+                    <div class="card-body p-4">
+                        <div class="d-flex flex-start">
+                        <div>
+                            <h6 class="fw-bold mb-1">${data.name}</h6>
+                            <div class="d-flex align-items-center mb-3">
+                            </div>
+                            <p class="mb-0">
+                            ${$('#reviewtext').val()}
+                            </p>
+                        </div>
+                        </div>
+                    </div> `);
+                })
+
+                ajaxReq.error(function(jqXHR, textStatus, errorThrown) {
+                    alert(textStatus + ": Failed ajax request" + errorThrown);
+                });
+                }catch(e){
+                    console.log(e);
+                    alert(e);
+                }
+        });
+    </script>
+    
     <script>
         var playerInfoList = {{{videodata}}}
         {{!-- console.log(playerInfoList) --}}

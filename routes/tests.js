@@ -3,16 +3,20 @@ const { tests } = require('../data');
 const router = express.Router();
 const data = require('../data');
 const courseData = data.courses;
+const user = require("../data/users")
 
 
 router.get('/', async (req, res) => {
+    if(req.session.user){
     try {
-        console.log('asd');
-        const allCourses = await courseData.getAllCourses();
-        res.render('tests/testIndex', { title: `course`, course: allCourses });
+        // console.log('asd');
+        const allCourses = await user.get_user_courses(req.session.user.email);
+        res.status(200).render('tests/testIndex', { title: `course`, course: allCourses.courses });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
+    }
+    else res.status(400).json({error:"Login to view test."})
 });
 
 router.post('/', async (req, res) => {

@@ -109,7 +109,7 @@ module.exports = {
                 throw "Couldnt Enroll"
             }
             else{
-                console.log({"Enrolled":true})
+                // console.log({"Enrolled":true})
             }
         }
         else{
@@ -156,6 +156,7 @@ module.exports = {
         const userCollection = await users();
         const user = await userCollection.findOne({email: email},{$project:{courses:1}});
         // console.log(user)
+        // var user = {courses: user_courses}
         var prog_data = []
         for (var i of user.courses){
             if (i.courseName){
@@ -164,6 +165,15 @@ module.exports = {
             }
         }
         return prog_data
+    },
+
+    async get_user_courses(email){
+        validate.validateEmail(email);
+        email = email.trim();
+        email = email.toLowerCase();
+        const userCollection = await users();
+        const user = await userCollection.findOne({email: email},{$project:{courses:1}});
+        return user
     },
     
     async editUserInfo(email, name, gender, age, userType){
@@ -229,7 +239,38 @@ module.exports = {
         }
 
         return {UserUpdated: true} ;
+    },
+
+
+    async score(email, score, course_name) {
+    validate.validateEmail(email);
+    email = email.trim();
+    email = email.toLowerCase();
+    const userCollection = await users();
+    const user = await userCollection.findOne({ email: email });
+    // console.log(user)
+    let course_info = await courses_func.getCourseByName(course_name)
+    if (!course_info) {
+        throw "Course not found"
     }
+    else {
+        const found = user.courses.some(el => el._id.equals(course_info._id))
+        // console.log(found)
+        if (found) {
+            user.tests.push([course_info.courseName,score])
+            let update = await userCollection.updateOne({ email: email }, [{ $set: { tests:user.tests}}])
+            if (update.modifiedCount === 0) {
+                throw "Couldnt Send score"
+            }
+            else {
+                // console.log({ "Score_sent": true })
+            }
+        }
+        else {
+            throw "Cannot send score, Course not found"
+        }
+    }
+}
 
 }
 

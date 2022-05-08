@@ -37,7 +37,7 @@ function getTotal() {
     var subSolution = document.querySelector(
       "#" + `section${i + 1}` + " input[type=radio]:checked"
     ).nextElementSibling;
-console.log(subSolution)
+// console.log(subSolution)
     
     if (getSolution("section" + (i + 1)) == solutions[i]) {
       score += 1;
