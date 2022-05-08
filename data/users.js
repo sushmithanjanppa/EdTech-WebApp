@@ -110,7 +110,7 @@ module.exports = {
                 throw "Couldnt Enroll"
             }
             else{
-                console.log({"Enrolled":true})
+                // console.log({"Enrolled":true})
             }
         }
         else{
@@ -157,6 +157,7 @@ module.exports = {
         const userCollection = await users();
         const user = await userCollection.findOne({email: email},{$project:{courses:1}});
         // console.log(user)
+        // var user = {courses: user_courses}
         var prog_data = []
         for (var i of user.courses){
             if (i.courseName){
@@ -165,6 +166,15 @@ module.exports = {
             }
         }
         return prog_data
+    },
+
+    async get_user_courses(email){
+        validate.validateEmail(email);
+        email = email.trim();
+        email = email.toLowerCase();
+        const userCollection = await users();
+        const user = await userCollection.findOne({email: email},{$project:{courses:1}});
+        return user
     },
     
     async editUserInfo(email, name, gender, age, userType){
@@ -232,7 +242,7 @@ module.exports = {
         return {UserUpdated: true} ;
     },
 
-async score(email, score, course_name) {
+    async score(email, score, course_name) {
     validate.validateEmail(email);
     email = email.trim();
     email = email.toLowerCase();
@@ -253,7 +263,7 @@ async score(email, score, course_name) {
                 throw "Couldnt Send score"
             }
             else {
-                console.log({ "Score_sent": true })
+                // console.log({ "Score_sent": true })
             }
         }
         else {

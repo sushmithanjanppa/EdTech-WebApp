@@ -3,32 +3,35 @@ const courses = mongoCollections.courses;
 const video_func = require("./videos");
 const { ObjectId } = require("mongodb");
 const validateRev = require("../validation/reviewValidate");
-
-const video_func = require("./videos");
 const users = mongoCollections.users;
 
 module.exports = {
-    async addCourse(courseName, description, image, video_id, branch) {
-
+    async addCourse(courseName, description, image, video_id, branch, email) {
         const courseCollection = await courses();
         const course = await courseCollection.findOne({ courseName: courseName});
         if(course){
             throw "Course with same name Already Exists"
         }
+        var uname = courseName.split(" ").map(cname => {
+            return cname[0].toUpperCase() + cname.slice(1);
+        })
+        
+        courseName = uname.join(" ");
         let videos = [];
         let newCourse = {
-             courseName:courseName,
-             email:email,
-             description:description,
-             image:image,
-             videos:videos,
-             reviews: [],
-             overallRating: 0.0,
-             questions: []
+            courseName:courseName,
+            email:email,
+            description:description,
+            image:image,
+            videos:videos,
+            reviews: [],
+            overallRating: 0.0,
+            questions: [],
+            branch: branch
         }
         const insertInfo = await courseCollection.insertOne(newCourse);
         if (!insertInfo.insertedId)
-        throw "Could not add course";
+            console.log("Could not add course")
         else{
             try{
                 if (Array.isArray(video_id)){
@@ -36,9 +39,10 @@ module.exports = {
                         await video_func.createVideo(title='video '+ i, id=video_id[i], course_name = courseName)
                     }
                 }
-                // else{
-                //     await video_func.createVideo(title='video 0', id=video_id, course_name = courseName)
-                // }
+                else if(video_id){
+                    await video_func.createVideo(title='video 0', id=video_id, course_name = courseName)
+                }
+
             }
             catch(e){
                 throw "couldnt add course"
@@ -100,7 +104,9 @@ module.exports = {
                 return cname[0].toUpperCase() + cname.slice(1);
             })
             var sname= uname.join(" ");
-            var course = await courseCollection.findOne({ courseName: sname });          
+            // console.log(sname)
+            var course = await courseCollection.findOne({ courseName: sname });
+            // console.log(course)          
         }
         catch (error) {
             throw `Unable to retrieve course. Check again later..`
@@ -218,14 +224,22 @@ module.exports = {
 async function main(){
     // console.log(await module.exports.getInstCourses("courses@gmail.com"))
     // console.log(await module.exports.deleteCourse("627567e57fa68b4567ec4017"))
+    // const data = {
+    //     courseName: 'Temp',
+    //     description: 'This is a temp course',
+    //     image: '',
+    //     video_id: [ '3JluqTojuME', 'rfscVS0vtbw' ],
+    //     course_id: '6275b26aeb6dba4d69c80d9e'
+    // }
     const data = {
         courseName: 'Temp',
         description: 'This is a temp course',
         image: '',
-        video_id: [ '3JluqTojuME', 'rfscVS0vtbw' ],
-        course_id: '6275b26aeb6dba4d69c80d9e'
+        video_id: '3JluqTojuME',
+        branch : "CS",
+        email:"teacher@test.com"
     }
-    console.log(await module.exports.modifyCourse(data))
+    console.log(await module.exports.addCourse(data.courseName,data.description,data.image,data.video_id,data.branch,data.email))
 }
 
 // main();

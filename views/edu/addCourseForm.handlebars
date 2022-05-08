@@ -7,20 +7,27 @@
             <div class="form-group">
                 <label>
                     courseName:
-                    <input type="text" name="courseName" />
+                    <input type="text" name="courseName" required />
                 </label>
             </div>
             <div class="form-group">
                 <label>
                     description:
-                    <input type="text" name="description" />
+                    <input type="text" name="description" required/>
                 </label>
             </div>
             <div class="form-group">
                 <label>
-                    Image Link
+                    Image Link:
                     <input type="text" name="image" />
                 </label>
+            </div>
+            <div>
+                <label for="branch">Branch:
+                <select class="form-control" name="branch" id="branch" value = "CS">
+                <option value="CS">CS</option>
+                <option value="Non-CS">Non-CS</option>
+                </select>
             </div>
             <div class="container1">
                 <button class="add_form_field">Add Video &nbsp; 
@@ -28,6 +35,7 @@
                 </button>
                 <div><input type="text" name="video_id"></div>
             </div>
+                
             <button type="submit" class="submitButton">Submit</button>
         </form>
     </div>
@@ -71,7 +79,7 @@
                 )
             },
             error: function(result) {
-                console.log(result)
+                {{!-- console.log(result) --}}
                 alert('error');
             }
             });

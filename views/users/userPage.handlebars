@@ -27,7 +27,10 @@
         <div id="userType" data-utype="{{data.userType}}">
         </div>
     </h2>
-
+    <div class = "Test", id = 'test_div'>
+        <button id = "Test" class="btn btn-default f-center"> Go To Test Page!</button>
+    </div>
+    <div></div>
     <div class = "wrapper"></div>
 
     <div class="btn f-right" id="fox-popup-triger">
@@ -114,6 +117,10 @@
         }
     }
     progress()
+    $('.Test').click(function(e){
+        console.log("Click")
+        window.location = "http://localhost:3000/tests/"
+    })
     $('.inner').click(function(e){
         {{!-- alert(this.text) --}}
         {{!-- console.log(jQuery(this).text()) --}}
@@ -145,7 +152,7 @@
             }
         },
         error: function(result) {
-            console.log(result)
+            {{!-- console.log(result) --}}
             alert('error');
         }
         });
