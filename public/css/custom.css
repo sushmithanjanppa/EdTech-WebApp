@@ -46,8 +46,14 @@ p.error {
 
 
 a:link {
-    color: #5086e9;
+    color: #4f86e9;
 }
+a.sign-up-link{
+    color:#2074e1;
+}
+a.course{
+    color: #2074e1;
+} 
 a:visited {
     color: #90e36e;
 }

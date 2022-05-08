@@ -157,12 +157,10 @@
                          <div class="col-md-offset-1 col-md-4 col-sm-12">
                               <div class="entry-form">
                                    <form action="/login" method="post" id="login-form" class="login-form">
-                                        <h2>Login Now</h2>
-                                        
-
-                                        <input type="email" name="email" class="form-control" placeholder="Your Email" required="">
-
-                                        <input type="password" name="password" class="form-control" placeholder="Your password" required="">
+                                        <h2>Login Now</h2><label for="Email" class="sign-up-label">
+                                        <input type="email" name="email" id = "Email" class="form-control" placeholder="Your Email" required=""></label>
+                                        <label for="Password" class="sign-up-label">
+                                        <input type="password" name="password"  id="Password"class="form-control" placeholder="Your password" required=""></label>
 
                                         <button class="submit-btn form-control" id="form-submit">Login</button>
                                    </form>
