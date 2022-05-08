@@ -64,12 +64,17 @@ module.exports = {
     },
     async getAllCourses(){
         const courseCollection = await courses();
+        const userCollection = await users();
         const courseList = [];
         await courseCollection.find({}).toArray().then((courses) => {
             courses.forEach(course => {
-                courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description, 'image':course.image});
-            });
-        });
+                courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description, 'image':course.image, "email":course.email});
+            }); })
+        for (var i in courseList){
+            var email = courseList[i].email;
+            const user = await userCollection.findOne({email: email});
+            courseList[i].name = user.name
+        }
         return courseList;
     },
     async getCourseById(id){
@@ -227,7 +232,8 @@ async function main(){
         branch : "CS",
         email:"teacher@test.com"
     }
-    console.log(await module.exports.addCourse(data.courseName,data.description,data.image,data.video_id,data.branch,data.email))
+    // console.log(await module.exports.addCourse(data.courseName,data.description,data.image,data.video_id,data.branch,data.email))
+    console.log(await module.exports.getAllCourses())
 }
 
 // main();

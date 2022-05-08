@@ -65,7 +65,6 @@ module.exports = {
             throw "Either the email or password is invalid";
         } 
     },
-
     async getUser(email){
         // console.log('inside getuser, mail:',email)
         validate.validateEmail(email);
