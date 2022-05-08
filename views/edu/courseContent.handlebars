@@ -108,7 +108,7 @@
             course_name: course.courseName
         },
         success: function(result) {
-            console.log('inside success')
+            {{!-- console.log('inside success') --}}
             alert(result.message);
             $('#enroll').hide()
             $('#video').show()
@@ -116,7 +116,7 @@
             $('hiddenrev').show()
         },
         error: function(result) {
-            console.log('inside error')
+            {{!-- console.log('inside error') --}}
             $('#video').hide()
             alert(result.responseJSON.message);
         }

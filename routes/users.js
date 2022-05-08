@@ -142,7 +142,7 @@ router.get('/video/:course', async(req,res) => {
         let email = req.session.user.email;
         let data = await videos.getVideos(email,course_name);
         let course = await courses.getCourseByName(course_name);
-        console.log(course.videos);
+        // console.log(course.videos);
         let vidInfo = course.videos;
         return res.render('edu/video',{vidInfo: JSON.stringify(vidInfo),course: JSON.stringify(course_name), videodata : JSON.stringify(data), location: crossPageNavs, notLoggedIn: req.session.user ? false : true});
       }catch(e){
@@ -160,7 +160,7 @@ router.post('/video/:course', async(req,res) => {
       let email = req.session.user.email;
       let user = await userData.getUser(email);
       let newComment = await videos.addComment(courseName, req.body.vidId, user._id, user.name,req.body.text);
-      console.log(newComment.commentInserted)
+      // console.log(newComment.commentInserted)
       let uname = newComment.commentVal.userName;
       let vidName = newComment.vidName;
       res.send({name: uname, vidName:vidName});
@@ -172,7 +172,7 @@ router.post('/video/:course', async(req,res) => {
 });
 
 router.get('/courseForm',async(req,res)=>{
-     res.render('edu/addCourseForm', {notLoggedIn: req.session.user ? false : true, location: crossPageNavs})
+    res.render('edu/addCourseForm', {notLoggedIn: req.session.user ? false : true, location: crossPageNavs})
 })
 router.get('/allCourses',async(req,res)=>{
     let email = req.session.user.email
@@ -318,10 +318,10 @@ router.post('/video', async(req,res) => {
     }
 })
 
-router.get('/progress', async(req, res) => {
-    let data = await videos.getprogress();
-    return res.render('edu/progress',{videodata : JSON.stringify(data), notLoggedIn: req.session.user ? false : true, location: crossPageNavs});
-})
+// router.get('/progress', async(req, res) => {
+//     let data = await videos.getprogress();
+//     return res.render('edu/progress',{videodata : JSON.stringify(data), notLoggedIn: req.session.user ? false : true, location: crossPageNavs});
+// })
 
 router.post("/enroll", async(req,res) => {
   // console.log("In Route")

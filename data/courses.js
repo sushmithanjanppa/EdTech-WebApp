@@ -121,7 +121,7 @@ module.exports = {
         text = text.trim();
         const courseCollection = await courses();
         const currCourse = await this.getCourseById(courseId);
-        console.log(rating)
+        // console.log(rating)
         const newReview = {
             _id: ObjectId(),
             userId: uId,

@@ -3,7 +3,9 @@
     <link rel="stylesheet" href="/public/css/video.css" crossorigin="anonymous">
     <div>
         {{> navbar this}} 
-    <button id="stop">Stop All Videos</button>
+    
+    <h1>Welcome!</h1>
+    
     </div>
     
     <div id="commentdiv">
@@ -14,11 +16,12 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3">
-                            <h3>Select Course</h3>
+                            <h2>Select Course</h2>
                             <select id="list" name="list" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required></select>
                             <h3>Add comment: </h3>
                             <form id="addComment" method="POST">
                                 <div class="form-group">
+                                    <label for ="commenttext"></label>
                                     <textarea name="commenttext" id="commenttext" class="form-control" placeholder="type here" required></textarea>
                                 </div>
                                 <div class="form-group">
@@ -38,7 +41,7 @@
                     <div class="col-md-12 col-lg-10">
                         <div class="card text-dark">
                             <div class="card-body p-4">
-                                <h4 class="mb-0">Recent comments</h4>
+                                <h3 class="mb-0">Recent comments</h3>
                                 <p class="fw-light mb-4 pb-2">Latest Comments by users</p>
                                 <hr class="my-0" />
                                 <div id="existingcomm"></div>
@@ -49,7 +52,7 @@
                 </div>
             </div>
         </div>
-       
+    <button id="stop">Stop All Videos</button>
     {{!-- <div class="wrapper">
         <div id="player1"></div>
         <div id="player2"></div>
@@ -85,7 +88,7 @@
                 for(var j=0; j<vidData[i].comments.length; j++){
                     $('#appendexstcomms'+vidData[i].video_id).append(`
                     <div>
-                        <h6 class="fw-bold mb-1">${vidData[i].comments[j].userName}</h6>
+                        <h4 class="fw-bold mb-1">${vidData[i].comments[j].userName}</h4>
                         <div class="d-flex align-items-center mb-3">
                         </div>
                         <p class="mb-0">
@@ -159,9 +162,6 @@
                     alert(e);
                 }
         });
-    </script>
-    
-    <script>
         var playerInfoList = {{{videodata}}}
         {{!-- console.log(playerInfoList.length) --}}
         for (var i = 0; i < playerInfoList.length; i++) {
@@ -278,7 +278,8 @@
                     })}
                 playerevent.done = true;
                 $.ajax(requestConfig).then(function (responseMessage) {
-                    console.log(responseMessage);});
+                    {{!-- console.log(responseMessage); --}}
+                    });
             }
             if (event.data == YT.PlayerState.PAUSED) {
                 var time = event.target.getCurrentTime();
