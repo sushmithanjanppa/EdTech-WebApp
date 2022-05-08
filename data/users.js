@@ -230,7 +230,7 @@ module.exports = {
         }
 
         return {UserUpdated: true} ;
-    }
+    },
 
 async score(email, score, course_name) {
     validate.validateEmail(email);
