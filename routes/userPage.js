@@ -40,6 +40,7 @@ router.post('/editinfo', async (req, res) => {
       userinfo.userType = req.body.UserType;
       const user = await userData.editUserInfo(uemail,req.body.Name,req.body.Gender,req.body.Age, req.body.UserType)
       if (user.UserUpdated){
+        req.session.user_type = {type: req.body.userType};
         res.send({success:true})
       }
       else{
