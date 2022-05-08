@@ -1,3 +1,4 @@
+{{> navbar this}}
 <section>
   <h1>Take a Test</h1>
   <form>
@@ -10,10 +11,10 @@
             <span class="choice_error">Please select a choice</span></p>
             <p> {{question}} <span class="error"></span></p>
 
-            <label><input type="radio" name={{_id}} value={{answer1}}>{{answer1}}<span></span></label>
-            <label><input type="radio" name={{_id}} value={{answer2}}>{{answer2}}<span></span></label>
-            <label><input type="radio" name={{_id}} value={{answer3}}>{{answer3}}<span></span></label>
-            <label><input type="radio" name={{_id}} value={{answer4}}>{{answer4}}<span></span></label>
+            <label><input type="radio" name={{_id}} value="{{answer1}}">{{answer1}}<span></span></label>
+            <label><input type="radio" name={{_id}} value="{{answer2}}">{{answer2}}<span></span></label>
+            <label><input type="radio" name={{_id}} value="{{answer3}}">{{answer3}}<span></span></label>
+            <label><input type="radio" name={{_id}} value="{{answer4}}">{{answer4}}<span></span></label>
 
             <br>
             <br>
@@ -36,7 +37,7 @@
   
 
   <br><br>
-  <a href="/layouts/main">Click here to go Back</a>
+  <a href="/tests">Click here to go Back</a>
   </fieldset>
   </form>
 </section>
@@ -45,8 +46,44 @@
 <script>
 
   var solutions = {{{ solution }}}
-  console.log(solutions)
+  {{!-- console.log(solutions) --}}
   sum = solutions.length;
+
+
+  function getSolution(QuestID) {
+    var answer = document.querySelector(
+      "#" + QuestID + " input[type=radio]:checked"
+    );
+
+    if (answer === null) {
+      document.querySelector("#" + QuestID + " .error").style.display =
+        "inline";
+    } else {
+      document.querySelector("#" + QuestID + " .error").style.display =
+        "";
+      answer = answer.value;
+    }
+
+    return answer;
+  }
+
+  return answer;
+}
+
+<script>
+
+
+      {{!-- console.log(document.querySelector(
+        "#" + `section${i + 1}` + " input[type=radio]:checked"
+      )) --}}
+      try{
+      var subSolution = document.querySelector(
+        "#" + `section${i + 1}` + " input[type=radio]:checked"
+      ).nextElementSibling;
+      }
+      catch(e){
+          subSolution = {textContent:0}
+      }
 
 
   function getSolution(QuestID) {
@@ -142,11 +179,11 @@
            score: result[1]
               },
     success: function (result_s) {
-      console.log(result_s)
+      {{!-- console.log(result_s) --}}
       alert(result_s.message);
     },
     error: function (result_s) {
-      console.log(result_s)
+      {{!-- console.log(result_s) --}}
       alert('error');
     }
         });
@@ -154,4 +191,5 @@
 
     });
  
+
 </script>

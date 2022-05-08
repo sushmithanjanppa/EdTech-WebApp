@@ -30,7 +30,7 @@ router.get("/", async (req, res) => {
   if(!req.session.user_type){
     req.session.user_type = {type: 0}
   }
-  console.log(course_i)
+  // console.log(course_i)
   res.render("users/index", { title: "Login Page", location: samePageNavs, notLoggedIn: req.session.user ? false : true, course_info:JSON.stringify(course_i) , userType: req.session.user_type.type});
 });
 
@@ -129,28 +129,47 @@ router.get("/logout", async (req, res) => {
 // const validation = require('../tasks/validation')
 
 router.get('/video/:course', async(req,res) => {
-    // console.log(req.params)
-    if(req.params){
-      var course_name = req.params.course
+    if(req.session.user){
+      if(req.params){
+        var course_name = req.params.course
+      }
+      else{
+        var course_name = "Web Development"
+      }
+      try{
+        let email = req.session.user.email
+        var data = await videos.getVideos(email,course_name);
+        let vidArr = [];
+        let commentArr = [];
+        if(data.length>0){
+          for(let i=0; i<data.length; i++){
+            vidArr[i] = {title: data[i].title, id: data[i].video_id};
+            if(data[i].comments.length>0){
+              for(let j=0; j<data[i].comments.length; j++){
+                commentArr[j] = {vid: data[i].video_id, uid: data[i].comments[j].userId, text: data[i].comments[j].text}
+              }
+            }
+          }
+        return res.render('edu/video',{commentArr: JSON.stringify(commentArr) ,vidArr:JSON.stringify(vidArr), course: JSON.stringify(course_name), videodata : JSON.stringify(data), location: crossPageNavs, notLoggedIn: req.session.user ? false : true});
+      }
+    }catch(e){
+        console.log(e)
+      }
     }
     else{
-      var course_name = "Web Development"
+      res.status(403).render('users/authError', { notLoggedIn: req.session.user ? false : true, location: crossPageNavs });
     }
+});
+router.post('/video/:course', async(req,res) => {
+  if(req.session.user){
+    let courseName = req.params.course;
     let email = req.session.user.email
-    // console.log(course_name)
-    // let email = 'pjhangl1@stevens.edu'
-    // console.log(req)
-    try{
-      var data = await videos.getVideos(email,course_name);
-    }
-    catch(e){
-      console.log(e)
-    }
-    // console.log(data);
-    // res.locals.videodata = JSON.stringify(data)
-    // console.log(res.locals.videodata)
-    return res.render('edu/video',{videodata : JSON.stringify(data), location: crossPageNavs, notLoggedIn: req.session.user ? false : true});
-})
+    let user = await userData.getUser(email);
+    let newComment = await videos.addComment(courseName, req.body.vidId, user._id, req.body.text);
+
+  }
+});
+
 router.get('/courseForm',async(req,res)=>{
      res.render('edu/addCourseForm', {notLoggedIn: req.session.user ? false : true, location: crossPageNavs})
 })
@@ -174,8 +193,6 @@ router.post('/delete/:_id',async(req,res)=>{
     if(flag)res.redirect('/allCourses');
 })
 router.get('/course/:Name', async(req,res) => {
-    // let course=await courses.getCourseById(req.params._id);
-    // console.log(req.params.Name)
     try{
       let course = await courses.getCourseByName(req.params.Name)
       let len = course.reviews.length<=0 ? -1 : course.reviews.length;
@@ -203,18 +220,32 @@ router.post('/course/:Name', async(req,res) => {
       let text = req.body.text;
       let rating = req.body.rating;
       let course = await courses.getCourseByName(courseName);
-  
+      if(user.courses.length===0) throw "User not enrolled in course!";
+      let canModify = false;
+      for(let i=0; i<user.courses.length; i++){
+        if(user.courses[i]._id.toString()===course._id.toString()){
+          // console.log('same id')
+          canModify = true;
+          break;
+        }
+      }
+      if(!canModify) throw "User must be enrolled in course!";
       let udatedcourse = await courses.addReview(course._id, user._id, text, rating);
-      res.send({name:uname});
+      res.send({name:uname, canModify: canModify});
     }catch(e){
       console.log(e);
+      res.send({error: e}) 
     }
 })
 
 
 router.post('/courseForm', async(req,res) => {
-  // console.log(req.body)
-  var email = req.session.user.email
+  if(req.session.user){
+    var email = req.session.user.email
+  }
+  else{
+    var email = " "
+  }
   try{
     validate.validateEmail(email)
   }
@@ -227,9 +258,10 @@ router.post('/courseForm', async(req,res) => {
   else{
     image_link = "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg"
   }
+  var branch = req.body.branch
   try{
-    let courseAdded=await courses.addCourse(req.body.courseName,req.body.description, image_link, req.body.video_id, email);
-    console.log(courseAdded)
+    let courseAdded=await courses.addCourse(req.body.courseName,req.body.description, image_link, req.body.video_id, branch, email);
+    // console.log(courseAdded)
     if(courseAdded.courseInserted)  
     // res.redirect('/allCourses');
     res.jsonp({success:true})
@@ -239,7 +271,6 @@ router.post('/courseForm', async(req,res) => {
 })
 
 router.post('/modify', async(req,res) => {
-  // console.log(req.body)
   var email = req.session.user.email
   try{
     validate.validateEmail(email)
@@ -294,19 +325,24 @@ router.get('/progress', async(req, res) => {
 router.post("/enroll", async(req,res) => {
   // console.log("In Route")
   // console.log(req.body)
-  let course_name = req.body.course_name
-  let email = req.session.user.email
   // console.log("In Enroll")
   // console.log([course_name,email])
   try {
+    let course_name = req.body.course_name
+    let email = req.session.user.email
     await userData.enroll(email,course_name)
     // res.send('_callback(\'{"message": "Enrolled"}\')');
     res.send({message:"Enrolled"})
   } catch(e) {
     // console.log(e);
-    if (e === 'Already Enrolled')
+    if (e === 'Already Enrolled'){ 
+
       // res.send('_callback(\'{"message": "Already Enrolled"}\')');
-      res.send({message:"Already Enrolled."})
+      res.send({message:"Already Enrolled."})}
+    else{
+      if(!req.session.user)
+        res.status(401).send({message: "User is not logged in"});
+    }
 
   } 
   return;
@@ -316,7 +352,7 @@ router.post("/score", async(req,res) => {
   let email = req.session.user.email
   let course_name = req.body.course_name
   let score = req.body.score
-  console.log(req.body)
+  // console.log(req.body)
   try {
     await userData.score(email,score,course_name)
    

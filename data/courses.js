@@ -1,47 +1,37 @@
 const mongoCollections = require("../config/mongoCollection");
 const courses = mongoCollections.courses;
+const video_func = require("./videos");
 const { ObjectId } = require("mongodb");
 const validateRev = require("../validation/reviewValidate");
-<<<<<<< Updated upstream
-const video_func = require("./videos");
-=======
-
->>>>>>> Stashed changes
 const users = mongoCollections.users;
 
 module.exports = {
-    async addCourse(courseName, description, image, video_id, branch) {
-        if (!courseName) throw 'All fields need to have valid values';
-        if (!description) throw 'All fields need to have valid values';
-        if (!image) throw 'All fields need to have valid values';
-        if (!branch) throw 'All fields need to have valid values';
-        if (!video_id) throw 'All fields need to have valid values';
-        if (typeof courseName !== 'string') throw 'Name must be a string';
-        if (typeof description !== 'string') throw 'Description must be a string';
-        if (typeof branch !== 'string') throw 'Branch must be a string';
-        if (courseName.trim().length === 0) throw 'name cannot be an empty string or just spaces';
-        if (description.trim().length === 0) throw 'description cannot be an empty string or just spaces';
-        if (branch.trim().length === 0) throw 'branch cannot be an empty string or just spaces';
-
+    async addCourse(courseName, description, image, video_id, branch, email) {
         const courseCollection = await courses();
         const course = await courseCollection.findOne({ courseName: courseName});
         if(course){
             throw "Course with same name Already Exists"
         }
+        var uname = courseName.split(" ").map(cname => {
+            return cname[0].toUpperCase() + cname.slice(1);
+        })
+        
+        courseName = uname.join(" ");
         let videos = [];
         let newCourse = {
-             courseName:courseName,
-             email:email,
-             description:description,
-             image:image,
-             videos:videos,
-             reviews: [],
-             overallRating: 0.0,
-             questions: []
+            courseName:courseName,
+            email:email,
+            description:description,
+            image:image,
+            videos:videos,
+            reviews: [],
+            overallRating: 0.0,
+            questions: [],
+            branch: branch
         }
         const insertInfo = await courseCollection.insertOne(newCourse);
         if (!insertInfo.insertedId)
-            throw "Could not add course";
+            console.log("Could not add course")
         else{
             try{
                 if (Array.isArray(video_id)){
@@ -49,13 +39,13 @@ module.exports = {
                         await video_func.createVideo(title='video '+ i, id=video_id[i], course_name = courseName)
                     }
                 }
-                else{
+                else if(video_id){
                     await video_func.createVideo(title='video 0', id=video_id, course_name = courseName)
                 }
+
             }
             catch(e){
-                // throw "couldnt add course"
-                console.log(e)
+                throw "couldnt add course"
             }
             return {courseInserted: true};
         }
@@ -75,13 +65,13 @@ module.exports = {
     },
     async getAllCourses(){
         const courseCollection = await courses();
+        const userCollection = await users();
         const courseList = [];
         await courseCollection.find({}).toArray().then((courses) => {
             courses.forEach(course => {
                 courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description, 'image':course.image, 'email':course.email});
             });
         });
-        const userCollection = await users();
         for (var i in courseList){
             const user = await userCollection.findOne({email: courseList[i].email}); 
         if(user === null){
@@ -101,10 +91,6 @@ module.exports = {
     },
     async deleteCourse(id) {
         const courseCollection = await courses();
-        const userCollection = await users()
-        const update = await userCollection.updateMany({},
-            {$pull : {courses : {_id:  ObjectId(id)}}})
-        // console.log(update)
         const flag = await courseCollection.deleteOne( { "_id" : ObjectId(id) } );
         return flag;
     },
@@ -118,7 +104,9 @@ module.exports = {
                 return cname[0].toUpperCase() + cname.slice(1);
             })
             var sname= uname.join(" ");
-            var course = await courseCollection.findOne({ courseName: sname });          
+            // console.log(sname)
+            var course = await courseCollection.findOne({ courseName: sname });
+            // console.log(course)          
         }
         catch (error) {
             throw `Unable to retrieve course. Check again later..`
@@ -140,7 +128,6 @@ module.exports = {
             text: text,
             rating: rating,
         }
-
 
         // console.log('inside addReview',text, rating)
         // console.log('inside addReview',currCourse.overallRating, currCourse.reviews.length)
@@ -237,14 +224,23 @@ module.exports = {
 async function main(){
     // console.log(await module.exports.getInstCourses("courses@gmail.com"))
     // console.log(await module.exports.deleteCourse("627567e57fa68b4567ec4017"))
+    // const data = {
+    //     courseName: 'Temp',
+    //     description: 'This is a temp course',
+    //     image: '',
+    //     video_id: [ '3JluqTojuME', 'rfscVS0vtbw' ],
+    //     course_id: '6275b26aeb6dba4d69c80d9e'
+    // }
     const data = {
         courseName: 'Temp',
         description: 'This is a temp course',
         image: '',
-        video_id: [ '3JluqTojuME', 'rfscVS0vtbw' ],
-        course_id: '6275b26aeb6dba4d69c80d9e'
+        video_id: '3JluqTojuME',
+        branch : "CS",
+        email:"teacher@test.com"
     }
-    console.log(await module.exports.modifyCourse(data))
+    // console.log(await module.exports.addCourse(data.courseName,data.description,data.image,data.video_id,data.branch,data.email))
+    console.log(await module.exports.getAllCourses())
 }
 
 // main();
