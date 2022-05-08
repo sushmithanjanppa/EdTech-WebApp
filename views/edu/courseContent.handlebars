@@ -1,15 +1,18 @@
-<h2 style="margin-left: 25px;" id="course_name"></h2>
+<h1 style="margin-left: 25px;" id="course_name"></h1>
 {{> navbar this}}
 <div class="row">
     <div class="col-sm-12">
-        <div style="margin-left: 25px;">
-            <h3>
+
+     <div style="margin-left: 25px;">
+         <h2>
             Course Description:  <br> <br>
-            <p id="desc"></p></h3>
+         <p id="desc"></p></h2>
+      
         <form method = "post">
         <input name = "Data" id="data" hidden>
         <input type = "submit" id = "enroll" class="enroll" name = "enroll"  value = "Enroll Now" >
         <button id="video" hidden>Go to Videos!</button>
+
 
         </form>
 
@@ -26,7 +29,7 @@
                                     <textarea name="reviewtext" id="reviewtext" class="form-control" placeholder="type here" required></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <h4>Rate Course: </h4>
+                                    <h3>Rate Course: </h3>
                                     <input type="number" min="0" max="5" id="reviewrating" class="form-control" placeholder="enter rating" required>
                                 </div>
                                 <div class="form-group">
@@ -45,7 +48,7 @@
                     <div class="col-md-12 col-lg-10">
                         <div class="card text-dark">
                             <div class="card-body p-4">
-                                <h4 class="mb-0">Recent reviews</h4>
+                                <h3 class="mb-0">Recent reviews</h3>
                                 <p class="fw-light mb-4 pb-2">Latest reviews by users</p>
                                 <hr class="my-0" />
                                 <ul id="commentList" class="list-group"></ul>
@@ -62,7 +65,7 @@
                                         <div class="card-body p-4">
                                             <div class="d-flex flex-start">
                                                 <div>
-                                                    <h6 class="fw-bold mb-1">{{name}}</h6>
+                                                    <h5 class="fw-bold mb-1">{{name}}</h5>
                                                     <div class="d-flex align-items-center mb-3">
                                                     </div>
                                                     <p class="mb-0">

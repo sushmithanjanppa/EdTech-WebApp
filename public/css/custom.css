@@ -18,8 +18,8 @@
 	box-sizing: border-box;
 }
 
-.error {
-    color: red;
+p.error {
+    color: #ff3939;
     font-weight: bold;
 }
 
@@ -46,7 +46,7 @@
 
 
 a:link {
-    color: #2d76e2;
+    color: #5086e9;
 }
 a:visited {
     color: #90e36e;
@@ -70,5 +70,5 @@ textarea:focus, input:focus {
 }
 
 input, select, textarea{
-    color: rgb(167, 233, 54);
+    color: #598200;
 }

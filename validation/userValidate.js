@@ -22,6 +22,8 @@ module.exports = {
     validateName(name){
         if(typeof(name)==='undefined') throw "Please enter a valid input for name";
         if(typeof(name) !== 'string') throw 'You must provide string value for name';
+        // console.log(parseInt(name))
+        if(parseInt(name)) throw 'Name should be all alphabets.'
         if(name.trim().length === 0) throw "Name cannot be blank"
     },
 
