@@ -60,11 +60,13 @@ module.exports = {
         // const coursedata = await courses_func.getCourseByName(course_name)
         const courseCollection = await courses();
         const coursedata = await courseCollection.findOne({ courseName: course_name});
+        // console.log(coursedata)
         let courseinfo = await userCollection.find({ email:email },{courses:{$elemMatch:{_id:coursedata._id} }, "courses.videos":1}).toArray();
+        // console.log("++++++++++++++++++++++++++")
         // console.log(courseinfo);
         if(courseinfo){
             for(var i of courseinfo[0].courses){
-                // console.log(i._id)
+                // console.log(i)
                 if(i._id.equals(coursedata._id)){
                     // console.log(i.videos)
                     return i.videos
@@ -167,7 +169,6 @@ module.exports = {
                 comments: video.comments,
             }
             newvideo.comments.push(comment);
-            // courseinfo.videos.push(newvideo);
             let currVideId = video.video_id;
 
             var deleteInfo = await coursescollection.updateOne(
@@ -210,7 +211,8 @@ async function main(){
         // console.log(await module.exports.getVideos('pjhangl1@stevens.edu','Web Programming'))
         // console.log(await module.exports.addtime('pjhangl1@stevens.edu',''))
 
-        console.log(await module.exports.getprogress('pjhangl1@stevens.edu','Web Programming'));
+        // console.log(await module.exports.getprogress('pjhangl1@stevens.edu','Web Programming'));
+        console.log(await module.exports.getVideos('preet@gmail.com','Demo 2'));
         process.exit(0)
         
     }catch(e){

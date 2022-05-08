@@ -41,24 +41,8 @@
                                 <h4 class="mb-0">Recent comments</h4>
                                 <p class="fw-light mb-4 pb-2">Latest Comments by users</p>
                                 <hr class="my-0" />
+                                <div id="existingcomm"></div>
                                 <ul id="commentList" class="list-group"></ul>
-                                    {{#each videodata}}
-                                        <div class="card-body p-4">
-                                            <div class="d-flex flex-start">
-                                                <h3 class="fw-bold mb-1">{{this.title}}</h3>
-                                                {{#each this.comments}}
-                                                    <div>
-                                                        <h6 class="fw-bold mb-1">{{userName}}</h6>
-                                                        <div class="d-flex align-items-center mb-3">
-                                                        </div>
-                                                        <p class="mb-0">
-                                                        Comment: {{text}}
-                                                        </p>
-                                                    </div>
-                                                {{/each}}
-                                            </div>
-                                        </div>
-                                    {{/each}}
                             </div>
                         </div>
                     </div>
@@ -82,13 +66,44 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 
     <script>
-        var vidData = {{{videodata}}}
+        var vidData = {{{vidInfo}}}
         var courseName = {{{course}}}
-
         const sb = document.querySelector('#list');
         var len = vidData.length;
+
         for(var i=0; i<len; i++){
-            console.log(vidData[i])
+            $('#existingcomm').append(`
+                <div class="card-body p-4">
+                    <div class="d-flex flex-start">
+                        <h3 class="fw-bold mb-1">${vidData[i].title}</h3>
+                        <div id="appendexstcomms${vidData[i].video_id}"> </div>
+                        <div id="appendpara${vidData[i].video_id}"> </div>
+                    </div>
+                </div>`);
+ 
+            if(vidData[i].comments.length>0){
+                for(var j=0; j<vidData[i].comments.length; j++){
+                    $('#appendexstcomms'+vidData[i].video_id).append(`
+                    <div>
+                        <h6 class="fw-bold mb-1">${vidData[i].comments[j].userName}</h6>
+                        <div class="d-flex align-items-center mb-3">
+                        </div>
+                        <p class="mb-0">
+                        Comment: ${vidData[i].comments[j].text}
+                        </p>
+                    </div>`);
+                }
+            }else{
+                $('#appendpara'+vidData[i].video_id).append(`
+                <div>
+                    <p class="mb-0">
+                        This video has no comments yet!
+                    </p>
+                </div>`);
+            }
+        }
+
+        for(var i=0; i<len; i++){
             var val = vidData[i].title;
             var opt = new Option(val, vidData[i].video_id);
             sb.add(opt)
@@ -96,11 +111,12 @@
 
         $('#post-comment').on('click', function(event) {
                 event.preventDefault();
+                
                 var sendData = {
                     vidId: $('#list').val(), 
                     text: $('#commenttext').val(),            
                 };
-                console.log('=====',sendData)
+                $('#appendpara'+sendData.vidId).hide();
                 function checkText(text){
                 if(typeof(text)==='undefined') throw "Please provide a review";
                 if(typeof(text)!='string') throw "Review must be a string";
@@ -119,12 +135,10 @@
                 });
 
                 ajaxReq.success(function (data, status, jqXhr) {
-                    console.log(data)
                     $('#commentList').append(`
                     <div class="card-body p-4">
                         <div class="d-flex flex-start">
                             <h3 class="fw-bold mb-1">${data.vidName}</h3>
-                            {{#each this.comments}}
                                 <div>
                                     <h6 class="fw-bold mb-1">${data.name}</h6>
                                     <div class="d-flex align-items-center mb-3">
@@ -133,7 +147,6 @@
                                     Comment: ${$('#commenttext').val()}
                                     </p>
                                 </div>
-                            {{/each}}
                         </div>
                     </div> `);
                 })
