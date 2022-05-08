@@ -35,7 +35,7 @@
 
     <div class="btn f-right" id="fox-popup-triger">
         <div>
-            <button id="editUser" class="btn btn-default f-right"><i class="icon ion-md-lock"></i>Edit Info!</button>
+            <button id="editUser" class="btn btn-default f-right" hidden><i class="icon ion-md-lock"></i>Edit Info!</button>
         </div>
         </div>
         <div class="fox-popup-wrap">
@@ -118,7 +118,8 @@
     }
     progress()
     $('.Test').click(function(e){
-        console.log("Click")
+        {{!-- console.log("Click") --}}
+        console.log($('wrapper').length)
         window.location = "http://localhost:3000/tests/"
     })
     $('.inner').click(function(e){
