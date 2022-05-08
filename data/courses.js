@@ -116,12 +116,12 @@ module.exports = {
 
     async addReview(courseId, uId, text, rating){
         validateRev.checkRating(rating);
-        rating = Number.parseInt(rating);
+        rating = Number(rating);
         validateRev.checkText(text);
         text = text.trim();
         const courseCollection = await courses();
         const currCourse = await this.getCourseById(courseId);
-        
+        console.log(rating)
         const newReview = {
             _id: ObjectId(),
             userId: uId,

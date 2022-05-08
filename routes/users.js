@@ -38,8 +38,10 @@ router.get("/signup", async (req, res) => {
   if (req.session.user) {
     return res.status(200).redirect("/login");
   } else {
+
     res.status(200).render("users/signup", { title: "Signup Page", location: crossPageNavs , notLoggedIn: req.session.user ? false : true });
     // res.render("users/signup", { title: "Signup Page", location: crossPageNavs , notLoggedIn: req.session.user ? false : true });
+
   }
 });
 
@@ -131,30 +133,18 @@ router.get("/logout", async (req, res) => {
 router.get('/video/:course', async(req,res) => {
     if(req.session.user){
       if(req.params){
-        var course_name = req.params.course
+        var course_name = req.params.course;
       }
       else{
         var course_name = "Web Development"
       }
       try{
-        let email = req.session.user.email
+        let email = req.session.user.email;
         var data = await videos.getVideos(email,course_name);
-        let vidArr = [];
-        let commentArr = [];
-        if(data.length>0){
-          for(let i=0; i<data.length; i++){
-            vidArr[i] = {title: data[i].title, id: data[i].video_id};
-            if(data[i].comments.length>0){
-              for(let j=0; j<data[i].comments.length; j++){
-                commentArr[j] = {vid: data[i].video_id, uid: data[i].comments[j].userId, text: data[i].comments[j].text}
-              }
-            }
-          }
-        return res.render('edu/video',{commentArr: JSON.stringify(commentArr) ,vidArr:JSON.stringify(vidArr), course: JSON.stringify(course_name), videodata : JSON.stringify(data), location: crossPageNavs, notLoggedIn: req.session.user ? false : true});
-      }
-    }catch(e){
-        console.log(e)
-      }
+        return res.render('edu/video',{course: JSON.stringify(course_name), videodata : JSON.stringify(data), location: crossPageNavs, notLoggedIn: req.session.user ? false : true});
+      }catch(e){
+          console.log(e)
+        }
     }
     else{
       res.status(403).render('users/authError', { notLoggedIn: req.session.user ? false : true, location: crossPageNavs });
@@ -162,11 +152,19 @@ router.get('/video/:course', async(req,res) => {
 });
 router.post('/video/:course', async(req,res) => {
   if(req.session.user){
-    let courseName = req.params.course;
-    let email = req.session.user.email
-    let user = await userData.getUser(email);
-    let newComment = await videos.addComment(courseName, req.body.vidId, user._id, req.body.text);
-
+    try{
+      let courseName = req.params.course;
+      let email = req.session.user.email
+      let user = await userData.getUser(email);
+      let newComment = await videos.addComment(courseName, req.body.vidId, user._id, user.name,req.body.text);
+      console.log(newComment)
+      let uname = newComment.commentVal.userName;
+      let vidName = newComment.vidName;
+      res.send({name: uname, vidName:vidName});
+    }catch(e){
+      console.log(e)
+      res.status(401).send({error: e})
+    }
   }
 });
 
@@ -206,9 +204,10 @@ router.get('/course/:Name', async(req,res) => {
       }else{
         flag = true;
       }
-      res.render('edu/courseContent',{data:JSON.stringify(course), flag: flag, comments:comments, notLoggedIn: req.session.user ? false : true, location: crossPageNavs });
+      return res.render('edu/courseContent',{data:JSON.stringify(course), flag: flag, comments:comments, notLoggedIn: req.session.user ? false : true, location: crossPageNavs });
     }catch(e){
       console.log(e);
+      return res.render('edu/errorPage');
     }
   })
 router.post('/course/:Name', async(req,res) => {
@@ -224,7 +223,6 @@ router.post('/course/:Name', async(req,res) => {
       let canModify = false;
       for(let i=0; i<user.courses.length; i++){
         if(user.courses[i]._id.toString()===course._id.toString()){
-          // console.log('same id')
           canModify = true;
           break;
         }

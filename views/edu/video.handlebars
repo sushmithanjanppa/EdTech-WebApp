@@ -14,6 +14,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3">
+                            <h3>Select Course</h3>
+                            <select id="list" name="list" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required></select>
                             <h3>Add comment: </h3>
                             <form id="addComment" method="POST">
                                 <div class="form-group">
@@ -40,31 +42,23 @@
                                 <p class="fw-light mb-4 pb-2">Latest Comments by users</p>
                                 <hr class="my-0" />
                                 <ul id="commentList" class="list-group"></ul>
-                                {{#if flag}}
-                                    <div class="card-body p-4">
-                                        <div class="d-flex flex-start">
-                                            <div>
-                                                <h6 class="fw-bold mb-1">This video has no comments yet!</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {{else}}
                                     {{#each videodata}}
                                         <div class="card-body p-4">
                                             <div class="d-flex flex-start">
-                                                <div>
-                                                    <h6 class="fw-bold mb-1">{{name}}</h6>
-                                                    <div class="d-flex align-items-center mb-3">
+                                                <h3 class="fw-bold mb-1">{{this.title}}</h3>
+                                                {{#each this.comments}}
+                                                    <div>
+                                                        <h6 class="fw-bold mb-1">{{userName}}</h6>
+                                                        <div class="d-flex align-items-center mb-3">
+                                                        </div>
+                                                        <p class="mb-0">
+                                                        Comment: {{text}}
+                                                        </p>
                                                     </div>
-                                                    <p class="mb-0">
-                                                    Rating: {{rat}}
-                                                    </p>
-                                                </div>
+                                                {{/each}}
                                             </div>
                                         </div>
                                     {{/each}}
-                                {{/if}}
-                                
                             </div>
                         </div>
                     </div>
@@ -86,17 +80,27 @@
  
     {{!-- <div class="wrapper" id="wrapper"></div> --}}
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
-    
+
     <script>
         var vidData = {{{videodata}}}
-        {{!-- console.log(vidData) --}}
+        var courseName = {{{course}}}
+
+        const sb = document.querySelector('#list');
+        var len = vidData.length;
+        for(var i=0; i<len; i++){
+            console.log(vidData[i])
+            var val = vidData[i].title;
+            var opt = new Option(val, vidData[i].video_id);
+            sb.add(opt)
+        }
+
         $('#post-comment').on('click', function(event) {
                 event.preventDefault();
                 var sendData = {
-                    vidId: 0, 
-                    text: $('#reviewtext').val(),            
+                    vidId: $('#list').val(), 
+                    text: $('#commenttext').val(),            
                 };
-
+                console.log('=====',sendData)
                 function checkText(text){
                 if(typeof(text)==='undefined') throw "Please provide a review";
                 if(typeof(text)!='string') throw "Review must be a string";
@@ -109,23 +113,27 @@
 
                     var ajaxReq = $.ajax({
                     type: "POST",
-                    url: "http://localhost:3000/course/"+sendData.courseName,
+                    url: "http://localhost:3000/video/"+courseName,
                     data: sendData,
                     dataType: "json",
                 });
 
                 ajaxReq.success(function (data, status, jqXhr) {
+                    console.log(data)
                     $('#commentList').append(`
                     <div class="card-body p-4">
                         <div class="d-flex flex-start">
-                        <div>
-                            <h6 class="fw-bold mb-1">${data.name}</h6>
-                            <div class="d-flex align-items-center mb-3">
-                            </div>
-                            <p class="mb-0">
-                            ${$('#reviewtext').val()}
-                            </p>
-                        </div>
+                            <h3 class="fw-bold mb-1">${data.vidName}</h3>
+                            {{#each this.comments}}
+                                <div>
+                                    <h6 class="fw-bold mb-1">${data.name}</h6>
+                                    <div class="d-flex align-items-center mb-3">
+                                    </div>
+                                    <p class="mb-0">
+                                    Comment: ${$('#commenttext').val()}
+                                    </p>
+                                </div>
+                            {{/each}}
                         </div>
                     </div> `);
                 })
@@ -142,7 +150,7 @@
     
     <script>
         var playerInfoList = {{{videodata}}}
-        {{!-- console.log(playerInfoList) --}}
+        {{!-- console.log(playerInfoList.length) --}}
         for (var i = 0; i < playerInfoList.length; i++) {
             {{!-- p = document.createElement('p') --}}
             {{!-- p.innerHTML = 'I am P' --}}
