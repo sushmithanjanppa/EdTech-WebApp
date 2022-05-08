@@ -1,5 +1,6 @@
 const mongoCollections = require("../config/mongoCollection");
 const courses = mongoCollections.courses;
+const video_func = require("./videos");
 const { ObjectId } = require("mongodb");
 const validateRev = require("../validation/reviewValidate");
 const users = mongoCollections.users;
@@ -41,10 +42,10 @@ module.exports = {
                 else if(video_id){
                     await video_func.createVideo(title='video 0', id=video_id, course_name = courseName)
                 }
+
             }
             catch(e){
-                // throw "couldnt add course"
-                console.log(e)
+                throw "couldnt add course"
             }
             return {courseInserted: true};
         }
@@ -67,22 +68,29 @@ module.exports = {
         const courseList = [];
         await courseCollection.find({}).toArray().then((courses) => {
             courses.forEach(course => {
-                courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description, 'image':course.image});
+                courseList.push({ "_id": course._id, "courseName": course.courseName ,'description':course.description, 'image':course.image, 'email':course.email});
             });
         });
+        const userCollection = await users();
+        for (var i in courseList){
+            const user = await userCollection.findOne({email: courseList[i].email}); 
+        if(user === null){
+            courseList[i].inst_name = "Instructor Not Found"
+        }
+        else{
+        courseList[i].inst_name = user.name
+        }
+        }
+
         return courseList;
     },
-    async getCourseById(id){
+    async getCourseById(id) {
         const courseCollection = await courses();
         const course = await courseCollection.findOne({ _id: ObjectId(id) });
         return course;
     },
-    async deleteCourse(id){
+    async deleteCourse(id) {
         const courseCollection = await courses();
-        const userCollection = await users()
-        const update = await userCollection.updateMany({},
-            {$pull : {courses : {_id:  ObjectId(id)}}})
-        // console.log(update)
         const flag = await courseCollection.deleteOne( { "_id" : ObjectId(id) } );
         return flag;
     },
@@ -121,7 +129,6 @@ module.exports = {
             rating: rating,
         }
 
-
         // console.log('inside addReview',text, rating)
         // console.log('inside addReview',currCourse.overallRating, currCourse.reviews.length)
         
@@ -147,12 +154,17 @@ module.exports = {
     },
 
     async getfilterByBranch(branch) {
+
+        if (!branch) throw 'All fields need to have valid values';
+        if (typeof branch !== 'string') throw 'branch must be a string';
+        if (branch.trim().length === 0) throw 'branch cannot be an empty string or just spaces';
         try {
-            
+
+
             const courseCollection = await courses();
-            const course = await courseCollection.find({ branch: branch}).toArray();
+            const course = await courseCollection.find({ branch: branch }).toArray();
             return course
-            
+
         }
         catch (error) {
             throw new Error(`Unable to retrieve course. Check again later..`)
@@ -232,4 +244,3 @@ async function main(){
 
 // main();
 
-// main();

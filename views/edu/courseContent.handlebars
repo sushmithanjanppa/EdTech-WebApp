@@ -2,15 +2,13 @@
 {{> navbar this}}
 <div class="row">
     <div class="col-sm-12">
-        <div style="margin-left: 25px;">
-            <h3>
+     <div style="margin-left: 25px;">
+         <h3>
             Course Description:  <br> <br>
-            <p id="desc"></p></h3>
-        <form method = "post">
-        <input name = "Data" id="data" hidden>
-        <input type = "submit" id = "enroll" class="enroll" name = "enroll"  value = "Enroll Now" >
-        <button id="video" hidden>Go to Videos!</button>
-
+         <p id="desc"></p></h3>
+         <form method = "post" action = "/enroll">
+            <input name = "Data" id="data" hidden>
+            <input type = "submit" id = "enroll" class="enroll" name = "enroll"  value = "Enroll Now" >
         </form>
 
         {{#if notLoggedIn}}
@@ -45,8 +43,8 @@
                     <div class="col-md-12 col-lg-10">
                         <div class="card text-dark">
                             <div class="card-body p-4">
-                                <h4 class="mb-0">Recent comments</h4>
-                                <p class="fw-light mb-4 pb-2">Latest Comments section by users</p>
+                                <h4 class="mb-0">Recent reviews</h4>
+                                <p class="fw-light mb-4 pb-2">Latest reviews by users</p>
                                 <hr class="my-0" />
                                 <ul id="commentList" class="list-group"></ul>
                                 {{#if flag}}
@@ -92,6 +90,7 @@
     $("#course_name").html(course.courseName)
     $("#desc").html(course.description)
     $("#data").attr("value",course.courseName)
+</script>
 
     $(document).ready(function() {
     $("#enroll").click(function(e) {
@@ -113,16 +112,21 @@
             $('hiddenrev').show()
         },
         error: function(result) {
-            {{!-- console.log(result) --}}
-            alert('error');
+            console.log('inside error')
+            $('#video').hide()
+            alert(result.responseJSON.message);
         }
         });
     });
 
     $("#video").click(function(e) {
         e.preventDefault();
+        if({{notLoggedIn}})
+            alert('User not logged in!')
+        else{
         window.location.href = "/video/"+course.courseName;
         return false;
+        }
     });
     
     });

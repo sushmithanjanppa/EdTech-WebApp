@@ -40,6 +40,7 @@ module.exports = {
             age: age,
             userType: userType,
             courses: [],
+            tests:[]
         };
 
         const insertUser = await userCollection.insertOne(newUser);
@@ -241,7 +242,6 @@ module.exports = {
         return {UserUpdated: true} ;
     },
 
-
     async score(email, score, course_name) {
     validate.validateEmail(email);
     email = email.trim();
@@ -274,8 +274,9 @@ module.exports = {
 
 }
 
-async function main(){
-    console.log(await module.exports.getUser("pjhangl1@stevens.edu"))
-}
+// async function main(){
+//     // console.log(await module.exports.getUser("pjhangl1@stevens.edu"))
+//     console.log(await module.exports.score("sneha@gmail.com",'100','C'))
+// }
 
 // main();

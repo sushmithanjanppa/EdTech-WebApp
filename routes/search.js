@@ -3,6 +3,14 @@ const router = express.Router();
 const data = require('../data');
 const courseData = data.courses;
 
+const crossPageNavs = {
+    top: "/#top",
+    about: "/#about",
+    courses: "/#courses",
+    reviews: "/#reviews",
+    team: "/#team"
+  };  
+
 
 router.get('/', async (req, res) => {
     res.render('edu/searchIndex', { title: `course Finder` });
@@ -11,13 +19,15 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const createResData = req.body;
     try {
-        const { name, branch} = createResData;
+        const { name, branch } = createResData;
         try {
             if (!name) throw 'All fields need to have valid values';
             if (!branch) throw 'All fields need to have valid values';
 
             if (typeof name !== 'string') throw 'Name must be a string';
-            if (typeof branch !== 'string') throw 'Name must be a string';
+            if (typeof branch !== 'string') throw 'Branch must be a string';
+            if (name.trim().length === 0) throw 'name cannot be an empty string or just spaces';
+            if (branch.trim().length === 0) throw 'Branch cannot be an empty string or just spaces';
 
 
         } catch (error) {
@@ -51,7 +61,7 @@ router.post('/searchcourses', async (req, res) => {
         hasError = true;
         error = `We're sorry, but no results were found for ${bodyData.courseSearchTerm}.`
     }
-    res.render('edu/allCoursesPage', { title: `courses Found`, data: result, courseSearchTerm: bodyData.courseSearchTerm, error: error, hasError: error!="", search: true });
+    res.render('edu/allCoursesPage', { title: `courses Found`, data: result, courseSearchTerm: bodyData.courseSearchTerm, error: error, hasError: error!="", search: true, location: crossPageNavs });
 });
 
 router.get('/course/:id', async (req, res) => {
@@ -66,7 +76,7 @@ router.get('/course/:id', async (req, res) => {
         error = `No courses found for the given id ${req.params.id}`
         return res.status(404).json({ error: error });
     }
-    
+
     res.render('edu/courseContent', { title: result.name, data: result, error: error, hasError: hasError });
 });
 
