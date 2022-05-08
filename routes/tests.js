@@ -22,20 +22,23 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const createResData = req.body;
     try {
-        const { courseName, branch, description, videos, question, answer1, answer2, answer3, answer4 } = createResData;
+        const { courseName, branch, description, image, videos } = createResData;
         try {
             if (!courseName) throw 'All fields need to have valid values';
             if (!branch) throw 'All fields need to have valid values';
+            if (!image) throw 'All fields need to have valid values';
+            if (!videos) throw 'All fields need to have valid values';
+            if (!description) throw 'All fields need to have valid values';
 
             if (typeof courseName !== 'string') throw 'Name must be a string';
-            if (typeof branch !== 'string') throw 'Name must be a string';
+            if (typeof branch !== 'string') throw 'Branch must be a string';
 
 
         } catch (error) {
             res.status(400).json({ error: error.message });
             return;
         }
-        const newCourse = await courseData.addCourse(courseName, branch, description, videos);
+        const newCourse = await courseData.addCourse(courseName, branch, description, image, videos);
         res.status(200).json(newCourse);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -64,10 +67,10 @@ router.get('/:id', async (req, res) => {
             
             correct_Answer[i] = String(resArr[i].answer)
         }
-       
-        console.log(correct_Answer)
-
-        res.render('tests/questions', { title: getRes.name, questions: getRes.questions, qlength:len, solution:JSON.stringify(correct_Answer) });
+    //    getRes.courseName = String(getRes.courseName)
+    //     console.log(getRes)
+        // res.render('tests/questions', { title: getRes.courseName, name:String(getRes.courseName, questions: getRes.questions, qlength:len, solution:JSON.stringify(correct_Answer) });
+        res.render('tests/questions', { course :JSON.stringify(getRes), data: getRes, qlength:len, solution:JSON.stringify(correct_Answer) });
     } catch (error) {
         if (error.message === "Error in id. No course with the given id") {
             res.status(404).json({ error: `No course with the given id` });
@@ -76,13 +79,6 @@ router.get('/:id', async (req, res) => {
         }
     }
 });
-
-
-
-
-
-
-
 
 module.exports = router;
 

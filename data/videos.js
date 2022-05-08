@@ -2,6 +2,8 @@ const mongoCollections = require("../config/mongoCollection");
 const videos = mongoCollections.videos;
 const courses = mongoCollections.courses;
 const users = mongoCollections.users;
+const courses_func = require('./courses')
+const validRev = require('../validation/reviewValidate');
 // const courses_func = require('./courses')
 // const validation = require('../tasks/validation')
 const { ObjectId } = require("mongodb");
@@ -14,6 +16,7 @@ module.exports = {
         let newvideo = {
             title: title,
             video_id: id,
+            comments: [],
         }
         const coursescollection = await courses()
         let courseinfo = await coursescollection.findOne({ courseName: course_name})
@@ -68,9 +71,6 @@ module.exports = {
                     return i.videos
                 }
             }
-        }
-        else{
-            throw `Not Enrolled in such course`
         }
         // return courseinfo
     },
@@ -141,7 +141,45 @@ module.exports = {
         }
     },
 
-    
+    async addComment(coursename, vidId, uId, text){
+
+        validateRev.checkText(text);
+        text = text.trim();
+
+        const coursescollection = await courses();
+        let courseinfo = await coursescollection.findOne({ courseName: coursename})
+        
+        if (courseinfo.videos){
+            var found = courseinfo.videos.some(el => el.video_id === vidId)
+        }
+        else{
+            var found = false
+        }
+
+        if(found){
+            let video = courseinfo.videos.find(vid => vid.video_id === vidId);
+            let comment = {
+                _id: ObjectId(),
+                userId: uId,
+                text:text,
+            }
+            video.comments.push(comment);
+            var insertInfo = await coursescollection.updateOne(
+                {_id: ObjectId(courseinfo._id)},
+                [{$addToSet: {videos:comment}}],
+            );
+
+            if (insertInfo.modifiedCount === 0) {
+                throw 'could not update comment';
+            }
+
+            return {commentInserted: true};
+        }else{
+            return "Video does not exits";
+        }
+
+    },
+
 }
 
 async function main(){
@@ -155,10 +193,10 @@ async function main(){
         // console.log(await module.exports.createVideo('Demo Video', 'M7lc1UVf-VE', 'Web Programming'))
         // console.log(await module.exports.createVideo('First Video', '3JluqTojuME','Web Programming'))
         // console.log(await module.exports.createVideo('Second Video', 'Q33KBiDriJY', 'Web Programming'))
-        console.log(await module.exports.getVideos('pjhangl1@stevens.edu','Web Development'))
+        // console.log(await module.exports.getVideos('pjhangl1@stevens.edu','Web Programming'))
         // console.log(await module.exports.addtime('pjhangl1@stevens.edu',''))
-        console.log(await module.exports.getVideos('teacher@test.com','Graphic'))
-        // console.log(await module.exports.getprogress('pjhangl1@stevens.edu','Web Programming'));
+
+        console.log(await module.exports.getprogress('pjhangl1@stevens.edu','Web Programming'));
         process.exit(0)
         
     }catch(e){

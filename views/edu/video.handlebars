@@ -2,10 +2,76 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="/public/css/video.css" crossorigin="anonymous">
     <div>
-        {{> navbar this}}
+        {{> navbar this}} 
     <button id="stop">Stop All Videos</button>
     </div>
     
+    <div id="commentdiv">
+        {{#if notLoggedIn}}
+            <br>
+        {{else}}
+            <div id="reviews" style="margin-left: 25px;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <h3>Add comment: </h3>
+                            <form id="addComment" method="POST">
+                                <div class="form-group">
+                                    <textarea name="commenttext" id="commenttext" class="form-control" placeholder="type here" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" id="post-comment" class="btn btn-primary" value="Submit">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>                     
+        {{/if}}
+    </div>  
+
+    <div id="hiddencom">
+            <div class="container my-5 py-5">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-12 col-lg-10">
+                        <div class="card text-dark">
+                            <div class="card-body p-4">
+                                <h4 class="mb-0">Recent comments</h4>
+                                <p class="fw-light mb-4 pb-2">Latest Comments by users</p>
+                                <hr class="my-0" />
+                                <ul id="commentList" class="list-group"></ul>
+                                {{#if flag}}
+                                    <div class="card-body p-4">
+                                        <div class="d-flex flex-start">
+                                            <div>
+                                                <h6 class="fw-bold mb-1">This video has no comments yet!</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{else}}
+                                    {{#each videodata}}
+                                        <div class="card-body p-4">
+                                            <div class="d-flex flex-start">
+                                                <div>
+                                                    <h6 class="fw-bold mb-1">{{name}}</h6>
+                                                    <div class="d-flex align-items-center mb-3">
+                                                    </div>
+                                                    <p class="mb-0">
+                                                    Rating: {{rat}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {{/each}}
+                                {{/if}}
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
     {{!-- <div class="wrapper">
         <div id="player1"></div>
         <div id="player2"></div>

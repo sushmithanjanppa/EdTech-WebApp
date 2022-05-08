@@ -29,9 +29,11 @@
   </form>
   <p id="results"></p>
   <br>
-        <br>
-   <button type="Retake" name ="Retake" > Retake Quiz</button>
+  <br>
+  <button type="Retake" name="Retake"> Retake Quiz</button>
   <br><br>
+
+
   
 
   <br><br>
@@ -68,8 +70,8 @@
   return answer;
 }
 
-function getTotal() {
-  var score = 0;
+<script>
+
 
       {{!-- console.log(document.querySelector(
         "#" + `section${i + 1}` + " input[type=radio]:checked"
@@ -83,67 +85,84 @@ function getTotal() {
           subSolution = {textContent:0}
       }
 
-    
-     console.log(document.querySelector(
-      "#" + `section${i + 1}` + " input[type=radio]:checked"
-    ))    
-    var subSolution = document.querySelector(
-      "#" + `section${i + 1}` + " input[type=radio]:checked"
-    ).nextElementSibling;
 
-    
-    if (getSolution("section" + (i + 1)) == solutions[i]) {
-      score += 1;
+  function getSolution(QuestID) {
+    var answer = document.querySelector(
+      "#" + QuestID + " input[type=radio]:checked"
+    );
 
-     subSolution.textContent = " (Correct!)";
+    if (answer === null) {
+      document.querySelector("#" + QuestID + " .error").style.display =
+        "inline";
     } else {
-      subSolution.textContent = " (Incorrect!)";
+      document.querySelector("#" + QuestID + " .error").style.display =
+        "";
+      answer = answer.value;
     }
-  } 
 
-  return score;
-}
-
-const questionButton = document.getElementById("questionButton");
-
-questionButton.addEventListener("click", () => {
-   getResults()
-})
-
-var getResults = function() {
- 
-  var message = "";
-  var isValid = true;
-  var score_temp = 0
-  if (getTotal() == 0)
-   {
-    message = "your score is 0%, Retake the Quiz";
-  } 
-  else if (getTotal() ==1 ) 
-  {
-    message = "your score is 30%, Retake the Quiz";
-    score_temp = 30
-  } 
-  else if (getTotal() ==2 ) 
-  {
-    message = "your score is 50%, Retake the Quiz";
-    score_temp = 50
-  }
-  else if (getTotal() ==3 ) 
-  {
-    message = "your score is 70%, You have passed!";
-    score_temp = 70
-  }
-  else if (getTotal() == 4) 
-  {
-    message = "Perfect.your score is 100% ,You have passed!";
-    score_temp=100
+    return answer;
   }
 
-  return [message,score_temp];
-};
+  function getTotal() {
+    var score = 0;
 
-function returnResults() {
+    for (var i = 0; i < sum; i++) {
+
+      console.log(document.querySelector(
+        "#" + `section${i + 1}` + " input[type=radio]:checked"
+      ))
+      var subSolution = document.querySelector(
+        "#" + `section${i + 1}` + " input[type=radio]:checked"
+      ).nextElementSibling;
+
+
+      if (getSolution("section" + (i + 1)) == solutions[i]) {
+        score += 1;
+
+        subSolution.textContent = " (Correct!)";
+      } else {
+        subSolution.textContent = " (Incorrect!)";
+      }
+    }
+
+    return score;
+  }
+
+  const questionButton = document.getElementById("questionButton");
+
+  questionButton.addEventListener("click", () => {
+    getResults()
+  })
+
+  var getResults = function () {
+
+    var message = "";
+    var isValid = true;
+    var score_temp = 0
+    if (getTotal() == 0) {
+      message = "your score is 0%, Retake the Quiz";
+    }
+    else if (getTotal() == 1) {
+      message = "your score is 30%, Retake the Quiz";
+      score_temp = 30
+    }
+    else if (getTotal() == 2) {
+      message = "your score is 50%, Retake the Quiz";
+      score_temp = 50
+    }
+    else if (getTotal() == 3) {
+      message = "your score is 70%, You have passed!";
+      score_temp = 70
+    }
+    else if (getTotal() == 4) {
+      message = "Perfect.your score is 100% ,You have passed!";
+      score_temp = 100
+    }
+
+    return [message, score_temp];
+  };
+
+  $('#questionButton').click(function(e) {
     var result = getResults();
     document.getElementById("results").innerHTML = result[0];
     {{!-- console.log({{{data}}}) --}}
@@ -172,4 +191,5 @@ function returnResults() {
 
     });
  
+
 </script>
