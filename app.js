@@ -6,6 +6,7 @@ const configRoutes = require('./routes');
 const exphbs = require('express-handlebars');
 const Handlebars = require('handlebars');
 const validate = require('./validation/userValidate');
+const e = require('express');
 const crossPageNavs = {
   top: "http://localhost:3000/#top",
   // team: "http://localhost:3000/#team",
@@ -101,6 +102,7 @@ app.use(session({
 
 
 app.use('/courseForm', async (req, res, next) => {
+  if(req.session.user){
     if (req.session.user_type.type != 1) {
         return res.redirect('/');
     } else {
@@ -108,15 +110,24 @@ app.use('/courseForm', async (req, res, next) => {
         // return res.redirect('/');
         next();
     }
+  }
+  else{
+    return res.status(403).redirect('/userPage');
+  }
 });
 
 app.use('/allCourses', async (req, res, next) => {
-  if (req.session.user_type.type != 1) {
-      return res.redirect('/');
-  } else {
-    //here I',m just manually setting the req.method to post since it's usually coming from a form
-      // return res.redirect('/');
-      next();
+  if(req.session.user){
+    if (req.session.user_type.type != 1) {
+        return res.redirect('/');
+    } else {
+      //here I',m just manually setting the req.method to post since it's usually coming from a form
+        // return res.redirect('/');
+        next();
+    }
+  }
+  else{
+    return res.status(403).redirect('/userPage');
   }
 });
 

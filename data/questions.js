@@ -10,13 +10,13 @@ module.exports = {
         if (!courseId) throw 'courseId should be passed';
     if (typeof courseId != 'string' || courseId.trim() === '') throw 'courseId is not of type string';
     
-        if (!question) throw 'All fields need to have valid values';
-        if (!answer1) throw 'All fields need to have valid values';
-        if (!answer2) throw 'All fields need to have valid values';
-        if (!answer3) throw 'All fields need to have valid values';
-        if (!answer4) throw 'All fields need to have valid values';
-        if (!sectionid) throw 'All fields need to have valid values';
-        if (!answer) throw 'All fields need to have valid values';
+        if (!question) throw 'quest fields need to have valid values';
+        if (!answer1) throw 'ans1 fields need to have valid values';
+        if (!answer2) throw 'ams2 fields need to have valid values';
+        if (!answer3) throw 'ans3 fields need to have valid values';
+        if (!answer4) throw 'ans4 fields need to have valid values';
+        if (!sectionid) throw 'secid fields need to have valid values';
+        if (!answer) throw 'Ans fields need to have valid values';
 
         if (typeof question !== 'string') throw 'question must be a string';
         if (typeof answer1 !== 'string') throw 'answer1 must be a string';
