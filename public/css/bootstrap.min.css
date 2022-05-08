@@ -1215,7 +1215,7 @@ h6 .small,
 h6 small {
   font-weight: 400;
   line-height: 1;
-  color: #777;
+  color: #000000;
 }
 .h1,
 .h2,
@@ -3269,7 +3269,7 @@ fieldset[disabled] .btn-primary:hover {
 }
 .btn-success {
   color: #fff;
-  background-color: #5cb85c;
+  background-color: #008a00;
   border-color: #4cae4c;
 }
 .btn-success.focus,
@@ -3317,11 +3317,11 @@ fieldset[disabled] .btn-primary:hover {
 fieldset[disabled] .btn-success.focus,
 fieldset[disabled] .btn-success:focus,
 fieldset[disabled] .btn-success:hover {
-  background-color: #5cb85c;
+  background-color: #008a00;
   border-color: #4cae4c;
 }
 .btn-success .badge {
-  color: #5cb85c;
+  color: #008a00;
   background-color: #fff;
 }
 .btn-info {
@@ -4985,7 +4985,7 @@ a.label:hover {
   background-color: #286090;
 }
 .label-success {
-  background-color: #5cb85c;
+  background-color: #008a00;
 }
 .label-success[href]:focus,
 .label-success[href]:hover {
@@ -5292,7 +5292,7 @@ a.thumbnail:hover {
   animation: progress-bar-stripes 2s linear infinite;
 }
 .progress-bar-success {
-  background-color: #5cb85c;
+  background-color: #008a00;
 }
 .progress-striped .progress-bar-success {
   background-image: -webkit-linear-gradient(

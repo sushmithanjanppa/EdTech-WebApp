@@ -64,9 +64,11 @@ module.exports = {
         // console.log(courseinfo);
         if(courseinfo){
             for(var i of courseinfo[0].courses){
-                // console.log(i._id)
+                console.log(i._id)
                 if(i._id.equals(coursedata._id)){
+
                     // console.log(i.videos)
+
                     return i.videos
                 }
             }

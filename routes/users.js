@@ -36,9 +36,12 @@ router.get("/", async (req, res) => {
 
 router.get("/signup", async (req, res) => {
   if (req.session.user) {
-    return res.redirect("/login");
+    return res.status(200).redirect("/login");
   } else {
-    return res.status(401).render("users/signup", { title: "Signup Page", location: crossPageNavs , notLoggedIn: req.session.user ? false : true });
+
+    res.status(200).render("users/signup", { title: "Signup Page", location: crossPageNavs , notLoggedIn: req.session.user ? false : true });
+    // res.render("users/signup", { title: "Signup Page", location: crossPageNavs , notLoggedIn: req.session.user ? false : true });
+
   }
 });
 
