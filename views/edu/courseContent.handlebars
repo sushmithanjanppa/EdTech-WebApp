@@ -54,9 +54,9 @@
                                 <ul id="commentList" class="list-group"></ul>
                                 {{#if flag}}
                                     <div class="card-body p-4">
-                                        <div class="d-flex flex-start">
+                                        <div class="d-flex flex-start" >
                                             <div>
-                                                <h4 class="fw-bold mb-1">This course has no reviews yet!</h4>
+                                                <h6 class="fw-bold mb-1" id = "NoReview">This course has no reviews yet!</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -137,6 +137,7 @@
 
     $('#post-comment').on('click', function(event) {
         event.preventDefault();
+        $('#NoReview').hide()
         var sendData = {
             courseName: course.courseName,
             text: $('#reviewtext').val(),

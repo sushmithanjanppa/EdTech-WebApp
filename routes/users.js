@@ -140,8 +140,11 @@ router.get('/video/:course', async(req,res) => {
       }
       try{
         let email = req.session.user.email;
-        var data = await videos.getVideos(email,course_name);
-        return res.render('edu/video',{course: JSON.stringify(course_name), videodata : JSON.stringify(data), location: crossPageNavs, notLoggedIn: req.session.user ? false : true});
+        let data = await videos.getVideos(email,course_name);
+        let course = await courses.getCourseByName(course_name);
+        console.log(course.videos);
+        let vidInfo = course.videos;
+        return res.render('edu/video',{vidInfo: JSON.stringify(vidInfo),course: JSON.stringify(course_name), videodata : JSON.stringify(data), location: crossPageNavs, notLoggedIn: req.session.user ? false : true});
       }catch(e){
           console.log(e)
         }
@@ -154,10 +157,10 @@ router.post('/video/:course', async(req,res) => {
   if(req.session.user){
     try{
       let courseName = req.params.course;
-      let email = req.session.user.email
+      let email = req.session.user.email;
       let user = await userData.getUser(email);
       let newComment = await videos.addComment(courseName, req.body.vidId, user._id, user.name,req.body.text);
-      console.log(newComment)
+      console.log(newComment.commentInserted)
       let uname = newComment.commentVal.userName;
       let vidName = newComment.vidName;
       res.send({name: uname, vidName:vidName});
