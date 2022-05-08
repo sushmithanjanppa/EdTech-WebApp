@@ -9,7 +9,7 @@ module.exports = {
     checkRating(rating){
         if(typeof(rating)==='undefined') throw "Please provide a rating";
         if(rating.trim().length===0) throw "Must provide a rating";
-        rating = Number.parseInt(rating);
+        rating = Number(rating);
         if(typeof(rating)!='number') throw 'Rating should be a number';
         if(rating>5 || rating<0) throw 'Rating must be between 0-5';
     },

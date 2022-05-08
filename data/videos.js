@@ -3,7 +3,7 @@ const videos = mongoCollections.videos;
 const courses = mongoCollections.courses;
 const users = mongoCollections.users;
 const courses_func = require('./courses')
-const validRev = require('../validation/reviewValidate');
+const validateRev = require('../validation/reviewValidate');
 // const courses_func = require('./courses')
 // const validation = require('../tasks/validation')
 const { ObjectId } = require("mongodb");
@@ -60,14 +60,15 @@ module.exports = {
         // const coursedata = await courses_func.getCourseByName(course_name)
         const courseCollection = await courses();
         const coursedata = await courseCollection.findOne({ courseName: course_name});
-        // console.log(coursedata)
         let courseinfo = await userCollection.find({ email:email },{courses:{$elemMatch:{_id:coursedata._id} }, "courses.videos":1}).toArray();
-        // console.log(courseinfo)
+        // console.log(courseinfo);
         if(courseinfo){
             for(var i of courseinfo[0].courses){
                 console.log(i._id)
                 if(i._id.equals(coursedata._id)){
-                    console.log(i.videos)
+
+                    // console.log(i.videos)
+
                     return i.videos
                 }
             }
@@ -141,41 +142,56 @@ module.exports = {
         }
     },
 
-    async addComment(coursename, vidId, uId, text){
+    async addComment(coursename, vidId, uId, userName, text){
 
         validateRev.checkText(text);
         text = text.trim();
-
         const coursescollection = await courses();
         let courseinfo = await coursescollection.findOne({ courseName: coursename})
-        
+        // console.log('-------courseinfo.videos-------',courseinfo.videos)
         if (courseinfo.videos){
             var found = courseinfo.videos.some(el => el.video_id === vidId)
         }
         else{
             var found = false
         }
-
         if(found){
             let video = courseinfo.videos.find(vid => vid.video_id === vidId);
             let comment = {
                 _id: ObjectId(),
                 userId: uId,
+                userName: userName,
                 text:text,
             }
-            video.comments.push(comment);
+            let newvideo = {
+                title: video.title,
+                video_id: video.video_id,
+                comments: video.comments,
+            }
+            newvideo.comments.push(comment);
+            // courseinfo.videos.push(newvideo);
+            let currVideId = video.video_id;
+
+            var deleteInfo = await coursescollection.updateOne(
+                {_id: ObjectId(courseinfo._id)},
+                {$pull: {videos: {video_id: currVideId}}},
+            )
+            if (deleteInfo.modifiedCount === 0) {
+                throw 'could not delete video';
+            }
+
             var insertInfo = await coursescollection.updateOne(
                 {_id: ObjectId(courseinfo._id)},
-                [{$addToSet: {videos:comment}}],
+                {$push: {videos: newvideo}},
             );
 
             if (insertInfo.modifiedCount === 0) {
                 throw 'could not update comment';
             }
 
-            return {commentInserted: true};
+            return {commentInserted: true, commentVal: comment, vidName: newvideo.title};
         }else{
-            return "Video does not exits";
+            return {error: "Video does not exits"};
         }
 
     },
