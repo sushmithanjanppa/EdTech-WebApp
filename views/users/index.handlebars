@@ -1,5 +1,21 @@
-<title>EdTech</title>
-<body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+
+{{!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+     
+     <title>EdTech</title>
+
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+     <meta name="description" content="">
+     <meta name="keywords" content="">
+     <meta name="author" content="">
+     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+</head>
+<body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50"> --}}
+
 
      {{> navbar this}}
 
@@ -143,10 +159,12 @@
                          <div class="col-md-offset-1 col-md-4 col-sm-12">
                               <div class="entry-form">
                                    <form action="/login" method="post" id="login-form" class="login-form">
+
                                         <h2>Login Now</h2><label for="Email" class="sign-up-label">
                                         <input type="email" name="email" id = "Email" class="form-control" placeholder="Your Email" required=""></label>
                                         <label for="Password" class="sign-up-label">
                                         <input type="password" name="password"  id="Password" class="form-control" placeholder="Your password" required=""></label>
+
 
                                         <button class="submit-btn form-control" id="form-submit">Login</button>
                                    </form>
@@ -160,6 +178,7 @@
                               </div>
                          </div>
                     {{/if}}
+               </div>
                </div>
           </div>
      </section>
@@ -179,7 +198,7 @@
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="public/images/Achal.jpeg" class="img-responsive" alt="">
+                                   <img src="public/images/Achal.jpeg" class="img-responsive" alt=""/>
                               </div>
                               <div class="team-info">
                                    <h3>Achal</h3>
@@ -191,7 +210,7 @@
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="public/images/Preet.jpg" class="img-responsive" alt="">
+                                   <img src="public/images/Preet.jpg" class="img-responsive" alt=""/>
                               </div>
                               <div class="team-info">
                                    <h3>Preet</h3>
@@ -203,7 +222,7 @@
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="public/images/Sushmitha.jpeg" class="img-responsive" alt="">
+                                   <img src="public/images/Sushmitha.jpeg" class="img-responsive" alt=""/>
                               </div>
                               <div class="team-info">
                                    <h3>Sushmitha</h3>
@@ -215,7 +234,7 @@
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="public/images/Marvin.jpeg" class="img-responsive" alt="">
+                                   <img src="public/images/Marvin.jpeg" class="img-responsive" alt=""/>
                               </div>
                               <div class="team-info">
                                    <h3>Marvin</h3>
@@ -250,6 +269,7 @@
                          </div>
                     </div>
                </div>
+          </div>
           </div>
      </section>
 
@@ -342,6 +362,38 @@
                               </div>
 
                          </div>
+
+                    </div>
+               </div>
+          </div>
+     </section> 
+
+
+     {{!-- <!-- CONTACT -->
+     <section id="contact">
+          <div class="container">
+               <div class="row">
+
+                    <div class="col-md-6 col-sm-12">
+                         <form id="contact-form" role="form" action="" method="post">
+                              <div class="section-title">
+                                   <h2>Contact us <small>we love conversations. let us talk!</small></h2>
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <input type="text" class="form-control" placeholder="Enter full name" name="name" required="">
+                    
+                                   <input type="email" class="form-control" placeholder="Enter email address" name="email" required="">
+
+                                   <textarea class="form-control" rows="6" placeholder="Tell us about your message" name="message" required=""></textarea>
+                              </div>
+
+                              <div class="col-md-4 col-sm-12">
+                                   <input type="submit" class="form-control" name="send message" value="Send Message">
+                              </div>
+
+                         </form>
+
                     </div>
                </div>
           </div>
@@ -397,7 +449,8 @@
           </div>
      </footer>
 
-</body>
+
+{{!-- </body> --}}
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 
@@ -456,4 +509,3 @@
           }
      }
 </script>
-</html>
