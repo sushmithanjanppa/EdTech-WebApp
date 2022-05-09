@@ -223,30 +223,3 @@ module.exports = {
 
 }
 
-
-async function main(){
-    // console.log(await module.exports.getInstCourses("courses@gmail.com"))
-    // console.log(await module.exports.deleteCourse("627567e57fa68b4567ec4017"))
-    // const data = {
-    //     courseName: 'Temp',
-    //     description: 'This is a temp course',
-    //     image: '',
-    //     video_id: [ '3JluqTojuME', 'rfscVS0vtbw' ],
-    //     course_id: '6275b26aeb6dba4d69c80d9e'
-    // }
-    const data = {
-        courseName: 'Temp',
-        description: 'This is a temp course',
-        image: '',
-        video_id: '3JluqTojuME',
-        branch : "CS",
-        email:"teacher@test.com"
-    }
-    // console.log(await module.exports.addCourse(data.courseName,data.description,data.image,data.video_id,data.branch,data.email))
-    // console.log(await module.exports.getAllCourses())
-    const c = await module.exports.getCourseByName('Web Development')
-    console.log(c._id.toString())
-}
-
-// main();
-
