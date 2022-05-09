@@ -213,6 +213,10 @@ module.exports = {
             {"$set" : {"courses.$" :  course_up}})
         // console.log(user_update)
         if(user_update.modifiedCount === user_update.matchedCount){
+<<<<<<< Updated upstream
+=======
+            // console.log('modified')
+>>>>>>> Stashed changes
             return {Modified:true}
         }
 

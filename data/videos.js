@@ -84,6 +84,11 @@ module.exports = {
         // console.log(email)
         email = email.trim();
         email = email.toLowerCase();
+<<<<<<< Updated upstream
+=======
+        // console.log(typeof(data))
+        if(typeof(data)==='undefined') throw "No data provided";
+>>>>>>> Stashed changes
         // let data_up = await videocollection.findOne({video_id:data.video_id});
         let data_up = await userCollection.aggregate([
             {
