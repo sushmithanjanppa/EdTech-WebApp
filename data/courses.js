@@ -215,7 +215,9 @@ module.exports = {
         const user_update = await userCollection.updateMany({"courses._id":  ObjectId(data.course_id)},
             {"$set" : {"courses.$" :  course_up}})
         if(user_update.modifiedCount === user_update.matchedCount){
-            console.log('modified')
+
+            // console.log('modified')
+
             return {Modified:true}
         }
 

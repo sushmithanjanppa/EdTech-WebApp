@@ -91,8 +91,9 @@ module.exports = {
         // console.log(email)
         email = email.trim();
         email = email.toLowerCase();
-        console.log(typeof(data))
+        // console.log(typeof(data))
         if(typeof(data)==='undefined') throw "No data provided";
+
         // let data_up = await videocollection.findOne({video_id:data.video_id});
         let data_up = await userCollection.aggregate([
             {
