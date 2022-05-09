@@ -6,7 +6,7 @@ body {
     justify-content: center;
     padding: 20px;
     box-sizing: border-box;
-    background: url("../images/background.jpg");
+    /* background: url("../images/background.jpg"); */
     background-size: cover;
   }
   

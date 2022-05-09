@@ -31,9 +31,9 @@ function getTotal() {
     document.getElementById("set" + i).innerHTML = "";
 
     
-    console.log(document.querySelector(
-      "#" + `section${i + 1}` + " input[type=radio]:checked"
-    ))    
+    // console.log(document.querySelector(
+    //   "#" + `section${i + 1}` + " input[type=radio]:checked"
+    // ))    
     var subSolution = document.querySelector(
       "#" + `section${i + 1}` + " input[type=radio]:checked"
     ).nextElementSibling;

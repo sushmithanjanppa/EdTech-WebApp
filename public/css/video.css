@@ -1,6 +1,6 @@
 
 button {
-    background-color: lightcoral;
+    background-color: rgb(173, 5, 5);
     color: white;
     display: block;
     margin: 3vw auto;
@@ -24,10 +24,10 @@ border: 1px solid #000000;
 margin: 10px;
 border-radius: 10px;
 background: #000000;
-    iframe {
+    /* iframe {
         frameborder :1;
         border: 3px solid #000fff ;
         width: 30vw;
         height: 16.5vw;
-    }
+    } */
 }

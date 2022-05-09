@@ -3326,7 +3326,7 @@ fieldset[disabled] .btn-success:hover {
 }
 .btn-info {
   color: #fff;
-  background-color: #5bc0de;
+  background-color: #00829b;
   border-color: #46b8da;
 }
 .btn-info.focus,
@@ -3378,7 +3378,7 @@ fieldset[disabled] .btn-info:hover {
   border-color: #46b8da;
 }
 .btn-info .badge {
-  color: #5bc0de;
+  color: #00829b;
   background-color: #fff;
 }
 .btn-warning {

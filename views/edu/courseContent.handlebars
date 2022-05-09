@@ -54,13 +54,12 @@
                                 <ul id="commentList" class="list-group"></ul>
                                 {{#if flag}}
                                     <div class="card-body p-4">
-                                        <div class="d-flex flex-start">
+                                        <div class="d-flex flex-start" >
                                             <div>
-<<<<<<< Updated upstream
-                                                <h4 class="fw-bold mb-1">This course has no reviews yet!</h4>
-=======
+
+
                                                 <h4 class="fw-bold mb-1" id = "NoReview">This course has no reviews yet!</h4>
->>>>>>> Stashed changes
+
                                             </div>
                                         </div>
                                     </div>
@@ -112,7 +111,7 @@
             course_name: course.courseName
         },
         success: function(result) {
-            console.log('inside success')
+            {{!-- console.log('inside success') --}}
             alert(result.message);
             $('#enroll').hide()
             $('#video').show()
@@ -120,7 +119,7 @@
             $('hiddenrev').show()
         },
         error: function(result) {
-            console.log('inside error')
+            {{!-- console.log('inside error') --}}
             $('#video').hide()
             alert(result.responseJSON.message);
         }
@@ -141,6 +140,7 @@
 
     $('#post-comment').on('click', function(event) {
         event.preventDefault();
+        $('#NoReview').hide()
         var sendData = {
             courseName: course.courseName,
             text: $('#reviewtext').val(),

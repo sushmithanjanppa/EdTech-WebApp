@@ -4,7 +4,7 @@ const video_func = require("./videos");
 const { ObjectId } = require("mongodb");
 const validateRev = require("../validation/reviewValidate");
 const users = mongoCollections.users;
-
+const xss = require('xss');
 module.exports = {
     async addCourse(courseName, description, image, video_id, branch, email) {
         const courseCollection = await courses();
@@ -121,7 +121,7 @@ module.exports = {
         text = text.trim();
         const courseCollection = await courses();
         const currCourse = await this.getCourseById(courseId);
-        console.log(rating)
+        // console.log(rating)
         const newReview = {
             _id: ObjectId(),
             userId: uId,
@@ -193,7 +193,7 @@ module.exports = {
                     cnt = cnt + 1
                 }
             }
-            else{
+            else if(data.video_id.trim()){
                 await video_func.createVideo(title='video '+(cnt+1), id=data.video_id, course_name = data.courseName)
             }
         }
@@ -240,7 +240,9 @@ async function main(){
         email:"teacher@test.com"
     }
     // console.log(await module.exports.addCourse(data.courseName,data.description,data.image,data.video_id,data.branch,data.email))
-    console.log(await module.exports.getAllCourses())
+    // console.log(await module.exports.getAllCourses())
+    const c = await module.exports.getCourseByName('Web Development')
+    console.log(c._id.toString())
 }
 
 // main();
