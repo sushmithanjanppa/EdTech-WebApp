@@ -1,7 +1,6 @@
 const emailValidator = require('email-validator')
 const { ObjectId } = require('mongodb');
 
-
 module.exports = {
     validateEmail(email){
         if(typeof(email)==='undefined') throw "Please enter a valid input for email";
@@ -55,6 +54,7 @@ module.exports = {
 
     validateId(id){
         if(typeof(id)==='undefined') throw 'Please provide an id';
+        id = id.toString();
         if(typeof(id)!='string') throw 'id is not string type';
         id = id.trim();
         if(id.length===0) throw 'empty id provided';
