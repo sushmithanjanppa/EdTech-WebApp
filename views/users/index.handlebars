@@ -160,7 +160,7 @@
                                         <h2>Login Now</h2><label for="Email" class="sign-up-label">
                                         <input type="email" name="email" id = "Email" class="form-control" placeholder="Your Email" required=""></label>
                                         <label for="Password" class="sign-up-label">
-                                        <input type="password" name="password"  id="Password"class="form-control" placeholder="Your password" required=""></label>
+                                        <input type="password" name="password"  id="Password" class="form-control" placeholder="Your password" required=""></label>
 
                                         <button class="submit-btn form-control" id="form-submit">Login</button>
                                    </form>
@@ -169,12 +169,11 @@
                                    <p class="error">{{error}}</p>
                                    {{/if}}
                                    <div class="signup">
-                                   <a href="/signup">Need to register? Click here to SignUp</a>
+                                        <a href="/signup">Need to register? Click here to SignUp</a>
+                                   </div>
                               </div>
                          </div>
                     {{/if}}
-
-
                </div>
           </div>
      </section>
@@ -200,11 +199,6 @@
                                    <h3>Achal</h3>
                                    <span>I love Teaching</span>
                               </div>
-                              {{!-- <ul class="social-icon">
-                                   <li><a href="#" class="fa fa-facebook-square" attr="facebook icon"></a></li>
-                                   <li><a href="#" class="fa fa-twitter"></a></li>
-                                   <li><a href="#" class="fa fa-instagram"></a></li>
-                              </ul> --}}
                          </div>
                     </div>
 
@@ -217,10 +211,6 @@
                                    <h3>Preet</h3>
                                    <span>Education is the key!</span>
                               </div>
-                              {{!-- <ul class="social-icon">
-                                   <li><a href="#" class="fa fa-google"></a></li>
-                                   <li><a href="#" class="fa fa-instagram"></a></li>
-                              </ul> --}}
                          </div>
                     </div>
 
@@ -233,11 +223,6 @@
                                    <h3>Sushmitha</h3>
                                    <span>I like Online Courses</span>
                               </div>
-                              {{!-- <ul class="social-icon">
-                                   <li><a href="#" class="fa fa-twitter"></a></li>
-                                   <li><a href="#" class="fa fa-envelope-o"></a></li>
-                                   <li><a href="#" class="fa fa-linkedin"></a></li>
-                              </ul> --}}
                          </div>
                     </div>
 
@@ -250,11 +235,6 @@
                                    <h3>Marvin</h3>
                                    <span>Learning is fun</span>
                               </div>
-                              {{!-- <ul class="social-icon">
-                                   <li><a href="#" class="fa fa-twitter"></a></li>
-                                   <li><a href="#" class="fa fa-google"></a></li>
-                                   <li><a href="#" class="fa fa-behance"></a></li>
-                              </ul> --}}
                          </div>
                     </div>
 
@@ -267,7 +247,6 @@
      <section id="courses">
           <div class="container">
                <div class="row">
-
                     <div class="col-md-12 col-sm-12" >
                          <div class="section-title">
                               <h2>Popular Courses <small>Upgrade your skills with newest courses</small></h2>
@@ -281,165 +260,9 @@
                          </div>
 
                          <div class="owl-carousel owl-theme owl-courses" id="course_row">
-                              {{!-- <div class="col-md-4 col-sm-4">
-                                   <div class="item">
-                                        <div class="courses-thumb">
-                                             <div class="courses-top">
-                                                  <div class="courses-image">
-                                                       <img src="public/images/Webdevcourse.jpeg" class="img-responsive" alt="">
-                                                  </div>
-                                                  <div class="courses-date">
-                                                       <span><i class="fa fa-calendar"></i> 12 / 7 / 2018</span>
-                                                       <span><i class="fa fa-clock-o"></i> 7 Hours</span>
-                                                  </div>
-                                             </div>
-
-                                             <div class="courses-detail">
-                                                  <h3><a href="/course/1">Web Development</a></h3>
-                                                  <p>HTML, CSS, and Javascript for Web Developers</p>
-                                             </div>
-
-                                             <div class="courses-info">
-                                                  <div class="courses-author">
-                                                       <img src="public/images/author-image1.jpg" class="img-responsive" alt="">
-                                                       <span>Mark Wilson</span>
-                                                  </div>
-                                                  <!-- <div class="courses-price">
-                                                       <a href="#"><span>USD 25</span></a>
-                                                  </div> -->
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div>
-
-                              <div class="col-md-4 col-sm-4">
-                                   <div class="item">
-                                        <div class="courses-thumb">
-                                             <div class="courses-top">
-                                                  <div class="courses-image">
-                                                       <img src="public/images/Python Course.png" class="img-responsive" alt="">
-                                                  </div>
-                                                  <div class="courses-date">
-                                                       <span><i class="fa fa-calendar"></i> 20 / 7 / 2018</span>
-                                                       <span><i class="fa fa-clock-o"></i> 4.5 Hours</span>
-                                                  </div>
-                                             </div>
-
-                                             <div class="courses-detail">
-
-                                                  <h3><a href="/course/2">  Python for Everybody   </a></h3>
-
-                                                  <p>Python Programming, Python Syntax, Basic Programming Language, Tuple</p>
-                                             </div>
-
-                                             <div class="courses-info">
-                                                  <div class="courses-author">
-                                                       <img src="public/images/author-image2.jpg" class="img-responsive" alt="">
-                                                       <span>Jessica</span>
-                                                  </div>
-                                                  <!-- <div class="courses-price">
-                                                       <a href="#"><span>USD 80</span></a>
-                                                  </div> -->
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div>
-
-                              <div class="col-md-4 col-sm-4">
-                                   <div class="item">
-                                        <div class="courses-thumb">
-                                             <div class="courses-top">
-                                                  <div class="courses-image">
-                                                       <img src="public/images/java.jpeg" class="img-responsive" alt="">
-                                                  </div>
-                                                  <div class="courses-date">
-                                                       <span><i class="fa fa-calendar"></i> 15 / 8 / 2018</span>
-                                                       <span><i class="fa fa-clock-o"></i> 6 Hours</span>
-                                                  </div>
-                                             </div>
-
-                                             <div class="courses-detail">
-                                                  <h3><a href="/course/3">Introduction to Java</a></h3>
-                                                  <p>Java Database Connectivity (JDBC), Java Class Library, Java Programming </p>
-                                             </div>
-
-                                             <div class="courses-info">
-                                                  <div class="courses-author">
-                                                       <img src="public/images/author-image3.jpg" class="img-responsive" alt="">
-                                                       <span>Catherine</span>
-                                                  </div>
-                                                  <!-- <div class="courses-price free">
-                                                       <a href="#"><span>Free</span></a>
-                                                  </div> -->
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div> --}}
-{{!-- #### --}}
-                              <!-- <div class="col-md-4 col-sm-4">
-                                   <div class="item">
-                                        <div class="courses-thumb">
-                                             <div class="courses-top">
-                                                  <div class="courses-image">
-                                                       <img src="images/courses-image4.jpg" class="img-responsive" alt="">
-                                                  </div>
-                                                  <div class="courses-date">
-                                                       <span><i class="fa fa-calendar"></i> 10 / 8 / 2018</span>
-                                                       <span><i class="fa fa-clock-o"></i> 8 Hours</span>
-                                                  </div>
-                                             </div>
-
-                                             <div class="courses-detail">
-                                                  <h3><a href="#">Summer Kids</a></h3>
-                                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                             </div>
-
-                                             <div class="courses-info">
-                                                  <div class="courses-author">
-                                                       <img src="images/author-image1.jpg" class="img-responsive" alt="">
-                                                       <span>Mark Wilson</span>
-                                                  </div>
-                                                  <div class="courses-price">
-                                                       <a href="#"><span>USD 45</span></a>
-                                                  </div>
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div> -->
-
-                              <!-- <div class="col-md-4 col-sm-4">
-                                   <div class="item">
-                                        <div class="courses-thumb">
-                                             <div class="courses-top">
-                                                  <div class="courses-image">
-                                                       <img src="images/courses-image5.jpg" class="img-responsive" alt="">
-                                                  </div>
-                                                  <div class="courses-date">
-                                                       <span><i class="fa fa-calendar"></i> 5 / 10 / 2018</span>
-                                                       <span><i class="fa fa-clock-o"></i> 10 Hours</span>
-                                                  </div>
-                                             </div>
-
-                                             <div class="courses-detail">
-                                                  <h3><a href="#">Business &amp; Management</a></h3>
-                                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                             </div>
-
-                                             <div class="courses-info">
-                                                  <div class="courses-author">
-                                                       <img src="images/author-image2.jpg" class="img-responsive" alt="">
-                                                       <span>Jessica</span>
-                                                  </div>
-                                                  <div class="courses-price free">
-                                                       <a href="#"><span>Free</span></a>
-                                                  </div>
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div> -->
 
                          </div>
-
+                    </div>
                </div>
           </div>
      </section>
@@ -533,47 +356,10 @@
                               </div>
 
                          </div>
-
+                    </div>
                </div>
           </div>
      </section> 
-
-
-     {{!-- <!-- CONTACT -->
-     <section id="contact">
-          <div class="container">
-               <div class="row">
-
-                    <div class="col-md-6 col-sm-12">
-                         <form id="contact-form" role="form" action="" method="post">
-                              <div class="section-title">
-                                   <h2>Contact us <small>we love conversations. let us talk!</small></h2>
-                              </div>
-
-                              <div class="col-md-12 col-sm-12">
-                                   <input type="text" class="form-control" placeholder="Enter full name" name="name" required="">
-                    
-                                   <input type="email" class="form-control" placeholder="Enter email address" name="email" required="">
-
-                                   <textarea class="form-control" rows="6" placeholder="Tell us about your message" name="message" required=""></textarea>
-                              </div>
-
-                              <div class="col-md-4 col-sm-12">
-                                   <input type="submit" class="form-control" name="send message" value="Send Message">
-                              </div>
-
-                         </form>
-                    </div>
-
-                    <div class="col-md-6 col-sm-12">
-                         <div class="contact-image">
-                              <img src="public/images/contact-image.jpg" class="img-responsive" alt="Smiling Two Girls">
-                         </div>
-                    </div>
-
-               </div>
-          </div>
-     </section>        --}}
 
 
      <!-- FOOTER -->
@@ -590,12 +376,6 @@
                                    <p>1 Castle Point Terrace,<br> Hoboken, NJ 07030</p>
                               </address>
 
-                              {{!-- <ul class="social-icon">
-                                   <li><a href="#" class="fa fa-facebook-square" attr="facebook icon"></a></li>
-                                   <li><a href="#" class="fa fa-twitter"></a></li>
-                                   <li><a href="#" class="fa fa-instagram"></a></li>
-                              </ul> --}}
-
                               <div class="copyright-text"> 
                                    <p>Copyright &copy; 2022 EdTech</p>
                                    
@@ -610,18 +390,7 @@
                               </div>
                               <address>
                                    <p>+1 (900) 900 9000</p>
-                                   {{!-- <p><a href="hello@edtech.com">hello@edtech.com</a></p> --}}
                               </address>
-
-                              {{!-- <div class="footer_menu">
-                                   <h2>Quick Links</h2>
-                                   <ul>
-                                        <li><a href="#">Career</a></li>
-                                        <li><a href="#">Investor</a></li>
-                                        <li><a href="#">Terms & Conditions</a></li>
-                                        <li><a href="#">Refund Policy</a></li>
-                                   </ul>
-                              </div> --}}
                          </div>
                     </div>
 
@@ -643,7 +412,9 @@
      </footer>
 
 </body>
+
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+
 <script>
      if ({{{course_info}}}){
           var courses = {{{course_info}}}
