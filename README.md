@@ -26,4 +26,4 @@ and will have different functionality and information.
 
 ## Github Repo Link
   https://github.com/PreetJhanglani/EdTech-WebApp
-![image](https://user-images.githubusercontent.com/92929680/167325920-7d16b8a2-d7d5-4a11-ba9e-315412aa43e7.png)
+
