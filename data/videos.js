@@ -5,7 +5,9 @@ const users = mongoCollections.users;
 const courses_func = require('./courses')
 const validateRev = require('../validation/reviewValidate');
 // const courses_func = require('./courses')
-// const validation = require('../tasks/validation')
+const validateVideo = require('../validation/videoValidate');
+const validateCourse = require("../validation/courseValidate");
+const validateUser = require("../validation/userValidate");
 const { ObjectId } = require("mongodb");
 // const bcrypt = require('bcrypt');
 // const saltRounds = 12;
@@ -13,6 +15,10 @@ const { ObjectId } = require("mongodb");
 module.exports = {
     async createVideo(title,id, course_name){
         // const videocollection = await videos()
+        validateVideo.checkTitle(title);
+        validateCourse.checkVid(id);
+        validateCourse.checkName(course_name);
+
         let newvideo = {
             title: title,
             video_id: id,
@@ -51,7 +57,8 @@ module.exports = {
     // },
 
     async getVideos(email,course_name){
-        // validate.validateEmail(email);
+        validateUser.validateEmail(email);
+        validateCourse.checkName(course_name);
         email = email.trim();
         email = email.toLowerCase();
         // const userCollection = await users();
@@ -84,6 +91,8 @@ module.exports = {
         // console.log(email)
         email = email.trim();
         email = email.toLowerCase();
+        console.log(typeof(data))
+        if(typeof(data)==='undefined') throw "No data provided";
         // let data_up = await videocollection.findOne({video_id:data.video_id});
         let data_up = await userCollection.aggregate([
             {
@@ -145,7 +154,10 @@ module.exports = {
     },
 
     async addComment(coursename, vidId, uId, userName, text){
-
+        validateCourse.checkName(coursename);
+        validateCourse.checkVid(vidId);
+        validateUser.validateId(uId);
+        validateUser.validateName(userName);
         validateRev.checkText(text);
         text = text.trim();
         const coursescollection = await courses();

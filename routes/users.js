@@ -150,7 +150,7 @@ router.get('/video/:course', async(req,res) => {
         }
     }
     else{
-      res.status(403).render('users/authError', { notLoggedIn: req.session.user ? false : true, location: crossPageNavs });
+      res.status(403).render('users/authError', {title: "Authentication Error", notLoggedIn: req.session.user ? false : true, location: crossPageNavs });
     }
 });
 router.post('/video/:course', async(req,res) => {
@@ -210,7 +210,7 @@ router.get('/course/:Name', async(req,res) => {
       return res.render('edu/courseContent',{data:JSON.stringify(course), flag: flag, comments:comments, notLoggedIn: req.session.user ? false : true, location: crossPageNavs });
     }catch(e){
       console.log(e);
-      return res.render('edu/errorPage');
+      return res.status(404).render('edu/errorPage');
     }
   })
 router.post('/course/:Name', async(req,res) => {
@@ -235,7 +235,7 @@ router.post('/course/:Name', async(req,res) => {
       res.send({name:uname, canModify: canModify});
     }catch(e){
       console.log(e);
-      res.send({error: e}) 
+      res.status(404).send({error: e}) 
     }
 })
 
@@ -272,13 +272,22 @@ router.post('/courseForm', async(req,res) => {
 })
 
 router.post('/modify', async(req,res) => {
-  var email = req.session.user.email
-  try{
-    validate.validateEmail(email)
+  if(req.session.user){
+    try{
+      var email = req.session.user.email
+      validate.validateEmail(email)
+      let course_modify = await courses.modifyCourse(req.body)
+      if(course_modify.Modified){
+        res.redirect('/allCourses');
+      }
+    }
+    catch(e){
+      console.log(e)
+    }
+  }else{
+    res.status(403).render('users/authError', {title: "Authentication Error", notLoggedIn: req.session.user ? false : true, location: crossPageNavs });
   }
-  catch(e){
-    console.log(e)
-  }
+  
   // console.log(req.body)
   // var data = {}
   // if(req.body.courseName.trim()){
@@ -293,10 +302,7 @@ router.post('/modify', async(req,res) => {
   // if(Array.isArray(req.body.video_id) && req.body.video_id.length > 0){
   //   data.video_id = req.body.video_id
   // }
-  let course_modify = await courses.modifyCourse(req.body)
-  if(course_modify.Modified){
-    res.redirect('/allCourses');
-  }
+  
   // let courseAdded=await courses.addCourse(req.body.courseName,req.body.description, image_link, req.body.video_id, email);
   // if(courseAdded.courseInserted)  
   // res.redirect('/allCourses');

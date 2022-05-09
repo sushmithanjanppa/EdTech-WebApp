@@ -8,7 +8,7 @@ const { ObjectId } = require('mongodb');
 module.exports = {
     async create(courseId, question, answer1, answer2, answer3, answer4, sectionid, answer) {
         if (!courseId) throw 'courseId should be passed';
-    if (typeof courseId != 'string' || courseId.trim() === '') throw 'courseId is not of type string';
+        if (typeof courseId != 'string' || courseId.trim() === '') throw 'courseId is not of type string';
     
         if (!question) throw 'quest fields need to have valid values';
         if (!answer1) throw 'ans1 fields need to have valid values';
