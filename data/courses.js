@@ -3,10 +3,19 @@ const courses = mongoCollections.courses;
 const video_func = require("./videos");
 const { ObjectId } = require("mongodb");
 const validateRev = require("../validation/reviewValidate");
+const validateCourse = require("../validation/courseValidate");
+const validateUser = require("../validation/userValidate");
 const users = mongoCollections.users;
 const xss = require('xss');
 module.exports = {
     async addCourse(courseName, description, image, video_id, branch, email) {
+        validateCourse.checkName(courseName);
+        validateCourse.checkName(description);
+        validateCourse.checkVid(video_id);
+        validateCourse.checkBranch(branch);
+        validateUser.validateEmail(email);
+        //Image field can be blank, so no checking required
+
         const courseCollection = await courses();
         const course = await courseCollection.findOne({ courseName: courseName});
         if(course){
@@ -54,6 +63,7 @@ module.exports = {
     },
     
     async getInstCourses(email){
+        validateUser.validateEmail(email);
         const courseCollection = await courses();
         const courseList = [];
         await courseCollection.find({email:email}).toArray().then((courses) => {
@@ -85,28 +95,26 @@ module.exports = {
         return courseList;
     },
     async getCourseById(id) {
+        validateUser.validateId(id);
         const courseCollection = await courses();
         const course = await courseCollection.findOne({ _id: ObjectId(id) });
         return course;
     },
     async deleteCourse(id) {
+        validateUser.validateId(id);
         const courseCollection = await courses();
         const flag = await courseCollection.deleteOne( { "_id" : ObjectId(id) } );
         return flag;
     },
     async getCourseByName(name) {
         try {
-        if (!name) throw 'All fields need to have valid values';
-        if (typeof name !== 'string') throw 'Name must be a string';
-        if (name.trim().length === 0) throw 'name cannot be an empty string or just spaces';
+            validateCourse.checkName(name)
             const courseCollection = await courses();
             var uname = name.split(" ").map(cname => {
                 return cname[0].toUpperCase() + cname.slice(1);
             })
             var sname= uname.join(" ");
-            // console.log(sname)
-            var course = await courseCollection.findOne({ courseName: sname });
-            // console.log(course)          
+            var course = await courseCollection.findOne({ courseName: sname });    
         }
         catch (error) {
             throw `Unable to retrieve course. Check again later..`
@@ -115,28 +123,23 @@ module.exports = {
     },
 
     async addReview(courseId, uId, text, rating){
+        validateUser.validateId(courseId);
+        validateUser.validateId(uId);
         validateRev.checkRating(rating);
         rating = Number(rating);
         validateRev.checkText(text);
         text = text.trim();
         const courseCollection = await courses();
         const currCourse = await this.getCourseById(courseId);
-        // console.log(rating)
         const newReview = {
             _id: ObjectId(),
             userId: uId,
             text: text,
             rating: rating,
         }
-
-        // console.log('inside addReview',text, rating)
-        // console.log('inside addReview',currCourse.overallRating, currCourse.reviews.length)
-        
         let newRating = ((currCourse.overallRating*currCourse.reviews.length)+rating)/(currCourse.reviews.length+1);
         if(currCourse.reviews.length===0)
             newRating = rating;
-            
-        // console.log('\n new rat: ',Number(newRating))
 
         const updatedInfo = await courseCollection.updateOne(
             { _id: ObjectId(courseId) },
@@ -149,6 +152,9 @@ module.exports = {
             { _id: ObjectId(courseId) },
             { $set: {overallRating: Number(newRating)} }
         );
+        if (updatedRating.modifiedCount === 0) {
+            throw 'could not update rating';
+        }
 
         return {reviewAdded: true};
     },
@@ -181,7 +187,7 @@ module.exports = {
             course.description = data.description.trim()
         }
         if(data.image.trim()){
-            course.image = data.trim()
+            course.image = data.image.trim()
         }
         let update = await courseCollection.updateOne({"_id":ObjectId(data.course_id)}, [{$set:course}])
         if(update.modifiedCount){
@@ -198,7 +204,6 @@ module.exports = {
             }
         }
         catch(e){
-            // throw "couldnt add course"
             console.log(e)
         }
         }
@@ -207,47 +212,16 @@ module.exports = {
         )
         const course_up = await courseCollection.findOne({"_id":ObjectId(data.course_id)})
         const userCollection = await users()
-        // const user_update = await userCollection.updateMany({"courses._id":  ObjectId(data.course_id)},
-        //     {"$push" : {"courses.$.videos" : {"$each": course_up.videos.slice(cnt)}}})
         const user_update = await userCollection.updateMany({"courses._id":  ObjectId(data.course_id)},
             {"$set" : {"courses.$" :  course_up}})
-        // console.log(user_update)
         if(user_update.modifiedCount === user_update.matchedCount){
-<<<<<<< Updated upstream
-=======
+
             // console.log('modified')
->>>>>>> Stashed changes
+
             return {Modified:true}
         }
 
     }
 
 }
-
-
-async function main(){
-    // console.log(await module.exports.getInstCourses("courses@gmail.com"))
-    // console.log(await module.exports.deleteCourse("627567e57fa68b4567ec4017"))
-    // const data = {
-    //     courseName: 'Temp',
-    //     description: 'This is a temp course',
-    //     image: '',
-    //     video_id: [ '3JluqTojuME', 'rfscVS0vtbw' ],
-    //     course_id: '6275b26aeb6dba4d69c80d9e'
-    // }
-    const data = {
-        courseName: 'Temp',
-        description: 'This is a temp course',
-        image: '',
-        video_id: '3JluqTojuME',
-        branch : "CS",
-        email:"teacher@test.com"
-    }
-    // console.log(await module.exports.addCourse(data.courseName,data.description,data.image,data.video_id,data.branch,data.email))
-    // console.log(await module.exports.getAllCourses())
-    const c = await module.exports.getCourseByName('Web Development')
-    console.log(c._id.toString())
-}
-
-// main();
 

@@ -67,7 +67,6 @@ module.exports = {
         } 
     },
     async getUser(email){
-        // console.log('inside getuser, mail:',email)
         validate.validateEmail(email);
         email = email.trim();
         email = email.toLowerCase();
@@ -78,7 +77,6 @@ module.exports = {
     },
 
     async getUserById(id){
-        // console.log('inside getuser, mail:',email)
         validate.validateId(id)
         id = id.trim();
         const userCollection = await users();
@@ -93,15 +91,14 @@ module.exports = {
         email = email.toLowerCase();
         const userCollection = await users();
         const user = await userCollection.findOne({email: email});
-        // console.log({"cn":course_name})
+  
         let course_info = await courses_func.getCourseByName(course_name)
-        // console.log(course_info)
+
         if(!course_info){
             throw "Course not found"
         }
         else{
         const found = user.courses.some(el => el._id.equals(course_info._id))
-        // console.log(found)
         if (!found){
             user.courses.push(course_info)
             let update = await userCollection.updateOne({email:email},[{$set:{courses : user.courses}}])
@@ -121,21 +118,20 @@ module.exports = {
     async getprogress(email,course_name){
         email = email.trim();
         email = email.toLowerCase();
-        // const userCollection = await users();
-        // const user = await userCollection.findOne({email: email});
+
         const userCollection = await users()
         const coursedata = await courses_func.getCourseByName(course_name)
-        // console.log(coursedata._id)
+
         let courseinfo = await userCollection.find({ email:email },{courses:{$elemMatch:{_id:coursedata._id} }, "courses.videos":1}).toArray();
-        // console.log(courseinfo[0].courses)
+
         for(var i of courseinfo[0].courses){
-            // console.log(i._id)
+
             if(i._id.equals(coursedata._id)){
-                // console.log("IF")
+
                 var data = i.videos
             }
         }
-        // console.log(data);
+
         count = 0
         for(var i = 0; i < data.length; i++){
             if(data[i].done === true){
@@ -155,8 +151,7 @@ module.exports = {
         email = email.toLowerCase();
         const userCollection = await users();
         const user = await userCollection.findOne({email: email},{$project:{courses:1}});
-        // console.log(user)
-        // var user = {courses: user_courses}
+
         var prog_data = []
         for (var i of user.courses){
             if (i.courseName){
@@ -180,12 +175,9 @@ module.exports = {
         validate.validateEmail(email);
         email = email.trim();
         email = email.toLowerCase();
-        // let newName;
-        // let newGender;
-        // let newAge;
-        // let newuserType;
+        
         var user = await this.getUser(email);
-        // console.log(user)
+
         if(!name || typeof(name)=='undefined'){
             newName = user.name
         }else{
@@ -219,12 +211,7 @@ module.exports = {
         validate.validateUserType(newuserType)
 
         const userCollection = await users();
-        // const updatedUserInfo = {
-        //     name: newName,
-        //     gender: newGender, 
-        //     age: newAge,
-        //     userType:newuserType
-        // };
+       
         user.name = newName;
         user.age = newAge;
         user.gender = newGender;
@@ -233,7 +220,6 @@ module.exports = {
             { _id: user._id },
             { $set: user}
         );
-        // console.log(updatedInfo)
         if (updatedInfo.modifiedCount === 0) {
             throw 'could not update the user';
         }
@@ -247,14 +233,14 @@ module.exports = {
     email = email.toLowerCase();
     const userCollection = await users();
     const user = await userCollection.findOne({ email: email });
-    // console.log(user)
+
     let course_info = await courses_func.getCourseByName(course_name)
     if (!course_info) {
         throw "Course not found"
     }
     else {
         const found = user.courses.some(el => el._id.equals(course_info._id))
-        // console.log(found)
+     
         if (found) {
             user.tests.push([course_info.courseName,score])
             let update = await userCollection.updateOne({ email: email }, [{ $set: { tests:user.tests}}])
@@ -273,9 +259,3 @@ module.exports = {
 
 }
 
-// async function main(){
-//     // console.log(await module.exports.getUser("pjhangl1@stevens.edu"))
-//     console.log(await module.exports.score("sneha@gmail.com",'100','C'))
-// }
-
-// main();
