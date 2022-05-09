@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{!-- <!DOCTYPE html>
 <html lang="en">
 <head>
      
@@ -13,7 +13,7 @@
 
 
 </head>
-<body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+<body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50"> --}}
 
      {{> navbar this}}
 
@@ -157,12 +157,19 @@
                          <div class="col-md-offset-1 col-md-4 col-sm-12">
                               <div class="entry-form">
                                    <form action="/login" method="post" id="login-form" class="login-form">
+<<<<<<< Updated upstream
                                         <h2>Login Now</h2>
                                         
 
                                         <input type="email" name="email" class="form-control" placeholder="Your Email" required="">
 
                                         <input type="password" name="password" class="form-control" placeholder="Your password" required="">
+=======
+                                        <h2>Login Now</h2><label for="Email" class="sign-up-label">
+                                        <input type="email" name="email" id = "Email" class="form-control" placeholder="Your Email" required=""></label>
+                                        <label for="Password" class="sign-up-label">
+                                        <input type="password" name="password"  id="Password" class="form-control" placeholder="Your password" required=""></label>
+>>>>>>> Stashed changes
 
                                         <button class="submit-btn form-control" id="form-submit">Login</button>
                                    </form>
@@ -177,6 +184,7 @@
                     {{/if}}
 
 
+               </div>
                </div>
           </div>
      </section>
@@ -196,7 +204,7 @@
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="public/images/Achal.jpeg" class="img-responsive" alt="">
+                                   <img src="public/images/Achal.jpeg" class="img-responsive" alt=""/>
                               </div>
                               <div class="team-info">
                                    <h3>Achal</h3>
@@ -213,7 +221,7 @@
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="public/images/Preet.jpg" class="img-responsive" alt="">
+                                   <img src="public/images/Preet.jpg" class="img-responsive" alt=""/>
                               </div>
                               <div class="team-info">
                                    <h3>Preet</h3>
@@ -229,7 +237,7 @@
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="public/images/Sushmitha.jpeg" class="img-responsive" alt="">
+                                   <img src="public/images/Sushmitha.jpeg" class="img-responsive" alt=""/>
                               </div>
                               <div class="team-info">
                                    <h3>Sushmitha</h3>
@@ -246,7 +254,7 @@
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="public/images/Marvin.jpeg" class="img-responsive" alt="">
+                                   <img src="public/images/Marvin.jpeg" class="img-responsive" alt=""/>
                               </div>
                               <div class="team-info">
                                    <h3>Marvin</h3>
@@ -444,6 +452,7 @@
 
                </div>
           </div>
+          </div>
      </section>
 
 
@@ -535,7 +544,7 @@
                               </div>
 
                          </div>
-
+                    </div>
                </div>
           </div>
      </section> 
@@ -644,7 +653,7 @@
           </div>
      </footer>
 
-</body>
+{{!-- </body> --}}
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script>
      if ({{{course_info}}}){
@@ -701,4 +710,3 @@
           }
      }
 </script>
-</html>

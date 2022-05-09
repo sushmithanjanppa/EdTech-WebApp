@@ -181,7 +181,7 @@ module.exports = {
             course.description = data.description.trim()
         }
         if(data.image.trim()){
-            course.image = data.trim()
+            course.image = data.image.trim()
         }
         let update = await courseCollection.updateOne({"_id":ObjectId(data.course_id)}, [{$set:course}])
         if(update.modifiedCount){
