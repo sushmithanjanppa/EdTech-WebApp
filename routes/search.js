@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const courseData = data.courses;
+const xss = require('xss');
 
 const crossPageNavs = {
     top: "/#top",
@@ -45,11 +46,11 @@ router.post('/searchcourses', async (req, res) => {
     let bodyData = req.body;
     let error = ""
     let hasError = false
-    if (!bodyData.courseSearchTerm|| bodyData.courseSearchTerm.trim() === '') {
+    if (!xss(bodyData.courseSearchTerm)|| xss(bodyData.courseSearchTerm.trim()) === '') {
         return res.status(400).json({ status: 400, error: `No search term provided.`, home: "http://localhost:3000" });
     }
     
-    let result = await courseData.getCourseByName(bodyData.courseSearchTerm);
+    let result = await courseData.getCourseByName(xss(bodyData.courseSearchTerm));
     if(result != null) {
         let resultArr = [];
         for (let i = 0; i < result.length ; i++) {
@@ -59,21 +60,21 @@ router.post('/searchcourses', async (req, res) => {
         hasError = false;
     } else if (result == null || result.length == 0) {
         hasError = true;
-        error = `We're sorry, but no results were found for ${bodyData.courseSearchTerm}.`
+        error = `We're sorry, but no results were found for ${xss(bodyData.courseSearchTerm)}.`
     }
-    res.render('edu/allCoursesPage', { title: `courses Found`, data: result, courseSearchTerm: bodyData.courseSearchTerm, error: error, hasError: error!="", search: true, location: crossPageNavs });
+    res.render('edu/allCoursesPage', { title: `courses Found`, data: result, courseSearchTerm: xss(bodyData.courseSearchTerm), error: error, hasError: error!="", search: true, location: crossPageNavs });
 });
 
 router.get('/course/:id', async (req, res) => {
-    if (!req.params.id && req.params.id.trim() === '') {
+    if (!xss(req.params.id) && xss(req.params.id.trim()) === '') {
         return res.status(400).json({ status: 400, error: `Invalid id`, home: "http://localhost:3000" });
     }
-    let result = await courseData.getCourseById(req.params.id);
+    let result = await courseData.getCourseById(xss(req.params.id));
     let error = '';
     let hasError = false;
     if (!result) {
         hasError = true;
-        error = `No courses found for the given id ${req.params.id}`
+        error = `No courses found for the given id ${xss(req.params.id)}`
         return res.status(404).json({ error: error });
     }
 

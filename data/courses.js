@@ -6,7 +6,7 @@ const validateRev = require("../validation/reviewValidate");
 const validateCourse = require("../validation/courseValidate");
 const validateUser = require("../validation/userValidate");
 const users = mongoCollections.users;
-
+const xss = require('xss');
 module.exports = {
     async addCourse(courseName, description, image, video_id, branch, email) {
         validateCourse.checkName(courseName);

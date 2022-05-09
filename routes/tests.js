@@ -4,14 +4,14 @@ const router = express.Router();
 const data = require('../data');
 const courseData = data.courses;
 const user = require("../data/users")
-
+const xss = require('xss');
 
 
 router.get('/', async (req, res) => {
     if(req.session.user){
     try {
         // console.log('asd');
-        const allCourses = await user.get_user_courses(req.session.user.email);
+        const allCourses = await user.get_user_courses(xss(req.session.user.email));
         res.status(200).render('tests/testIndex', { title: `course`, course: allCourses.courses });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
             res.status(400).json({ error: error.message });
             return;
         }
-        const newCourse = await courseData.addCourse(courseName, branch, description, image, videos);
+        const newCourse = await courseData.addCourse(xss(courseName), xss(branch), xss(description), xss(image), videos);
         res.status(200).json(newCourse);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -47,15 +47,15 @@ router.post('/', async (req, res) => {
 });
 router.get('/:id', async (req, res) => {
     try {
-        if (!req.params.id) {
+        if (!xss(req.params.id)) {
             res.status(400).json({ error: `id must be passed` });
             return;
         }
-        if (typeof req.params.id != 'string' || req.params.id.trim() === '') {
+        if (typeof xss(req.params.id) != 'string' || xss(req.params.id.trim()) === '') {
             res.status(400).json({ error: `id must be valid` });
             return;
         }
-        const getRes = await courseData.getCourseById(req.params.id);
+        const getRes = await courseData.getCourseById(xss(req.params.id));
         len= getRes.questions.length
         let resArr=[]
         for(var i=0; i<len;i++){
