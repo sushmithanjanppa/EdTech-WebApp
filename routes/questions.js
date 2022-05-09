@@ -2,19 +2,19 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const questionData = data.questions;
-
+const xss = require('xss');
 
 router.get('/:id', async (req, res) => {
     try {
-        if (!req.params.id) {
+        if (!xss(req.params.id)) {
             res.status(400).json({ error: `courseId must be passed` });
             return;
         }
-        if (typeof req.params.id != 'string' || req.params.id.trim() === '') {
+        if (typeof xss(req.params.id) != 'string' || xss(req.params.id).trim() === '') {
             res.status(400).json({ error: `courseId must be valid` });
             return;
         }
-        const allQuestions = await questionData.getAll(req.params.id);
+        const allQuestions = await questionData.getAll(xss(req.params.id));
         res.json(allQuestions);
     } catch (error) {
         if (error.message.includes("Unable to find course")) {
@@ -28,11 +28,11 @@ router.get('/:id', async (req, res) => {
 router.post('/:id', async (req, res) => {
     const createQuestionData = req.body;
     try {
-        if (!req.params.id) {
+        if (!xss(req.params.id)) {
             res.status(400).json({ error: `courseID must be passed` });
             return;
         }
-        if (typeof req.params.id != 'string' || req.params.id.trim() === '') {
+        if (typeof xss(req.params.id) != 'string' || xss(req.params.id.trim()) === '') {
             res.status(400).json({ error: `courseId must be valid` });
             return;
         }
@@ -65,7 +65,7 @@ router.post('/:id', async (req, res) => {
             return;
         }
 
-        const newQuestion= await questionData.create(req.params.id, createQuestionData.question, createQuestionData.answer1, createQuestionData.answer2, createQuestionData.answer3, createQuestionData.answer4, createQuestionData.sectionid, createQuestionData.answer);
+        const newQuestion= await questionData.create(xss(req.params.id), createQuestionData.question, createQuestionData.answer1, createQuestionData.answer2, createQuestionData.answer3, createQuestionData.answer4, createQuestionData.sectionid, createQuestionData.answer);
         res.json(newQuestion);
     } catch (error) {
         if (error.message.includes("Unable to find question")) {

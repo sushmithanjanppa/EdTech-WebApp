@@ -6,7 +6,7 @@ const courses = require('../data/courses');
 const validate = require('../validation/userValidate');
 const validateReview = require("../validation/reviewValidate");
 const e = require("express");
-
+const xss = require('xss');
 const samePageNavs = {
   top: "#top",
   about: "#about",
@@ -27,11 +27,11 @@ const crossPageNavs = {
 router.get("/", async (req, res) => {
   var course_i = await courses.getAllCourses()
   // console.log(course_i)
-  if(!req.session.user_type){
+  if(!xss(req.session.user_type)){
     req.session.user_type = {type: 0}
   }
   // console.log(course_i)
-  res.render("users/index", { title: "Login Page", location: samePageNavs, notLoggedIn: req.session.user ? false : true, course_info:JSON.stringify(course_i) , userType: req.session.user_type.type});
+  res.render("users/index", { title: "Login Page", location: samePageNavs, notLoggedIn: req.session.user ? false : true, course_info:JSON.stringify(course_i) , userType: xss(req.session.user_type.type)});
 });
 
 router.get("/signup", async (req, res) => {
@@ -46,12 +46,12 @@ router.get("/signup", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-  let name= req.body.name;
-  let email = req.body.email;
-  let password = req.body.password;
-  let age = req.body.age;
-  let gender = req.body.gender;
-  let userType = req.body.userType;
+  let name= xss(req.body.name);
+  let email = xss(req.body.email);
+  let password = xss(req.body.password);
+  let age = xss(req.body.age);
+  let gender = xss(req.body.gender);
+  let userType = xss(req.body.userType);
 
   try {
     await validate.validateName(name);
@@ -77,8 +77,8 @@ router.post("/signup", async (req, res) => {
 
 
 router.post("/login", async (req, res) => {
-  let email = req.body.email;
-  let password = req.body.password;
+  let email = xss(req.body.email);
+  let password = xss(req.body.password);
 
   var course_i = await courses.getAllCourses()
   if(!req.session.user_type){
@@ -103,7 +103,7 @@ router.post("/login", async (req, res) => {
         hasErrors: true,
         notLoggedIn: req.session.user ? false : true,
         course_info: JSON.stringify(course_i),
-        userType: req.session.user_type.type
+        userType: xss(req.session.user_type.type)
       });
       return;
     }
@@ -114,7 +114,7 @@ router.post("/login", async (req, res) => {
       hasErrors: true,
       notLoggedIn: req.session.user ? false : true,
       course_info: JSON.stringify(course_i),
-      userType: req.session.user_type.type
+      userType: xss(req.session.user_type.type)
     });
     return;
   }
@@ -131,15 +131,15 @@ router.get("/logout", async (req, res) => {
 // const validation = require('../tasks/validation')
 
 router.get('/video/:course', async(req,res) => {
-    if(req.session.user){
+    if(xss(req.session.user)){
       if(req.params){
-        var course_name = req.params.course;
+        var course_name = xss(req.params.course);
       }
       else{
         var course_name = "Web Development"
       }
       try{
-        let email = req.session.user.email;
+        let email = xss(req.session.user.email);
         let data = await videos.getVideos(email,course_name);
         let course = await courses.getCourseByName(course_name);
         // console.log(course.videos);
@@ -156,10 +156,10 @@ router.get('/video/:course', async(req,res) => {
 router.post('/video/:course', async(req,res) => {
   if(req.session.user){
     try{
-      let courseName = req.params.course;
-      let email = req.session.user.email;
+      let courseName = xss(req.params.course);
+      let email = xss(req.session.user.email);
       let user = await userData.getUser(email);
-      let newComment = await videos.addComment(courseName, req.body.vidId, user._id, user.name,req.body.text);
+      let newComment = await videos.addComment(courseName, xss(req.body.vidId), user._id, user.name,xss(req.body.text));
       // console.log(newComment.commentInserted)
       let uname = newComment.commentVal.userName;
       let vidName = newComment.vidName;
@@ -175,7 +175,7 @@ router.get('/courseForm',async(req,res)=>{
     res.render('edu/addCourseForm', {notLoggedIn: req.session.user ? false : true, location: crossPageNavs})
 })
 router.get('/allCourses',async(req,res)=>{
-    let email = req.session.user.email
+    let email = xss(req.session.user.email)
     let courseList = await courses.getInstCourses(email);
     if (req.session.user){
       if(req.session.user_type.type === 1)
@@ -190,12 +190,12 @@ router.get('/viewAllCourses',async(req,res)=>{
   return res.render('edu/allCoursesPage',{data:courseList, notLoggedIn: req.session.user ? false : true, location: crossPageNavs, search: false})
 })
 router.post('/delete/:_id',async(req,res)=>{
-    let flag = await courses.deleteCourse(req.params._id);
+    let flag = await courses.deleteCourse(xss(req.params._id));
     if(flag)res.redirect('/allCourses');
 })
 router.get('/course/:Name', async(req,res) => {
     try{
-      let course = await courses.getCourseByName(req.params.Name)
+      let course = await courses.getCourseByName(xss(req.params.Name))
       let len = course.reviews.length<=0 ? -1 : course.reviews.length;
       let comments = [];
       let flag = false;
@@ -215,12 +215,12 @@ router.get('/course/:Name', async(req,res) => {
   })
 router.post('/course/:Name', async(req,res) => {
     try{
-      let email = req.session.user.email
+      let email = xss(req.session.user.email)
       let user = await userData.getUser(email);
       let uname = user.name;
-      let courseName = req.params.Name;
-      let text = req.body.text;
-      let rating = req.body.rating;
+      let courseName = xss(req.params.Name);
+      let text = xss(req.body.text);
+      let rating = xss(req.body.rating);
       let course = await courses.getCourseByName(courseName);
       if(user.courses.length===0) throw "User not enrolled in course!";
       let canModify = false;
@@ -242,7 +242,7 @@ router.post('/course/:Name', async(req,res) => {
 
 router.post('/courseForm', async(req,res) => {
   if(req.session.user){
-    var email = req.session.user.email
+    var email = xss(req.session.user.email)
   }
   else{
     var email = " "
@@ -254,14 +254,14 @@ router.post('/courseForm', async(req,res) => {
     console.log(e)
   }
   if(req.body.image){
-    var image_link = req.body.image
+    var image_link = xss(req.body.image)
   }
   else{
     image_link = "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg"
   }
-  var branch = req.body.branch
+  var branch = xss(req.body.branch)
   try{
-    let courseAdded=await courses.addCourse(req.body.courseName,req.body.description, image_link, req.body.video_id, branch, email);
+    let courseAdded=await courses.addCourse(xss(req.body.courseName),xss(req.body.description), xss(image_link), req.body.video_id, xss(branch), xss(email));
     // console.log(courseAdded)
     if(courseAdded.courseInserted)  
     // res.redirect('/allCourses');
@@ -272,7 +272,7 @@ router.post('/courseForm', async(req,res) => {
 })
 
 router.post('/modify', async(req,res) => {
-  var email = req.session.user.email
+  var email = xss(req.session.user.email)
   try{
     validate.validateEmail(email)
   }
@@ -306,7 +306,7 @@ router.post('/video', async(req,res) => {
     // console.log("post")
     // console.log(req.body)
     // let timeupdated = await videos.addtime(id = req.body.video_id, time = req.body.resume)
-    let email = req.session.user.email
+    let email = xss(req.session.user.email)
     email = email.trim();
     email = email.toLowerCase();
     let timeupdated = await videos.addtime(email,req.body)
@@ -329,8 +329,8 @@ router.post("/enroll", async(req,res) => {
   // console.log("In Enroll")
   // console.log([course_name,email])
   try {
-    let course_name = req.body.course_name
-    let email = req.session.user.email
+    let course_name = xss(req.body.course_name)
+    let email = xss(req.session.user.email)
     await userData.enroll(email,course_name)
     // res.send('_callback(\'{"message": "Enrolled"}\')');
     res.send({message:"Enrolled"})
@@ -350,9 +350,9 @@ router.post("/enroll", async(req,res) => {
 })
 
 router.post("/score", async(req,res) => {
-  let email = req.session.user.email
-  let course_name = req.body.course_name
-  let score = req.body.score
+  let email = xss(req.session.user.email)
+  let course_name = xss(req.body.course_name)
+  let score = xss(req.body.score)
   // console.log(req.body)
   try {
     await userData.score(email,score,course_name)
